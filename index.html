@@ -1,62 +1,127 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>واژه‌نامه تاتی - ایزگیرینی</title>
-    <style>
-        body { font-family: Tahoma, Arial, sans-serif; background: #f4f1ea; padding: 15px; margin: 0; direction: rtl; }
-        .container { max-width: 750px; margin: 20px auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        h1 { color: #6b4423; text-align: center; font-size: 22px; margin-bottom: 15px; }
-        input { width: 100%; padding: 12px; margin: 10px 0 20px 0; border: 2px solid #8a5a2b; border-radius: 8px; font-size: 16px; box-sizing: border-box; outline: none; }
-        table { width: 100%; border-collapse: collapse; text-align: right; }
-        th, td { padding: 12px 10px; border-bottom: 1px solid #eee; }
-        th { background: #8a5a2b; color: white; border-radius: 4px; }
-        tr:nth-child(even) { background: #fdfbf9; }
-        tr:hover { background: #f7ede2; }
-        .count { text-align: center; color: #777; font-size: 14px; margin-bottom: 10px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>واژه‌نامه تاتی ایزگیرینی</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --primary: #2563eb;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Tahoma, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      padding: 16px;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 1.6rem;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .search-box {
+      position: sticky;
+      top: 10px;
+      z-index: 100;
+      background: var(--bg);
+      padding-bottom: 12px;
+    }
+    input[type="search"] {
+      width: 100%;
+      padding: 14px 18px;
+      font-size: 1.05rem;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      background: #fff;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      transition: border-color 0.2s;
+    }
+    input[type="search"]:focus {
+      border-color: var(--primary);
+    }
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 4px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .word-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .tati-word {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .word-index {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      background: #f1f5f9;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+    .farsi-meaning {
+      font-size: 1rem;
+      color: var(--text-main);
+    }
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>واژه‌نامه تاتی - ایزگیرینی</h1>
-        <div class="count" id="countInfo">در حال بارگذاری...</div>
-        <input type="text" id="searchInput" onkeyup="searchWords()" placeholder="جستجوی کلمه تاتی یا معنی فارسی...">
-        
-        <table id="dictTable">
-            <thead>
-                <tr>
-                    <th style="width: 15%;">ردیف</th>
-                    <th style="width: 35%;">واژه تاتی (ایزگیرینی)</th>
-                    <th style="width: 50%;">معنی فارسی</th>
-                </tr>
-            </thead>
-            <tbody id="dictBody">
-                <!-- نمونه -->
-                <tr><td>۱</td><td>لیچ</td><td>زیر سقف اتاق یا زیر پشت بام چوبی</td></tr>
-                <tr><td>۲</td><td>نیاس</td><td>نگاه کردن / تماشا</td></tr>
-                <tr><td>۳</td><td>هَبوکَ</td><td>کوبیدن چیزی برای سفت شدن</td></tr>
-            </tbody>
-        </table>
+  <div class="container">
+    <header>
+      <h1>واژه‌نامه تاتی ایزگیرینی</h1>
+      <div class="subtitle">مجموعه واژگان و اصطلاحات تاتی با برگردان فارسی</div>
+    </header>
+
+    <div class="search-box">
+      <input type="search" id="searchInput" placeholder="جست‌وجوی واژه تاتی یا معنی فارسی..." autofocus>
+      <div class="meta">
+        <span>تعداد واژه‌ها: <b id="count">0</b></span>
+        <span>ایزگیرین</span>
+      </div>
     </div>
 
-    <script>
-        function searchWords() {
-            let filter = document.getElementById("searchInput").value.trim().toLowerCase();
-            let rows = document.getElementById("dictBody").getElementsByTagName("tr");
-            let visibleCount = 0;
-            for (let i = 0; i < rows.length; i++) {
-                let text = rows[i].innerText.toLowerCase();
-                if (text.indexOf(filter) > -1) {
-                    rows[i].style.display = "";
-                    visibleCount++;
-                } else {
-                    rows[i].style.display = "none";
-                }
-            }
-            document.getElementById("countInfo").innerText = "تعداد نمایش: " + visibleCount + " واژه";
-        }
-        searchWords();
-    </script>
-</body>
-</html>
+    <div id="wordList" class="word
