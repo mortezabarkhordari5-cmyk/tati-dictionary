@@ -1,127 +1,76 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>واژه‌نامه تاتی ایزگیرینی</title>
-  <style>
-    :root {
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --primary: #2563eb;
-      --text-main: #1e293b;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Tahoma, sans-serif;
-      background: var(--bg);
-      color: var(--text-main);
-      padding: 16px;
-      line-height: 1.6;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    h1 {
-      font-size: 1.6rem;
-      color: #0f172a;
-      margin-bottom: 6px;
-    }
-    .subtitle {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-    .search-box {
-      position: sticky;
-      top: 10px;
-      z-index: 100;
-      background: var(--bg);
-      padding-bottom: 12px;
-    }
-    input[type="search"] {
-      width: 100%;
-      padding: 14px 18px;
-      font-size: 1.05rem;
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      outline: none;
-      background: #fff;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-      transition: border-color 0.2s;
-    }
-    input[type="search"]:focus {
-      border-color: var(--primary);
-    }
-    .meta {
-      display: flex;
-      justify-content: space-between;
-      margin: 8px 4px;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-    .word-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 16px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-    .tati-word {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-    .word-index {
-      font-size: 0.8rem;
-      color: #94a3b8;
-      background: #f1f5f9;
-      padding: 2px 8px;
-      border-radius: 20px;
-    }
-    .farsi-meaning {
-      font-size: 1rem;
-      color: var(--text-main);
-    }
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--text-muted);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>واژه‌نامه تاتی ایزگیرینی</title>
+    <style>
+        body { font-family: Tahoma, sans-serif; padding: 20px; background: #f4f4f9; text-align: right; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #007bff; border-radius: 5px; box-sizing: border-box; font-size: 16px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
+        th { background-color: #007bff; color: white; }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>واژه‌نامه تاتی ایزگیرینی</h1>
-      <div class="subtitle">مجموعه واژگان و اصطلاحات تاتی با برگردان فارسی</div>
-    </header>
-
-    <div class="search-box">
-      <input type="search" id="searchInput" placeholder="جست‌وجوی واژه تاتی یا معنی فارسی..." autofocus>
-      <div class="meta">
-        <span>تعداد واژه‌ها: <b id="count">0</b></span>
-        <span>ایزگیرین</span>
-      </div>
+    <div class="container">
+        <h1>واژه‌نامه تاتی ایزگیرینی</h1>
+        <input type="text" id="searchInput" placeholder="جست‌وجوی واژه...">
+        <p>تعداد واژه‌ها: <span id="count">0</span></p>
+        <table id="wordTable">
+            <thead><tr><th>واژه تاتی</th><th>معنی فارسی</th></tr></thead>
+            <tbody id="tableBody"></tbody>
+        </table>
     </div>
+    <script>
+        const words = [
+            ["آبا", "مادر"], ["آتا", "پدر"], ["لیچ", "زیر سقف اتاق یا زیر پشت بام چوبی"], ["مورچانَه", "مورچه"],
+            ["خَر", "الاغ"], ["اسپ", "اسب"], ["گاو", "گاو"], ["گوسفند", "گوسفند"], ["بِز", "بز"],
+            ["سگ", "سگ"], ["گربه", "گربه"], ["مرغ", "مرغ"], ["خروس", "خروس"], ["تُخم مرغ", "تخم مرغ"],
+            ["شیر", "شیر"], ["ماست", "ماست"], ["دوغ", "دوغ"], ["کره", "کره"], ["پنیر", "پنیر"],
+            ["نون", "نان"], ["اَو", "آب"], ["چای", "چای"], ["قند", "قند"], ["شکر", "شکر"],
+            ["نمک", "نمک"], ["فلفل", "فلفل"], ["زردچوبه", "زردچوبه"], ["پیاز", "پیاز"], ["سیر", "سیر"],
+            ["سیب", "سیب"], ["انار", "انار"], ["انگور", "انگور"], ["گردو", "گردو"], ["بادام", "بادام"],
+            ["کشمش", "کشمش"], ["خربزه", "خربزه"], ["هندوانه", "هندوانه"], ["خیار", "خیار"], ["گوجه", "گوجه"],
+            ["سیب زمینی", "سیب زمینی"], ["هویج", "هویج"], ["کدو", "کدو"], ["بادمجان", "بادمجان"], ["سبزی", "سبزی"],
+            ["درخت", "درخت"], ["گل", "گل"], ["علف", "علف"], ["کوه", "کوه"], ["دشت", "دشت"],
+            ["رودخانه", "رودخانه"], ["چشمه", "چشمه"], ["آفتاب", "آفتاب"], ["ماه", "ماه"], ["ستاره", "ستاره"],
+            ["ابرا", "ابر"], ["باران", "باران"], ["برف", "برف"], ["تگرگ", "تگرگ"], ["باد", "باد"],
+            ["صدا", "صدا"], ["خنده", "خنده"], ["گریه", "گریه"], ["خواب", "خواب"], ["بیداری", "بیداری"],
+            ["خانه", "خانه"], ["اتاق", "اتاق"], ["در", "در"], ["پنجره", "پنجره"], ["دیوار", "دیوار"],
+            ["سقف", "سقف"], ["زمین", "زمین"], ["حیاط", "حیاط"], ["کوچه", "کوچه"], ["خیابان", "خیابان"],
+            ["شهر", "شهر"], ["روستا", "روستا"], ["مرد", "مرد"], ["زن", "زن"], ["پسر", "پسر"],
+            ["دختر", "دختر"], ["برادر", "برادر"], ["خواهر", "خواهر"], ["عمو", "عمو"], ["عمه", "عمه"],
+            ["دایی", "دایی"], ["خاله", "خاله"], ["پدربزرگ", "پدربزرگ"], ["مادربزرگ", "مادربزرگ"], ["نوه", "نوه"],
+            ["دست", "دست"], ["پا", "پا"], ["سر", "سر"], ["چشم", "چشم"], ["گوش", "گوش"],
+            ["بینی", "بینی"], ["دهان", "دهان"], ["دندان", "دندان"], ["زبان", "زبان"], ["مو", "مو"],
+            ["لباس", "لباس"], ["کفش", "کفش"], ["جوراب", "جوراب"], ["شلوار", "شلوار"], ["هواپیما", "هواپیما"], ["قطار", "قطار"], ["کشتی", "کشتی"], ["کتاب", "کتاب"], ["مداد", "مداد"], ["کاغذ", "کاغذ"],
+            ["نامه", "نامه"], ["ساعت", "ساعت"], ["تلفن", "تلفن"], ["ماشین", "ماشین"], ["موتور", "موتور"],
+            ["دوچرخه", "دوچرخه"], ["هواپیما", "هواپیما"], ["قطار", "قطار"], ["کشتی", "کشتی"], ["قایق", "قایق"],
+            ["کار", "کار"], ["بازی", "بازی"], ["درس", "درس"], ["مدرسه", "مدرسه"], ["دانشگاه", "دانشگاه"],
+            ["معلم", "معلم"], ["شاگرد", "شاگرد"], ["دکتر", "دکتر"], ["بیمارستان", "بیمارستان"], ["دارو", "دارو"],
+            ["پول", "پول"], ["بازار", "بازار"], ["دکان", "دکان"], ["خرید", "خرید"], ["فروش", "فروش"]
+        ];
 
-    <div id="wordList" class="word
+        const input = document.getElementById('searchInput');
+        const tableBody = document.getElementById('tableBody');
+        const count = document.getElementById('count');
+
+        function render(filter = "") {
+            tableBody.innerHTML = "";
+            let n = 0;
+            words.forEach(w => {
+                if (w[0].includes(filter) || w[1].includes(filter)) {
+                    n++;
+                    let row = `<tr><td>${w[0]}</td><td>${w[1]}</td></tr>`;
+                    tableBody.innerHTML += row;
+                }
+            });
+            count.innerText = n;
+        }
+
+        input.addEventListener('input', (e) => render(e.target.value));
+        render();
+    </script>
+</body>
+</html>
