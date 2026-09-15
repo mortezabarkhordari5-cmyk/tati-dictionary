@@ -4,35 +4,35 @@
     <meta charset="UTF-8">
     <title>واژه‌نامه تاتی ایزگیرینی</title>
     <style>
-        body { font-family: Tahoma; padding: 15px; background: #f9f9f9; text-align: right; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 0 5px #ccc; }
-        input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #007bff; border-radius: 5px; box-sizing: border-box; }
+        body { font-family: Tahoma; padding: 20px; }
+        .container { max-width: 600px; margin: auto; }
+        input { width: 100%; padding: 10px; margin-bottom: 10px; }
         table { width: 100%; border-collapse: collapse; }
-        td, th { border: 1px solid #ddd; padding: 8px; font-size: 14px; }
+        td, th { border: 1px solid #ddd; padding: 8px; text-align: right; }
         th { background-color: #007bff; color: white; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>واژه‌نامه تاتی ایزگیرینی</h1>
-        <input type="text" id="searchInput" placeholder="جست‌وجوی واژه...">
+        <input type="text" id="searchInput" placeholder="جستجو کنید...">
         <table>
             <thead><tr><th>واژه تاتی</th><th>معنی فارسی</th></tr></thead>
             <tbody id="tableBody"></tbody>
         </table>
     </div>
+
+    <script src="data.js"></script>
     <script>
-        const words = [
-            ["لیچ", "زیر سقف اتاق یا زیر پشت بام چوبی"], ["نیاس", "لبه پشت بام روی دیوار"], ["هَبوکَ", "کوبیدن چیزی برای سفت شدن"],
-            ["آبا", "مادر"], ["آتا", "پدر"], ["دِتر", "دختر"], ["وَرف", "برف"], ["کَرگ", "مرغ"], ["سَگ", "سگ"]
-            // لیست کامل را در پیام بعدی می‌فرستم تا مطمئن شویم این نسخه کار می‌کند.
-        ];
         const tbody = document.getElementById('tableBody');
+        const searchInput = document.getElementById('searchInput');
+
         function render(q) {
-            tbody.innerHTML = words.filter(w => w[0].includes(q) || w[1].includes(q))
-                .map(w => `<tr><td>${w[0]}</td><td>${w[1]}</td></tr>`).join('');
+            const filtered = words.filter(w => w[0].includes(q) || w[1].includes(q));
+            tbody.innerHTML = filtered.map(w => `<tr><td>${w[0]}</td><td>${w[1]}</td></tr>`).join('');
         }
-        document.getElementById('searchInput').addEventListener('input', e => render(e.target.value));
+
+        searchInput.addEventListener('input', (e) => render(e.target.value));
         render("");
     </script>
 </body>
