@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <title>واژه‌نامه تاتی ایزگیرینی</title>
     <style>
-        body { font-family: Tahoma, sans-serif; padding: 20px; background: #f4f4f9; text-align: right; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #007bff; border-radius: 5px; box-sizing: border-box; font-size: 16px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
+        body { font-family: Tahoma; padding: 15px; background: #f9f9f9; text-align: right; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 0 5px #ccc; }
+        input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #007bff; border-radius: 5px; box-sizing: border-box; }
+        table { width: 100%; border-collapse: collapse; }
+        td, th { border: 1px solid #ddd; padding: 8px; font-size: 14px; }
         th { background-color: #007bff; color: white; }
     </style>
 </head>
@@ -16,37 +16,24 @@
     <div class="container">
         <h1>واژه‌نامه تاتی ایزگیرینی</h1>
         <input type="text" id="searchInput" placeholder="جست‌وجوی واژه...">
-        <p>تعداد واژه‌ها: <span id="count">0</span></p>
-        <table id="wordTable">
+        <table>
             <thead><tr><th>واژه تاتی</th><th>معنی فارسی</th></tr></thead>
             <tbody id="tableBody"></tbody>
         </table>
     </div>
     <script>
         const words = [
-            ["آبا", "مادر"], ["آتا", "پدر"], ["لیچ", "زیر سقف اتاق یا زیر پشت بام چوبی"], ["مورچانَه", "مورچه"],
-            ["خَر", "الاغ"], ["اسپ", "اسب"], ["گاو", "گاو"], ["گوسفند", "گوسفند"], ["بِز", "بز"]
+            ["لیچ", "زیر سقف اتاق یا زیر پشت بام چوبی"], ["نیاس", "لبه پشت بام روی دیوار"], ["هَبوکَ", "کوبیدن چیزی برای سفت شدن"],
+            ["آبا", "مادر"], ["آتا", "پدر"], ["دِتر", "دختر"], ["وَرف", "برف"], ["کَرگ", "مرغ"], ["سَگ", "سگ"]
+            // لیست کامل را در پیام بعدی می‌فرستم تا مطمئن شویم این نسخه کار می‌کند.
         ];
-
-        const input = document.getElementById('searchInput');
-        const tableBody = document.getElementById('tableBody');
-        const count = document.getElementById('count');
-
-        function render(filter = "") {
-            tableBody.innerHTML = "";
-            let n = 0;
-            words.forEach(w => {
-                if (w[0].includes(filter) || w[1].includes(filter)) {
-                    n++;
-                    let row = `<tr><td>${w[0]}</td><td>${w[1]}</td></tr>`;
-                    tableBody.innerHTML += row;
-                }
-            });
-            count.innerText = n;
+        const tbody = document.getElementById('tableBody');
+        function render(q) {
+            tbody.innerHTML = words.filter(w => w[0].includes(q) || w[1].includes(q))
+                .map(w => `<tr><td>${w[0]}</td><td>${w[1]}</td></tr>`).join('');
         }
-
-        input.addEventListener('input', (e) => render(e.target.value));
-        render();
+        document.getElementById('searchInput').addEventListener('input', e => render(e.target.value));
+        render("");
     </script>
 </body>
 </html>
