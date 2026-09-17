@@ -3,32 +3,330 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>واژه‌نامه تاتی</title>
+    <title>واژه‌نامه تاتی الموتی</title>
     <style>
-        body { font-family: Tahoma, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; }
-        h1 { margin-bottom: 20px; }
-        input { width: 100%; max-width: 400px; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 20px; outline: none; box-sizing: border-box; }
-        table { width: 100%; max-width: 500px; margin: 0 auto; border-collapse: collapse; background: #fff; }
-        th, td { border: 1px solidوی کلمه (تاتی یا فارسی)...">
+        body { font-family: Tahoma, Arial, sans-serif; text-align: center; padding: 15px; background-color: #f4f6f8; margin: 0; }
+        h1 { color: #2c3e50; margin-bottom: 15px; font-size: 24px; }
+        .search-box { width: 100%; max-width: 500px; padding: 12px 15px; font-size: 16px; border: 2px solid #3498db; border-radius: 8px; margin-bottom: 20px; outline: none; box-sizing: border-box; }
+        .table-container { max-width: 600px; margin: 0 auto; overflow-x: auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; text-align: right; }
+        th, td { border-bottom: 1px solid #eee; padding: 12px 15px; }
+        th { background-color: #3498db; color: white; text-align: center; font-size: 16px; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        td { text-align: center; }
+        .count { margin-bottom: 10px; color: #7f8c8d; font-size: 14px; }
+    </style>
+</head>
+<body>
 
-    <table id="dictionaryTable">
-        <thead>
-            <tr>
-                <th>تاتی</th>
-                <th>فارسی</th>
-            </tr>
-        </thead>
-        <tbody id="tableBody">
-            <!-- کلمات اینجا بارگذاری می‌شوند -->
-        </tbody>
-    </table>
+    <h1>واژه‌نامه تاتی الموتی</h1>
+    <input type="text" id="searchInput" class="search-box" onkeyup="filterTable()" placeholder="جستجوی کلمه (تاتی یا فارسی)...">
+    <div class="count" id="wordCount"></div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>واژه تاتی</th>
+                    <th>معنی فارسی</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+            </tbody>
+        </table>
+    </div>
 
     <script>
-        // کلمات خود را مستقیم اینجا اضافه کنید
         const dictionaryData = [
-            { tati: "برا", farsi: "برادر" },
-            { tati: "خوا", farsi: "خواهر" },
-            { tati: "چمه", farsi: "مال من" }
+            { tati: "لیج", farsi: "زیر سقف اتاق یا زیر پشت بام چوبی" },
+            { tati: "نیاس", farsi: "لبه پشت بام روی دیوار" },
+            { tati: "هَبوکَ", farsi: "کوبیدن چیزی برای سفت شدن" },
+            { tati: "لَمچ", farsi: "دور دهان (لب)" },
+            { tati: "تُوک", farsi: "لب، نوک، بالا" },
+            { tati: "تُوکال", farsi: "بالا" },
+            { tati: "لُکبر", farsi: "هواکش یا سوراخی از تنور به بیرون" },
+            { tati: "لوجین", farsi: "نورگیر یا هواکش روی سقف" },
+            { tati: "تَندور", farsi: "تنور نان" },
+            { tati: "تَندور آشون", farsi: "چوب هم‌زدن زغال در تنور" },
+            { tati: "خانچو", farsi: "تخنه‌ی چانه‌نان" },
+            { tati: "خانتو", farsi: "خامه" },
+            { tati: "واچی", farsi: "جر داد، پاره کرد" },
+            { tati: "چَکِن", farsi: "چانه" },
+            { tati: "ناچولک", farsi: "ناودان" },
+            { tati: "دِتر", farsi: "دختر" },
+            { tati: "زاما", farsi: "داماد" },
+            { tati: "بَکِت", farsi: "افتاد" },
+            { tati: "بِرار", farsi: "برادر" },
+            { tati: "پی‌یَر", farsi: "پدر" },
+            { tati: "میجیش", farsi: "مایه ماست" },
+            { tati: "گُراچ", farsi: "سرحال، شاداب" },
+            { tati: "وَچِکِست", farsi: "بالا رفت" },
+            { tati: "اِشکِر", farsi: "چوب‌های ریز خشک" },
+            { tati: "تیف", farsi: "تیغ" },
+            { tati: "قَیش", farsi: "کمر بند" },
+            { tati: "تیل دار", farsi: "درخت بزرگ" },
+            { tati: "پَربُنی", farsi: "لباسی برای چیدن کنگر" },
+            { tati: "دَسوانَ", farsi: "دستکش برزنتی" },
+            { tati: "فِشاری", farsi: "پماد" },
+            { tati: "تول", farsi: "گل" },
+            { tati: "بِزقاز", farsi: "قورباغه" },
+            { tati: "آبلاکو", farsi: "لاک‌پشت" },
+            { tati: "چِل", farsi: "وسیله درست کردن نخ از پشم" },
+            { tati: "چَره", farsi: "وسیله درست کردن نخ" },
+            { tati: "شانه میک", farsi: "وسیله نرم کردن پشم" },
+            { tati: "وَرزو", farsi: "گاو نر برای شخم" },
+            { tati: "جِت و اَمراز", farsi: "وسیله شخم با گاو یا الاغ" },
+            { tati: "لَین", farsi: "طناب وصل به جت و امراز" },
+            { tati: "خِرازه", farsi: "کاردک کوچک با چوب بلند" },
+            { tati: "بَمبوری", farsi: "پارو برای برف‌روبی" },
+            { tati: "کَش", farsi: "کشش، سربالایی یا سرپایینی" },
+            { tati: "پِرتو", farsi: "پرتاب" },
+            { tati: "رَجه", farsi: "گردنه" },
+            { tati: "خُل", farsi: "خاکستر" },
+            { tati: "چِنسک", farsi: "شبنم یخ‌زده" },
+            { tati: "شی", farsi: "شبنم" },
+            { tati: "واش", farsi: "علف" },
+            { tati: "واشکو", farsi: "دپوی علف" },
+            { tati: "کُلاس", farsi: "نان سنتی خوشمزه" },
+            { tati: "پنجه کَش", farsi: "نان شبیه بربری" },
+            { tati: "بَبین", farsi: "بریدن، ببُر" },
+            { tati: "بَدوج", farsi: "بدوز" },
+            { tati: "بَگوت", farsi: "گفت" },
+            { tati: "وَچه", farsi: "بچه" },
+            { tati: "بَیت", farsi: "گرفت" },
+            { tati: "مُن نَبیام", farsi: "یعنی من نبودم" },
+            { tati: "کَش و کامان", farsi: "پستی و بلندی شیب‌دار" },
+            { tati: "جیر", farsi: "پایین" },
+            { tati: "جو عر", farsi: "بالا" },
+            { tati: "دَبُ", farsi: "بود" },
+            { tati: "دَنِبُ", farsi: "نبود" },
+            { tati: "دَرشو", farsi: "فرار کرد" },
+            { tati: "بَشو", farsi: "رفت، برو" },
+            { tati: "پا به دوش بیل", farsi: "بیلی برای شخم زدن" },
+            { tati: "گَل", farsi: "همراه" },
+            { tati: "گَل هم", farsi: "باهم" },
+            { tati: "بِشکِشت", farsi: "شکست" },
+            { tati: "سَلخ", farsi: "حوض یا استخر" },
+            { tati: "آل کَش", farsi: "دراز کش" },
+            { tati: "واز بِنگَن", farsi: "پریدن" },
+            { tati: "لَلیجَ", farsi: "علف نی یا خیزران" },
+            { tati: "اَوِجا", farsi: "دیوانه" },
+            { tati: "تور", farsi: "دیوانه" },
+            { tati: "کِرگ", farsi: "مرغ" },
+            { tati: "تِلا", farsi: "خروس" },
+            { tati: "مِرغانه", farsi: "تخم مرغ" },
+            { tati: "شَت", farsi: "تخم مرغی که جوجه داخلش باشد" },
+            { tati: "تَشنو", farsi: "مرغ جوان" },
+            { tati: "کاهام", farsi: "درختچه تیغ‌دار" },
+            { tati: "دوج", farsi: "جای زخم خوب‌شده" },
+            { tati: "دَربَچه", farsi: "پنجره" },
+            { tati: "شَتال", farsi: "هلو" },
+            { tati: "لَیش", farsi: "حصار چوبی" },
+            { tati: "دیل", farsi: "فضای باز برای گوسفندان" },
+            { tati: "را کَت", farsi: "راه افتاد" },
+            { tati: "کیلی", farsi: "کلید" },
+            { tati: "مَلکَموت", farsi: "ملک الموت (کنایه)" },
+            { tati: "وِرگ", farsi: "گرگ" },
+            { tati: "خوکَره", farsi: "جوجه تیغی" },
+            { tati: "چَندر", farsi: "چغندر" },
+            { tati: "چورَ", farsi: "جوجه" },
+            { tati: "شَلُم", farsi: "شلغم" },
+            { tati: "تَو", farsi: "تاب" },
+            { tati: "وِزوِزَی", farsi: "جیرجیرک" },
+            { tati: "گوردِنه", farsi: "چرخ، لاستیک" },
+            { tati: "پَرپَرَی", farsi: "پروانه" },
+            { tati: "گَلچَر", farsi: "قطع کردن" },
+            { tati: "گَلوانَه", farsi: "کوتاه کردن" },
+            { tati: "سَرنَه", farsi: "درب تنور از گل" },
+            { tati: "اَخلات", farsi: "فلفل" },
+            { tati: "چَمبَل", farsi: "حلقه طناب" },
+            { tati: "کَشکُورَه", farsi: "اطراف" },
+            { tati: "سور چُشم", farsi: "لوبیا" },
+            { tati: "دیم", farsi: "صورت" },
+            { tati: "تَش", farsi: "آتش" },
+            { tati: "خَو", farsi: "خواب" },
+            { tati: "اَو", farsi: "آب" },
+            { tati: "رَز دَر", farsi: "درب چوبی" },
+            { tati: "دِرَوجان", farsi: "آویزان" },
+            { tati: "نوکسات", farsi: "بداخلاق" },
+            { tati: "وَتِجِست", farsi: "پریدن غذا در گلو" },
+            { tati: "دونگوک", farsi: "نوک زدن" },
+            { tati: "اُشکنج", farsi: "غده زیر گلو حیوانات" },
+            { tati: "این دیم", farsi: "این طرف" },
+            { tati: "اون دیم", farsi: "آن طرف" },
+            { tati: "دو", farsi: "دود، دوغ" },
+            { tati: "جِل", farsi: "پارچه" },
+            { tati: "شوش", farsi: "چوب نرم" },
+            { tati: "ناتریک", farsi: "آنتریک، تیر کشیدن استخوان" },
+            { tati: "کاتی", farsi: "نوعی علف خاردار" },
+            { tati: "کینگَر خلاش", farsi: "کنگر خشک‌شده" },
+            { tati: "لَینگَری", farsi: "سینی بزرگ" },
+            { tati: "مَندوس", farsi: "نوعی علف خاردار" },
+            { tati: "وِلمِنجِنَی", farsi: "علف اول بهار" },
+            { tati: "دَمج", farsi: "لگد کن" },
+            { tati: "پیچالَه", farsi: "مچاله کردن" },
+            { tati: "کِرچی", farsi: "حالتون خوبه" },
+            { tati: "جوروف", farsi: "جوراب" },
+            { tati: "دِندان اِشمار", farsi: "مارمولک، آفتاب‌پرست" },
+            { tati: "لو مُشتَه", farsi: "دسته گندم آخر برداشت" },
+            { tati: "بَوج", farsi: "بباف" },
+            { tati: "بالابود", farsi: "مابقی، مازاد" },
+            { tati: "وابُو", farsi: "باز شد" },
+            { tati: "کِلاچ", farsi: "ترکیب رنگ سیاه و سفید" },
+            { tati: "ایسبی", farsi: "سفید" },
+            { tati: "پَلک بَند", farsi: "نخ درشت" },
+            { tati: "قِلاچ", farsi: "کلاغ" },
+            { tati: "مَلیجَه", farsi: "گنجشک" },
+            { tati: "کُم", farsi: "غربال ساخته‌شده با روده گاو" },
+            { tati: "سَرسُم", farsi: "زمانی که حیوان هنگام راه رفتن روی دست و پا می‌افتد" },
+            { tati: "کَند", farsi: "پرتگاه" },
+            { tati: "تلَه", farsi: "سخره، سنگ بزرگ" },
+            { tati: "ایس کیجَک", farsi: "سکسکه" },
+            { tati: "گَلو بارش", farsi: "آروغ" },
+            { tati: "عَسِل مَگِس", farsi: "زنبور عسل" },
+            { tati: "قَیماق", farsi: "سرشیر" },
+            { tati: "دوراغ", farsi: "خوراکی از دوغ" },
+            { tati: "لُور", farsi: "پنیر" },
+            { tati: "دُوشان کان", farsi: "کوزه بزرگ جدا کردن کره از ماست" },
+            { tati: "هادیام", farsi: "می‌دهم" },
+            { tati: "هانِدیام", farsi: "نمی‌دهم" },
+            { tati: "کَچَه", farsi: "پیاله" },
+            { tati: "بالبَند", farsi: "التنگو" },
+            { tati: "پورَه", farsi: "گشتن بیهوده" },
+            { tati: "چاک", farsi: "زمین سرسبز به خاطر چشمه" },
+            { tati: "چُر", farsi: "شیبی در رودخانه که آب از آنجا پایین می‌آید" },
+            { tati: "تابار", farsi: "برف بهار روی رودخانه‌ها" },
+            { tati: "اَودار", farsi: "آبیاری" },
+            { tati: "داهایلان", farsi: "چند دقیقه پیش" },
+            { tati: "نابِرابری", farsi: "دور از دید" },
+            { tati: "نِمازیر", farsi: "دم غروب" },
+            { tati: "حَکِّه دارَه", farsi: "ناز دارد" },
+            { tati: "سَمپورَه", farsi: "راسو" },
+            { tati: "شاهال", farsi: "شغال" },
+            { tati: "پَسا", farsi: "عقب‌گرد، برگرد" },
+            { tati: "وَگِردِست", farsi: "برگشت" },
+            { tati: "پَس پَسا", farsi: "برعکس" },
+            { tati: "لَس", farsi: "شل، لَمِس" },
+            { tati: "واتیلی نِستی", farsi: "پاره شد" },
+            { tati: "خَسیل", farsi: "جو نرسیده" },
+            { tati: "بَرّاسر", farsi: "مکانی برای دوشیدن گوسفندان و شیر دادن به بره‌ها" },
+            { tati: "بَرّا گلو", farsi: "محل عبور تک‌تک گوسفندان برای دوشیدن" },
+            { tati: "پوچِلاک", farsi: "پوست شکسته گردو و فندق" },
+            { tati: "سیل", farsi: "پوست سبز گردو" },
+            { tati: "پیچَک", farsi: "نانی که داخلش حلوا می‌گذارند و شب عید فطر می‌دهند" },
+            { tati: "بیلی", farsi: "مرغابی" },
+            { tati: "قور آهی", farsi: "کلمه‌ای برای آب دادن حیوانات" },
+            { tati: "اَلُمبَه", farsi: "چوب بلند" },
+            { tati: "وَرَه", farsi: "بره" },
+            { tati: "کولی", farsi: "بزغاله" },
+            { tati: "اُسکُول", farsi: "جایگاه میان سخره و سنگ" },
+            { tati: "دست ماز", farsi: "وضو" },
+            { tati: "رُتَه", farsi: "آشغال" },
+            { tati: "مَک", farsi: "شوره سر" },
+            { tati: "اَوسار", farsi: "افسار" },
+            { tati: "بُن", farsi: "زیر" },
+            { tati: "بَرِسِست", farsi: "رسید" },
+            { tati: "بَبیجِست", farsi: "برشته شد" },
+            { tati: "پَرجین", farsi: "الک" },
+            { tati: "بَرَندی", farsi: "خورجین" },
+            { tati: "چام", farsi: "استراحت" },
+            { tati: "بَخُس", farsi: "بخواب" },
+            { tati: "وَرِست", farsi: "بلند شو" },
+            { tati: "بَشیم", farsi: "بریم" },
+            { tati: "سال بَزن", farsi: "بلند شو، زود باش" },
+            { tati: "تیتال", farsi: "ناز کشیدن، تمنا" },
+            { tati: "سوسکَه", farsi: "سنجاق سر" },
+            { tati: "مورچانه", farsi: "مورچه" },
+            { tati: "چَپَر", farsi: "درختچه خاردار" },
+            { tati: "نیهیب", farsi: "حمله" },
+            { tati: "پیش پیش", farsi: "بید مشک" },
+            { tati: "دُر", farsi: "بوته‌های درهم‌تنیده" },
+            { tati: "اَرمو", farsi: "گلابی جنگلی" },
+            { tati: "کارتین", farsi: "عنکبوت" },
+            { tati: "دمبا کولانَه", farsi: "عقرب" },
+            { tati: "چینَه", farsi: "دیوار سنگی" },
+            { tati: "گُله", farsi: "ظرف سفالی، دیزی سفالی" },
+            { tati: "خَرَک", farsi: "روی هم گذاشتن و کوه کردن علف" },
+            { tati: "قَبِرقَه", farsi: "پهلو" },
+            { tati: "آسی اَو", farsi: "آسیاب" },
+            { tati: "سَر گَل", farsi: "بالا" },
+            { tati: "وَرف", farsi: "برف" },
+            { tati: "دُمکَل", farsi: "کسی که از پشت سر می‌آید" },
+            { tati: "کیل", farsi: "جوی و پشته داخل زمین" },
+            { tati: "خِسمَه", farsi: "بیش از حد آبکی" },
+            { tati: "دُماسِست", farsi: "گیر کرد" },
+            { tati: "چَچ", farsi: "چرک" },
+            { tati: "خِرَّه", farsi: "خیس" },
+            { tati: "واخُ ساند", farsi: "دنبال کرد" },
+            { tati: "بَسُرِستَی", farsi: "کنایه از «تو هم حال داریا!!»" },
+            { tati: "بَلَیت", farsi: "شعله آتش زیاد شده" },
+            { tati: "دَکُش", farsi: "خاموش کن" },
+            { tati: "دَمُرد", farsi: "خاموش شد" },
+            { tati: "پُو", farsi: "فوت زدن" },
+            { tati: "تَرچَسب", farsi: "فوری" },
+            { tati: "چوچوم", farsi: "نوعی علف" },
+            { tati: "تِلِشت", farsi: "پلشت" },
+            { tati: "قاتوق", farsi: "نوعی خورشت، ماست" },
+            { tati: "پیلَه", farsi: "لوبیای سبز / تاول" },
+            { tati: "پیل لَه", farsi: "بزرگ" },
+            { tati: "آردالَه", farsi: "کاچی" },
+            { tati: "سُوپاچ", farsi: "براق" },
+            { tati: "قَبخانه", farsi: "قهوه خانه" },
+            { tati: "تَشبِرق", farsi: "رعد و برق" },
+            { tati: "شومار", farsi: "مادرشوهر" },
+            { tati: "شوپیر", farsi: "پدرشوهر" },
+            { tati: "آما", farsi: "ما" },
+            { tati: "لیم", farsi: "کاه نرم" },
+            { tati: "دَپیرزان", farsi: "رد کردن مایعات از صافی (شیر، چای)" },
+            { tati: "چای پورزِن", farsi: "صافی چای" },
+            { tati: "شیر پورزِن", farsi: "صافی شیر" },
+            { tati: "حالانه", farsi: "گهواره" },
+            { tati: "دَر اِنگن", farsi: "بنداز" },
+            { tati: "پیتَه", farsi: "پارچه پاره و کهنه" },
+            { tati: "دَپیت", farsi: "پیچید" },
+            { tati: "دَبِست", farsi: "ببند" },
+            { tati: "کُناسات", farsi: "زور زدن" },
+            { tati: "کافتال", farsi: "زور زدن" },
+            { tati: "لالاشو", farsi: "ترسیدن" },
+            { tati: "دور کَشی", farsi: "عقب و جلو رفتن" },
+            { tati: "ایسَه", farsi: "حالا" },
+            { tati: "هَی", farsi: "می‌آیی؟" },
+            { tati: "نی اَی", farsi: "نمی‌آیی؟" },
+            { tati: "ماقولی", farsi: "یه مدت پیش" },
+            { tati: "یِه دَقه وَرا", farsi: "چند لحظه" },
+            { tati: "مُدرِک", farsi: "آدم موذی" },
+            { tati: "چُمبُه", farsi: "دم میوه مثل گیلاس" },
+            { tati: "کُعَینگ", farsi: "حلقه‌ای که با طناب هنگام حمل می‌زنند" },
+            { tati: "لاقَه", farsi: "یک طرف بار" },
+            { tati: "بَچِسبِست", farsi: "چسبید" },
+            { tati: "بَسوت", farsi: "سوخت" },
+            { tati: "بَروت", farsi: "فروخت" },
+            { tati: "هَیرُم", farsi: "می‌خرم" },
+            { tati: "بِتاشسِت", farsi: "تراشید" },
+            { tati: "هاکِر", farsi: "کندن" },
+            { tati: "مینی شینَه", farsi: "مال من" },
+            { tati: "تی اَی شینَه", farsi: "مال تو" },
+            { tati: "لَودار", farsi: "چوب بزرگ" },
+            { tati: "تی سَری شَقّا دَر بَردُم", farsi: "پشت سر تو حرف زدم" },
+            { tati: "بَبیج", farsi: "سرخ کن" },
+            { tati: "کِرگِ لان", farsi: "لانه مرغ" },
+            { tati: "وَرا لان", farsi: "لانه بره" },
+            { tati: "خازاوِر", farsi: "بشمار" },
+            { tati: "وَپیران", farsi: "نگاه کن" },
+            { tati: "کودِپات", farsi: "کودتا کردن" },
+            { tati: "گوشبینی", farsi: "در گوشی" },
+            { tati: "لَمبِلِک", farsi: "سر پر" },
+            { tati: "آقاندیر", farsi: "آقای مدیر" },
+            { tati: "لَمبوز", farsi: "صورت یا لپ باد کرده" },
+            { tati: "بَر اَن قَصد", farsi: "از قصد" },
+            { tati: "کوتَنِست", farsi: "می‌کوبید" },
+            { tati: "دُورِج", farsi: "درشت" },
+            { tati: "کِلاش", farsi: "خارش" },
+            { tati: "وَیر", farsi: "بردار" },
+            { tati: "وَنَیر", farsi: "برندار" },
+            { tati: "گال دُوج", farsi: "جوال دوز" },
+            { tati: "آلخالو", farsi: "کفشدوزک" },
+            { tati: "دَرزِن", farsi: "سوزن" }
         ];
 
         function renderTable(data) {
@@ -36,11 +334,12 @@
             tbody.innerHTML = '';
             data.forEach(item => {
                 let row = `<tr>
-                    <td>${item.tati}</td>
+                    <td><strong>${item.tati}</strong></td>
                     <td>${item.farsi}</td>
                 </tr>`;
                 tbody.innerHTML += row;
             });
+            document.getElementById('wordCount').innerText = `تعداد واژه‌ها: ${data.length}`;
         }
 
         function filterTable() {
@@ -52,7 +351,7 @@
             renderTable(filtered);
         }
 
-        // اجرا در اولین بارگذاری
+        // بارگذاری اولیه
         renderTable(dictionaryData);
     </script>
 </body>
