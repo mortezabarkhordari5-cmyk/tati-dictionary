@@ -7,7 +7,7 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#2563eb">
   <style>
-    /* ۱. جلوگیری از انتخاب متن و کپی در کل صفحه */
+    /* جلوگیری از انتخاب متن و کپی */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -29,75 +29,6 @@
       padding-bottom: 40px;
     }
 
-    /* استایل صفحه ورود / رمز */
-    #lockScreen {
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(135deg, #1e3a8a, #2563eb);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      z-index: 9999;
-    }
-    .lock-box {
-      background: white;
-      border-radius: 20px;
-      padding: 30px 24px;
-      width: 100%;
-      max-width: 360px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-    }
-    .lock-box h2 {
-      font-size: 1.25rem;
-      color: #1e293b;
-      margin-bottom: 8px;
-    }
-    .lock-box p {
-      font-size: 0.88rem;
-      color: #64748b;
-      margin-bottom: 20px;
-    }
-    .lock-box input {
-      width: 100%;
-      padding: 12px 16px;
-      border-radius: 12px;
-      border: 1.5px solid #cbd5e1;
-      font-size: 1rem;
-      margin-bottom: 12px;
-      outline: none;
-      text-align: center;
-    }
-    .lock-box input:focus {
-      border-color: #2563eb;
-    }
-    .lock-box button {
-      width: 100%;
-      padding: 12px;
-      background: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .lock-box button:hover {
-      background: #1d4ed8;
-    }
-    .error-msg {
-      color: #dc2626;
-      font-size: 0.85rem;
-      margin-top: 10px;
-      display: none;
-    }
-
-    /* بخش اصلی لغت‌نامه */
-    #appContent {
-      display: none;
-    }
     header {
       background: #2563eb;
       color: white;
@@ -136,18 +67,18 @@
       background: #ffffff;
       border-bottom: 1px solid #e2e8f0;
       position: sticky;
-      top: 110px;
+      top: 105px;
       z-index: 9;
       white-space: nowrap;
       scrollbar-width: thin;
     }
     .alpha-btn {
-      padding: 6px 12px;
+      padding: 6px 14px;
       border-radius: 8px;
       border: 1px solid #cbd5e1;
       background: #f8fafc;
       color: #334155;
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       cursor: pointer;
       font-weight: 500;
     }
@@ -175,7 +106,7 @@
       background: #e2e8f0;
       color: #1e3a8a;
       font-weight: bold;
-      padding: 4px 12px;
+      padding: 4px 14px;
       border-radius: 8px;
       font-size: 0.95rem;
       margin-bottom: 8px;
@@ -215,51 +146,37 @@
 </head>
 <body oncontextmenu="return false;">
 
-  <!-- صفحه قفل ورود -->
-  <div id="lockScreen">
-    <div class="lock-box">
-      <div style="font-size: 40px; margin-bottom: 8px;">🔒</div>
-      <h2>واژه‌نامه تاتی (ایزگیرینی)</h2>
-      <p>جهت دسترسی، لطفاً رمز عبور را وارد نمایید</p>
-      <input type="password" id="passInput" placeholder="رمز عبور...">
-      <button id="unlockBtn">ورود به واژه‌نامه</button>
-      <div id="errorMsg" class="error-msg">رمز عبور اشتباه است!</div>
+  <header>
+    <h1>واژه‌نامه تاتی (ایزگیرینی)</h1>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="جستجوی واژه تاتی یا فارسی..." autocomplete="off">
     </div>
+  </header>
+
+  <!-- نوار الفبا -->
+  <div class="alphabet-bar" id="alphabetBar"></div>
+
+  <div class="container">
+    <div class="count-badge" id="countBadge">در حال بارگذاری...</div>
+    <div id="wordListContainer"></div>
+    <div class="empty-state" id="emptyState" style="display: none;">واژه‌ای یافت نشد.</div>
   </div>
 
-  <!-- محتوای اصلی لغت‌نامه -->
-  <div id="appContent">
-    <header>
-      <h1>واژه‌نامه تاتی (ایزگیرینی)</h1>
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="جستجوی واژه تاتی یا فارسی..." autocomplete="off">
-      </div>
-    </header>
-
-    <!-- نوار الفبا -->
-    <div class="alphabet-bar" id="alphabetBar"></div>
-
-    <div class="container">
-      <div class="count-badge" id="countBadge">در حال بارگذاری...</div>
-      <div id="wordListContainer"></div>
-      <div class="empty-state" id="emptyState" style="display: none;">واژه‌ای یافت نشد.</div>
-    </div>
-  </div>
-
+  <!-- بارگذاری واژه‌ها از data.js -->
   <script src="data.js"></script>
 
   <script>
     /* ========================================================
-       ۱. بخش امنیت و جلوگیری از کپی / راست‌کلیک / پیست
+       ۱. بخش ضد کپی، ضد پیست و مسدودسازی راست‌کلیک و کلیدها
        ======================================================== */
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('copy', e => e.preventDefault());
     document.addEventListener('cut', e => e.preventDefault());
+    document.addEventListener('dragstart', e => e.preventDefault());
     document.addEventListener('selectstart', e => {
       if (e.target.tagName !== 'INPUT') e.preventDefault();
     });
     document.addEventListener('keydown', e => {
-      // غیرفعال کردن کلیدهای F12, Ctrl+U, Ctrl+C, Ctrl+S, Ctrl+A
       if (
         e.key === 'F12' ||
         ((e.ctrlKey || e.metaKey) && ['u', 's', 'c', 'p', 'a'].includes(e.key.toLowerCase()))
@@ -269,71 +186,26 @@
     });
 
     /* ========================================================
-       ۲. سیستم رمزنگاری و احراز هویت با هش SHA-256
-       ======================================================== */
-    // رمز عبور پیش‌فرض: ایزگیرینی۱۴۰۴
-    const PW_HASH = "8095b5832a76f2ff8390623a3ce4e0c90494eb753f2c525f053229b16bbd2417";
-
-    async function sha256(str) {
-      const buf = new TextEncoder().encode(str);
-      const hash = await crypto.subtle.digest('SHA-256', buf);
-      return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    const lockScreen = document.getElementById('lockScreen');
-    const appContent = document.getElementById('appContent');
-    const passInput = document.getElementById('passInput');
-    const unlockBtn = document.getElementById('unlockBtn');
-    const errorMsg = document.getElementById('errorMsg');
-
-    async function checkPassword() {
-      const entered = passInput.value.trim();
-      const hash = await sha256(entered);
-      if (hash === PW_HASH) {
-        sessionStorage.setItem('unlocked', 'true');
-        showApp();
-      } else {
-        errorMsg.style.display = 'block';
-        passInput.value = '';
-        passInput.focus();
-      }
-    }
-
-    function showApp() {
-      lockScreen.style.display = 'none';
-      appContent.style.display = 'block';
-      initDictionary();
-    }
-
-    unlockBtn.addEventListener('click', checkPassword);
-    passInput.addEventListener('keypress', e => {
-      if (e.key === 'Enter') checkPassword();
-    });
-
-    if (sessionStorage.getItem('unlocked') === 'true') {
-      showApp();
-    }
-
-    /* ========================================================
-       ۳. مرتب‌سازی الفبایی و نمایش لغات
+       ۲. مرتب‌سازی الفبایی و نمایش لغات
        ======================================================== */
     let rawWords = (typeof dictionaryData !== 'undefined') ? dictionaryData : [];
     let selectedLetter = 'ALL';
 
+    function getFirstLetter(word) {
+      if (!word) return '';
+      const ch = word.trim().charAt(0);
+      if (ch === 'آ' || ch === 'ا') return 'الف';
+      return ch;
+    }
+
     function initDictionary() {
-      // مرتب‌سازی کل لغات بر اساس الفبای تاتی
+      // مرتب‌سازی خودکار بر اساس الفبای تاتی
       rawWords.sort((a, b) => a.tati.localeCompare(b.tati, 'fa'));
 
       buildAlphabetBar();
       renderWords(rawWords);
 
       document.getElementById('searchInput').addEventListener('input', handleFilter);
-    }
-
-    function getFirstLetter(word) {
-      const ch = word.trim().charAt(0);
-      if (ch === 'آ' || ch === 'ا') return 'الف';
-      return ch;
     }
 
     function buildAlphabetBar() {
@@ -371,7 +243,6 @@
 
     function handleFilter() {
       const q = document.getElementById('searchInput').value.trim().toLowerCase();
-      
       let filtered = rawWords;
 
       if (selectedLetter !== 'ALL') {
@@ -402,7 +273,7 @@
       }
       emptyState.style.display = 'none';
 
-      // گروه‌بندی بر اساس حرف
+      // گروه‌بندی بر اساس حرف اول
       const groups = {};
       list.forEach(item => {
         const ltr = getFirstLetter(item.tati);
@@ -435,6 +306,14 @@
         grpDiv.appendChild(listDiv);
         container.appendChild(grpDiv);
       });
+    }
+
+    // راه‌اندازی برنامه
+    initDictionary();
+
+    // فعال‌سازی حالت آفلاین
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
     }
   </script>
 </body>
