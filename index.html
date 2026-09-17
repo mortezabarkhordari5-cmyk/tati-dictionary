@@ -10,6 +10,13 @@
         table { width: 100%; border-collapse: collapse; }
         td, th { border: 1px solid #ddd; padding: 8px; text-align: right; }
         th { background-color: #007bff; color: white; }
+        * {
+    -webkit-user-select: none;
+    user-select: none;
+}
+input {
+    user-select: auto;
+}
     </style>
 </head>
 <body>
@@ -36,5 +43,9 @@
         words.sort((a, b) => a[0].localeCompare(b[0], 'fa'));
         render("");
     </script>
+    <script>
+  document.addEventListener('contextmenu', event => event.preventDefault());
+  document.addEventListener('copy', event => event.preventDefault());
+</script>
 </body>
 </html>
