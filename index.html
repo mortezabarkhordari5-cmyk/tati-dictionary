@@ -3,624 +3,439 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>واژه‌نامه تاتی الموتی</title>
+  <title>واژه‌نامه تاتی (ایزگیرینی)</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2563eb">
   <style>
-    :root {
-      --primary: #2563eb;
-      --bg: #f8fafc;
-      --card: #ffffff;
-      --text: #1e293b;
-      --border: #e2e8f0;
-    }
+    /* ۱. جلوگیری از انتخاب متن و کپی در کل صفحه */
     * {
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+    input {
+      -webkit-user-select: auto;
+      user-select: auto;
     }
     body {
-      background-color: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 16px;
+      background-color: #f8fafc;
+      color: #1e293b;
+      padding-bottom: 40px;
+    }
+
+    /* استایل صفحه ورود / رمز */
+    #lockScreen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
       display: flex;
       justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 9999;
     }
-    .container {
+    .lock-box {
+      background: white;
+      border-radius: 20px;
+      padding: 30px 24px;
       width: 100%;
-      max-width: 650px;
-    }
-    header {
+      max-width: 360px;
       text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    .lock-box h2 {
+      font-size: 1.25rem;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+    .lock-box p {
+      font-size: 0.88rem;
+      color: #64748b;
       margin-bottom: 20px;
     }
-    h1 {
-      color: #0f172a;
-      margin-bottom: 6px;
-      font-size: 1.6rem;
+    .lock-box input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1.5px solid #cbd5e1;
+      font-size: 1rem;
+      margin-bottom: 12px;
+      outline: none;
+      text-align: center;
     }
-    .subtitle {
-      color: #64748b;
-      font-size: 0.9rem;
+    .lock-box input:focus {
+      border-color: #2563eb;
+    }
+    .lock-box button {
+      width: 100%;
+      padding: 12px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .lock-box button:hover {
+      background: #1d4ed8;
+    }
+    .error-msg {
+      color: #dc2626;
+      font-size: 0.85rem;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* بخش اصلی لغت‌نامه */
+    #appContent {
+      display: none;
+    }
+    header {
+      background: #2563eb;
+      color: white;
+      padding: 18px 16px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
     }
     .search-box {
-      position: sticky;
-      top: 12px;
-      z-index: 10;
-      margin-bottom: 15px;
-    }
-    input[type="text"] {
       width: 100%;
-      padding: 13px 16px;
-      font-size: 1rem;
-      border: 2px solid var(--border);
-      border-radius: 12px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 12px 18px;
+      border-radius: 25px;
+      border: none;
+      font-size: 0.95rem;
       outline: none;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.06);
-      transition: border-color 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
-    input[type="text"]:focus {
-      border-color: var(--primary);
+
+    /* نوار فیلتر الفبا */
+    .alphabet-bar {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 12px 16px;
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 110px;
+      z-index: 9;
+      white-space: nowrap;
+      scrollbar-width: thin;
     }
-    .stats {
+    .alpha-btn {
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: #334155;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .alpha-btn.active {
+      background: #2563eb;
+      color: white;
+      border-color: #2563eb;
+    }
+
+    .container {
+      max-width: 540px;
+      margin: 16px auto;
+      padding: 0 16px;
+    }
+    .count-badge {
       font-size: 0.85rem;
       color: #64748b;
       margin-bottom: 12px;
       text-align: left;
     }
+    .letter-group {
+      margin-bottom: 18px;
+    }
+    .letter-header {
+      background: #e2e8f0;
+      color: #1e3a8a;
+      font-weight: bold;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+    .word-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
     .word-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
+      background: white;
       padding: 12px 16px;
-      margin-bottom: 9px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     }
     .word-tati {
-      font-size: 1.15rem;
       font-weight: bold;
-      color: #1d4ed8;
+      color: #1e3a8a;
+      font-size: 1.05rem;
     }
-    .word-fa {
+    .word-farsi {
+      color: #475569;
       font-size: 0.95rem;
-      color: #334155;
       text-align: left;
-      max-width: 65%;
     }
-    .empty {
+    .empty-state {
       text-align: center;
-      padding: 40px;
       color: #94a3b8;
+      padding: 40px 16px;
     }
   </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
-<div class="container">
-  <header>
-    <h1>واژه‌نامه تاتی الموتی</h1>
-    <div class="subtitle">فرهنگ واژگان تاتی ایزگیرینی به فارسی (نسخه جامع)</div>
-  </header>
-
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="جستجوی واژه تاتی یا معنی فارسی...">
+  <!-- صفحه قفل ورود -->
+  <div id="lockScreen">
+    <div class="lock-box">
+      <div style="font-size: 40px; margin-bottom: 8px;">🔒</div>
+      <h2>واژه‌نامه تاتی (ایزگیرینی)</h2>
+      <p>جهت دسترسی، لطفاً رمز عبور را وارد نمایید</p>
+      <input type="password" id="passInput" placeholder="رمز عبور...">
+      <button id="unlockBtn">ورود به واژه‌نامه</button>
+      <div id="errorMsg" class="error-msg">رمز عبور اشتباه است!</div>
+    </div>
   </div>
 
-  <div class="stats" id="countDisplay">در حال بارگذاری...</div>
-  <div id="wordsList"></div>
-</div>
+  <!-- محتوای اصلی لغت‌نامه -->
+  <div id="appContent">
+    <header>
+      <h1>واژه‌نامه تاتی (ایزگیرینی)</h1>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="جستجوی واژه تاتی یا فارسی..." autocomplete="off">
+      </div>
+    </header>
 
-<script>
-const words = [
-  { tati: "لیچ", fa: "زیر سقف اتاق یا زیر پشت‌بام چوبی" },
-  { tati: "نیاس", fa: "لبه پشت‌بام روی دیوار" },
-  { tati: "هَبوکَ", fa: "کوبیدن چیزی برای سفت و محکم شدن آن" },
-  { tati: "لَمچ", fa: "دور دهان (لب)" },
-  { tati: "تُوک", fa: "لب، نوک، بالا" },
-  { tati: "تُوکال", fa: "بالا" },
-  { tati: "لُکبر", fa: "هواکش یا سوراخی که از تنور به بیرون آمده" },
-  { tati: "لوجین", fa: "نورگیر یا هواکش روی سقف" },
-  { tati: "تَندور", fa: "تنور نان" },
-  { tati: "تَندور آشون", fa: "چوب هم‌زدن زغال در تنور" },
-  { tati: "خانچو", fa: "تخته درست کردن چانه نان" },
-  { tati: "خانتو", fa: "خامه" },
-  { tati: "واچی", fa: "جر داد، پاره کرد" },
-  { tati: "چَکِن", fa: "چانه" },
-  { tati: "ناچولک", fa: "ناودان" },
-  { tati: "دِتر", fa: "دختر" },
-  { tati: "زاما", fa: "داماد" },
-  { tati: "بِرار", fa: "برادر" },
-  { tati: "پی یَر", fa: "پدر" },
-  { tati: "میجیش", fa: "مایه ماست (برای ماست‌بندی)" },
-  { tati: "گُراچ", fa: "سرحال، شاداب" },
-  { tati: "وَچِکِست", fa: "بالا رفت" },
-  { tati: "اِشکِر", fa: "چوب‌های ریز و خشک‌شده" },
-  { tati: "تیف", fa: "تیغ" },
-  { tati: "قَیش", fa: "کمربند" },
-  { tati: "تیل دار", fa: "درخت بزرگ" },
-  { tati: "پَربُنی", fa: "لباس چیدن کنگر و علف تیغ‌دار" },
-  { tati: "دَسوانَ", fa: "دستکش برزنتی" },
-  { tati: "فِشاری", fa: "پماد" },
-  { tati: "تول", fa: "گل" },
-  { tati: "بِزقاز", fa: "قورباغه" },
-  { tati: "آبلاکو", fa: "لاک‌پشت" },
-  { tati: "چِل", fa: "وسیله درست کردن نخ از پشم" },
-  { tati: "چَره", fa: "وسیله درست کردن نخ" },
-  { tati: "شانه میک", fa: "وسیله نرم کردن پشم گوسفند" },
-  { tati: "وَرزو", fa: "گاو نر برای شخم" },
-  { tati: "جِت و اَمراز", fa: "وسیله شخم با گاو یا الاغ" },
-  { tati: "لَین", fa: "طناب وصل به جت و امراز" },
-  { tati: "خِرازه", fa: "کاردک کوچک با چوب بلند" },
-  { tati: "بَمبوری", fa: "پارو برف‌روبی" },
-  { tati: "کَش", fa: "سربالایی یا سرپایینی" },
-  { tati: "پِرتو", fa: "پرتاب" },
-  { tati: "رَجه", fa: "گردنه" },
-  { tati: "خُل", fa: "خاکستر" },
-  { tati: "چِنسک", fa: "شبنم یخ‌زده" },
-  { tati: "شی", fa: "شبنم" },
-  { tati: "واش", fa: "علف" },
-  { tati: "واشکو", fa: "دپوی علف، کوی علف" },
-  { tati: "کُلاس", fa: "نان سنتی خوشمزه" },
-  { tati: "پنجه کَش", fa: "نانی شبیه بربری" },
-  { tati: "بَبین", fa: "بریدن، ببُر" },
-  { tati: "بَدوج", fa: "بدوز" },
-  { tati: "بَگوت", fa: "گفت" },
-  { tati: "وَچه", fa: "بچه" },
-  { tati: "بَیت", fa: "گرفت" },
-  { tati: "مُن نَبیام", fa: "من نبودم" },
-  { tati: "کَش و کامان", fa: "پستی‌بلندی شیب‌دار" },
-  { tati: "جیر", fa: "پایین" },
-  { tati: "جو عر", fa: "بالا" },
-  { tati: "دَبُ", fa: "بود" },
-  { tati: "دَنِبُ", fa: "نبود" },
-  { tati: "دَرشو", fa: "فرار کرد" },
-  { tati: "بَشو", fa: "رفت، برو" },
-  { tati: "پا به دوش بیل", fa: "بیل برای شخم زدن" },
-  { tati: "گَل", fa: "همراه" },
-  { tati: "گَل هم", fa: "باهم" },
-  { tati: "بِشکِشت", fa: "شکست" },
-  { tati: "سَلخ", fa: "حوض یا استخر" },
-  { tati: "آل کَش", fa: "درازکش، کش‌وقُوص بدن" },
-  { tati: "واز بِنگَن", fa: "پریدن" },
-  { tati: "لَلیجَ", fa: "علف نی یا خیزران" },
-  { tati: "اَوِجا", fa: "دیوانه" },
-  { tati: "تور", fa: "دیوانه" },
-  { tati: "کِرگ", fa: "مرغ" },
-  { tati: "تِلا", fa: "خروس" },
-  { tati: "مِرغانه", fa: "تخم‌مرغ" },
-  { tati: "شَت", fa: "تخم‌مرغی که داخل آن جوجه باشد" },
-  { tati: "تَشنو", fa: "مرغ جوان" },
-  { tati: "کاهام", fa: "درختچه تیغ‌دار" },
-  { tati: "دوج", fa: "جای زخم و بریدگی خوب‌شده" },
-  { tati: "دَربَچه", fa: "پنجره" },
-  { tati: "شَتال", fa: "هلو" },
-  { tati: "لَیش", fa: "حصار چوبی" },
-  { tati: "دیل", fa: "فضای رو باز نگهداری گوسفندان" },
-  { tati: "را کَت", fa: "راه افتاد" },
-  { tati: "کیلی", fa: "کلید" },
-  { tati: "مَلکَموت", fa: "عزرائیل / کار ملک‌الموت" },
-  { tati: "وِرگ", fa: "گرگ" },
-  { tati: "خوکَره", fa: "جوجه‌تیغی" },
-  { tati: "چَندر", fa: "چغندر" },
-  { tati: "چورَ", fa: "جوجه" },
-  { tati: "شَلُم", fa: "شلغم" },
-  { tati: "تَو", fa: "تاب" },
-  { tati: "وِزوِزَی", fa: "جیرجیرک" },
-  { tati: "گوردِنه", fa: "چرخ، لاستیک" },
-  { tati: "پَرپَرَی", fa: "پروانه" },
-  { tati: "گَلچَر", fa: "قطع کردن" },
-  { tati: "گلوانَه", fa: "کوتاه کردن" },
-  { tati: "سَرنَه", fa: "درب تنور که از گل درست می‌شود" },
-  { tati: "اَخلات", fa: "فلفل" },
-  { tati: "چَمبَل", fa: "حلقه طناب" },
-  { tati: "کَشکُورَه", fa: "اطراف" },
-  { tati: "سور چُشم", fa: "لوبیا" },
-  { tati: "دیم", fa: "صورت" },
-  { tati: "تَش", fa: "آتش" },
-  { tati: "خَو", fa: "خواب" },
-  { tati: "اَو", fa: "آب" },
-  { tati: "رَز دَر", fa: "درب چوبی" },
-  { tati: "دِرَوجان", fa: "آویزان" },
-  { tati: "نوکسات", fa: "بداخلاق" },
-  { tati: "وَتِجِست", fa: "پریدن غذا در گلو" },
-  { tati: "دوندوک", fa: "نوک زدن" },
-  { tati: "اُشکنج", fa: "غده زیر گلوی حیوانات" },
-  { tati: "این دیم", fa: "این طرف" },
-  { tati: "اون دیم", fa: "آن طرف" },
-  { tati: "دو", fa: "دود، دوغ" },
-  { tati: "جِل", fa: "پارچه" },
-  { tati: "شوش", fa: "چوب نرم" },
-  { tati: "ناتریک", fa: "تیرکشیدن استخوان" },
-  { tati: "کاتی", fa: "نوعی علف خاردار" },
-  { tati: "کینگَر خلاش", fa: "کنگر خشک‌شده" },
-  { tati: "لَینگَری", fa: "سینی بزرگ" },
-  { tati: "مَندوس", fa: "نوعی علف خاردار" },
-  { tati: "وِلمِنجِنَی", fa: "علف اول فصل بهار" },
-  { tati: "دَمج", fa: "لگدکن" },
-  { tati: "پیچالَه", fa: "مچاله‌کردن" },
-  { tati: "جوروف", fa: "جوراب پشمی" },
-  { tati: "دِندان اِشمار", fa: "مارمولک، آفتاب‌پرست" },
-  { tati: "لو مُشتَه", fa: "دسته گندم پایان درو" },
-  { tati: "بَوج", fa: "بباف" },
-  { tati: "بالابود", fa: "مازاد، مابقی بار" },
-  { tati: "وابُو", fa: "باز شد" },
-  { tati: "کِلاچ", fa: "ترکیب رنگ سیاه و سفید" },
-  { tati: "ایسبی", fa: "سفید" },
-  { tati: "پَلک بَند", fa: "نخ درشت" },
-  { tati: "قِلاچ", fa: "کلاغ" },
-  { tati: "مَلیجَه", fa: "گنجشک" },
-  { tati: "کُم", fa: "غربال ساخته‌شده از روده گاو" },
-  { tati: "سَرسُم", fa: "افتادن حیوان روی دست و پا هنگام راه رفتن" },
-  { tati: "کَند", fa: "پرتگاه" },
-  { tati: "تلَه", fa: "صخره، سنگ بزرگ" },
-  { tati: "ایس کیجَک", fa: "سکسکه" },
-  { tati: "گَلو بارش", fa: "آروغ" },
-  { tati: "عَسِل مَگِس", fa: "زنبور عسل" },
-  { tati: "قَیماق", fa: "سرشیر" },
-  { tati: "دوراغ", fa: "خوراکی از دوغ" },
-  { tati: "لُور", fa: "خوراکی از آب پنیر" },
-  { tati: "دُوشان", fa: "کوزه بزرگ جدا کردن کره از ماست" },
-  { tati: "هادیام", fa: "می‌دهم" },
-  { tati: "هانِدیام", fa: "نمی‌دهم" },
-  { tati: "کَچَه", fa: "پیاله" },
-  { tati: "بالبَند", fa: "النگو" },
-  { tati: "پورَه", fa: "گشتن بیهوده" },
-  { tati: "چاک", fa: "زمین سرسبز به خاطر چشمه" },
-  { tati: "چُر", fa: "شیب رودخانه که آب از آنجا پایین می‌آید" },
-  { tati: "تابار", fa: "برف بهار روی رودخانه‌ها" },
-  { tati: "اَودار", fa: "آبیاری" },
-  { tati: "داهایلان", fa: "چند دقیقه پیش" },
-  { tati: "نابرابری", fa: "دور از دید" },
-  { tati: "نِمازیر", fa: "دم غروب" },
-  { tati: "حَکِّه دارَه", fa: "ناز دارد" },
-  { tati: "سَمپورَه", fa: "راسو" },
-  { tati: "شاهال", fa: "شغال" },
-  { tati: "پَسا", fa: "عقب" },
-  { tati: "وَگِرد", fa: "برگرد" },
-  { tati: "وَگِردِست", fa: "برگشت" },
-  { tati: "پَس پَسا", fa: "برعکس" },
-  { tati: "لَس", fa: "شل، لمس" },
-  { tati: "واتیلی نِستی", fa: "پاره شد" },
-  { tati: "خَسیل", fa: "جو نرسیده" },
-  { tati: "بَرّاسر", fa: "جای دوشیدن گوسفندان و شیر دادن به بره‌ها" },
-  { tati: "بَرّا گلو", fa: "جای عبور تک‌تک گوسفندان و دوشیدن آنان" },
-  { tati: "پوچِلاک", fa: "پوست شکسته گردو، فندق" },
-  { tati: "سیل", fa: "پوست سبز گردو" },
-  { tati: "پیچَک", fa: "نان حلوا‌دار شب عید فطر" },
-  { tati: "بیلی", fa: "مرغابی" },
-  { tati: "قور آهی", fa: "کلمه آب دادن حیوانات" },
-  { tati: "اَلُمبَه", fa: "چوب بلند" },
-  { tati: "وَرَه", fa: "بره" },
-  { tati: "کولی", fa: "بزغاله" },
-  { tati: "اُسکُول", fa: "جایگاه میان صخره و سنگ" },
-  { tati: "دست ماز", fa: "وضو" },
-  { tati: "رُتَه", fa: "آشغال" },
-  { tati: "مَک", fa: "شوره سر" },
-  { tati: "اَوسار", fa: "افسار" },
-  { tati: "بُن", fa: "زیر" },
-  { tati: "بَرِسِست", fa: "رسید" },
-  { tati: "بَبیجِست", fa: "برشته شد" },
-  { tati: "پَرجین", fa: "الک" },
-  { tati: "بَرَندی", fa: "خورجین" },
-  { tati: "چام", fa: "استراحت" },
-  { tati: "بَخُس", fa: "بخواب" },
-  { tati: "وَرِست", fa: "بلند شو" },
-  { tati: "بَشیم", fa: "بریم" },
-  { tati: "سال بَزن", fa: "بلند شو، زود باش" },
-  { tati: "تیتال", fa: "ناز کشیدن، تمنا" },
-  { tati: "سوسکَه", fa: "سنجاق سر" },
-  { tati: "مورچانه", fa: "مورچه" },
-  { tati: "چَپَر", fa: "درختچه خاردار" },
-  { tati: "نیهیب", fa: "حمله" },
-  { tati: "پیش پیش", fa: "بید مشک" },
-  { tati: "دُر", fa: "بوته‌های درهم‌تنیده" },
-  { tati: "اَرمو", fa: "گلابی جنگلی" },
-  { tati: "کارتین", fa: "عنکبوت" },
-  { tati: "دمبا کولانَه", fa: "عقرب" },
-  { tati: "چینَه", fa: "دیوار سنگی" },
-  { tati: "گُله", fa: "ظرف سفالی، دیزی سفالی" },
-  { tati: "خَرَک", fa: "روی هم گذاشتن و کوه کردن علف" },
-  { tati: "قَبِرقَه", fa: "پهلو" },
-  { tati: "آسی اَو", fa: "آسیاب" },
-  { tati: "سَرگَل", fa: "بالا" },
-  { tati: "وَرف", fa: "برف" },
-  { tati: "دُمکَل", fa: "کسی که از پشت سر می‌آید" },
-  { tati: "کیل", fa: "جوی و پشته داخل زمین" },
-  { tati: "خِسمَه", fa: "بیش از حد آبکی" },
-  { tati: "دُماسِست", fa: "گیر کرد" },
-  { tati: "چَچ", fa: "چرک" },
-  { tati: "خِرَّه", fa: "خیس" },
-  { tati: "واخُ ساند", fa: "دنبال کرد" },
-  { tati: "بَسُرِستَی", fa: "کنایه از: تو هم حال داریا!" },
-  { tati: "بَلَیت", fa: "شعله آتش زیاد شده" },
-  { tati: "دَکُش", fa: "خاموش کن" },
-  { tati: "دَمُرد", fa: "خاموش شد" },
-  { tati: "پُو", fa: "فوت زدن" },
-  { tati: "تَرچَسب", fa: "فوری" },
-  { tati: "چوچوم", fa: "نوعی علف" },
-  { tati: "تِلِشت", fa: "پلشت" },
-  { tati: "قاتوق", fa: "نوعی خورشت، ماست" },
-  { tati: "پیلَه", fa: "لوبیای سبز" },
-  { tati: "پیل لَه", fa: "بزرگ" },
-  { tati: "آردالَه", fa: "کاچی" },
-  { tati: "سُوپاچ", fa: "براق" },
-  { tati: "قَبخانه", fa: "قهوه‌خانه" },
-  { tati: "تَشبِرق", fa: "رعد و برق" },
-  { tati: "شومار", fa: "مادرشوهر" },
-  { tati: "شوپیر", fa: "پدرشوهر" },
-  { tati: "آما", fa: "ما" },
-  { tati: "لیم", fa: "کاه نرم" },
-  { tati: "دَپیرزان", fa: "صاف کردن مایعات با صافی" },
-  { tati: "چای پورزِن", fa: "صافی چای" },
-  { tati: "شیر پورزِن", fa: "صافی شیر" },
-  { tati: "حالانه", fa: "گهواره‌ای که بچه را در آن تکان می‌دهند" },
-  { tati: "دَر اِنگن", fa: "بنداز" },
-  { tati: "پیتَه", fa: "پارچه پاره و کهنه برای مسدود کردن منافذ" },
-  { tati: "دَپیت", fa: "پیچید" },
-  { tati: "دَبِست", fa: "ببند" },
-  { tati: "کُناسات", fa: "زور زدن" },
-  { tati: "کافتال", fa: "زور زدن" },
-  { tati: "لالاشو", fa: "ترسیدن" },
-  { tati: "دور کَشی", fa: "عقب و جلو رفتن" },
-  { tati: "ایسَه", fa: "حالا" },
-  { tati: "هَی", fa: "میایی؟" },
-  { tati: "نی اَی", fa: "نمیایی؟" },
-  { tati: "ماقولی", fa: "یه مدت پیش" },
-  { tati: "یِه دَقه وَرا", fa: "چند لحظه" },
-  { tati: "مُدرِک", fa: "آدم موذی" },
-  { tati: "چُمبُه", fa: "دم میوه مثل گیلاس" },
-  { tati: "کُعَینگ", fa: "حلقه طناب هنگام حمل بار" },
-  { tati: "لاقَه", fa: "یک طرف بار" },
-  { tati: "بَچِسبِست", fa: "چسبید" },
-  { tati: "بَسوت", fa: "سوخت" },
-  { tati: "بَروت", fa: "فروخت" },
-  { tati: "هَیرُم", fa: "می‌خرم" },
-  { tati: "بِتاشسِت", fa: "تراشید" },
-  { tati: "هاکِر", fa: "کندن" },
-  { tati: "مینی شینَه", fa: "مال من" },
-  { tati: "تی اَی شینَه", fa: "مال تو" },
-  { tati: "لَودار", fa: "چوب بزرگ" },
-  { tati: "تی سَری شَقّا دَر بَردُم", fa: "پشت سر تو حرف زدم" },
-  { tati: "بَبیج", fa: "سرخ کن" },
-  { tati: "کِرگِ لان", fa: "لانه مرغ" },
-  { tati: "وَرا لان", fa: "لانه بره" },
-  { tati: "خازاوِر", fa: "بشمار (دقت کن)" },
-  { tati: "وَپیران", fa: "نگاه کن" },
-  { tati: "کودِپات", fa: "کودتا کردن" },
-  { tati: "گوشبینی", fa: "در گوشی صحبت کردن" },
-  { tati: "لَمبِلِک", fa: "سر پر، لبالب" },
-  { tati: "آقاندیر", fa: "آقای مدیر" },
-  { tati: "لَمبوز", fa: "صورت یا لپ باد کرده" },
-  { tati: "بَر اَن قَصد", fa: "از قصد" },
-  { tati: "کوتَنِست", fa: "می‌کوبید" },
-  { tati: "دُورِج", fa: "درشت" },
-  { tati: "کِلاش", fa: "خارش" },
-  { tati: "وَیر", fa: "بردار" },
-  { tati: "وَنَیر", fa: "برندار" },
-  { tati: "گال دُوج", fa: "جوال‌دوز" },
-  { tati: "آلخالو", fa: "کفشدوزک" },
-  { tati: "دَرزِن", fa: "سوزن" },
-  { tati: "وِندَه", fa: "وسیله از موی بز برای حمل کاه و برگ" },
-  { tati: "راتی", fa: "کبریت" },
-  { tati: "قیت گیت", fa: "گیر کرد" },
-  { tati: "نَو", fa: "حوض آب" },
-  { tati: "پَرکَه", fa: "می‌لرزد" },
-  { tati: "خُوش", fa: "آخرای آب آبیاری در حال تمام شدن" },
-  { tati: "دِراجین", fa: "آب را به چند قسمت تقسیم کن" },
-  { tati: "بَیر", fa: "بگیر" },
-  { tati: "لُقَّه", fa: "سوراخ" },
-  { tati: "لوکا", fa: "سوراخ" },
-  { tati: "بَوکتَن", fa: "بکوب" },
-  { tati: "چَرچی", fa: "دست‌فروش، دوره‌گرد" },
-  { tati: "لیلَه", fa: "بچه حیوان" },
-  { tati: "کُل", fa: "کنار، لنگ زدن" },
-  { tati: "آلَیش", fa: "چراندن کوتاه گوسفندان در نزدیکی" },
-  { tati: "جَنجیل", fa: "خرمنکوب چرخان توسط حیوان" },
-  { tati: "سَوَ", fa: "سبد بزرگ حمل وسایل" },
-  { tati: "چَلک", fa: "سبد چوبی کوچک" },
-  { tati: "زور", fa: "کود حیوانی" },
-  { tati: "چَمچَه", fa: "قاشق بزرگ" },
-  { tati: "بِچاست", fa: "سرد شد" },
-  { tati: "مِج", fa: "کنه" },
-  { tati: "گِرها", fa: "کنه بزرگ" },
-  { tati: "بال اُسکول", fa: "آرنج دست" },
-  { tati: "میالِسک", fa: "زرشک کوهی" },
-  { tati: "شَنَه", fa: "چهارشاخ چوبی" },
-  { tati: "خَشَه", fa: "کیسه بزرگ" },
-  { tati: "کاوی", fa: "گوسفند یک‌ساله" },
-  { tati: "کاهار", fa: "بز یک‌ساله" },
-  { tati: "شیلا", fa: "گوشتی از شکمبه گوسفند برای مایه پنیر" },
-  { tati: "گالَش", fa: "چوپان" },
-  { tati: "پابِجار", fa: "کفش" },
-  { tati: "جُمام", fa: "کم‌عادت در هر کاری" },
-  { tati: "دَه بَر", fa: "صحرا" },
-  { tati: "دارَه", fa: "داس" },
-  { tati: "بَوسِست", fa: "پاره شد" },
-  { tati: "نال", fa: "پایین درب" },
-  { tati: "کُلام", fa: "چوب بستن پشت درب" },
-  { tati: "قیلیز", fa: "سر خوردن" },
-  { tati: "اَلهو", fa: "علف کوهی" },
-  { tati: "کُما", fa: "علف کوهی" },
-  { tati: "بُو واش", fa: "علف کوهی معطر" },
-  { tati: "شیرپَت", fa: "نوعی گیاه کوهی" },
-  { tati: "لَمپا", fa: "چراغ گردسوز" },
-  { tati: "خُجیر", fa: "خوب" },
-  { tati: "مار", fa: "مادر" },
-  { tati: "خاخُر", fa: "خواهر" },
-  { tati: "دو رو", fa: "دروغ" },
-  { tati: "ایز", fa: "جای پا" },
-  { tati: "چَتون", fa: "چندش" },
-  { tati: "نیم ایز گیر", fa: "درب را نیمه‌باز گذاشتن" },
-  { tati: "کَل", fa: "وسیله حمل بار" },
-  { tati: "تاس", fa: "کاسه بزرگ" },
-  { tati: "دانَک", fa: "غذایی از حبوبات" },
-  { tati: "دیزِندان", fa: "سه‌پایه فلزی روی آتش یا اجاق" },
-  { tati: "قَزقان", fa: "دیگ بزرگ" },
-  { tati: "مَرجو", fa: "عدس" },
-  { tati: "تیلَک", fa: "ظرف سفالی" },
-  { tati: "تَلک", fa: "نشا" },
-  { tati: "کَلَک", fa: "جایی که آتش درست می‌کنند" },
-  { tati: "لَجَه", fa: "روی هم گذاشتن علوفه" },
-  { tati: "زَرِج", fa: "کبک" },
-  { tati: "دارکوتَن", fa: "دارکوب" },
-  { tati: "خَروش", fa: "خرگوش" },
-  { tati: "موقوف", fa: "فوت شده" },
-  { tati: "آتَک", fa: "تره کوهی" },
-  { tati: "دَس کَترال", fa: "کتف یا شانه" },
-  { tati: "کِمان گوشت", fa: "قارچ کوهی" },
-  { tati: "بَورات", fa: "ترکیب علف و برگ خشک" },
-  { tati: "وَلگ", fa: "برگ" },
-  { tati: "کِرشِت", fa: "علف خاردار" },
-  { tati: "یُخمَه", fa: "یک‌دنده و لجباز" },
-  { tati: "دَهَن یاز", fa: "خمیازه" },
-  { tati: "دِجی", fa: "لزج" },
-  { tati: "اُورَک", fa: "بستن افسار حیوانات پشت سر هم" },
-  { tati: "تَکَل", fa: "قرض" },
-  { tati: "خَرجی بار", fa: "جهیزیه عروس" },
-  { tati: "گارَه", fa: "گهواره" },
-  { tati: "گورِزال", fa: "تاریک" },
-  { tati: "راک", fa: "توفان شدید" },
-  { tati: "نُون", fa: "نان" },
-  { tati: "نُون دُرَه", fa: "لقمه بزرگ (ساندویچ)" },
-  { tati: "وابین", fa: "زدن پشم گوسفندان" },
-  { tati: "جَدَه", fa: "جاده" },
-  { tati: "بُرتو", fa: "تمشک" },
-  { tati: "پا پی", fa: "پیگیر" },
-  { tati: "اُوستین", fa: "ستون" },
-  { tati: "ب بپوسِستی", fa: "پوسیده" },
-  { tati: "هُوشُوم", fa: "بلدرچین" },
-  { tati: "دَر اِنجَن", fa: "خرد کن" },
-  { tati: "کَری", fa: "زالزالک" },
-  { tati: "کَنس", fa: "ازگیل" },
-  { tati: "کُته", fa: "بچه (بچه سگ)" },
-  { tati: "هَلِنگَه", fa: "بازی لی‌لی" },
-  { tati: "هاشان- هاشام", fa: "تکان دادن" },
-  { tati: "دیشَون", fa: "دیشب" },
-  { tati: "اِمشو", fa: "امشب" },
-  { tati: "هاشقال", fa: "آب گرفتن به صورت مچاله کردن" },
-  { tati: "دَخسان", fa: "خیس کن" },
-  { tati: "چِلپاچ", fa: "پخش شدن آب" },
-  { tati: "بِنگَن", fa: "بنداز" },
-  { tati: "بُرمَه", fa: "گریه" },
-  { tati: "وِل ها", fa: "نوعی علف" },
-  { tati: "سیارَه", fa: "دیوار سنگی کوتاه" },
-  { tati: "دیمَیت", fa: "برخورد کرد" },
-  { tati: "تَسِن گوُال", fa: "سوسک صحرایی" },
-  { tati: "خَرچَینگال", fa: "خرچنگ" },
-  { tati: "زُک", fa: "آب بینی" },
-  { tati: "دَبِن دا", fa: "بَست" },
-  { tati: "تُونی", fa: "می‌توانی" },
-  { tati: "کَل اَنگوشت", fa: "انگشت شصت" },
-  { tati: "دِراقان", fa: "فشرده کردن" },
-  { tati: "دِل تَرک", fa: "زهره‌ترک" },
-  { tati: "دَنین", fa: "بکار" },
-  { tati: "دَنی یَن", fa: "نیستن" },
-  { tati: "دَرن", fa: "هستن" },
-  { tati: "سُمچو", fa: "چوب بستن به گردن گاو هنگام شخم" },
-  { tati: "پیلاچی", fa: "بزرگ" },
-  { tati: "جیزال", fa: "بچه کوچک" },
-  { tati: "جیرکَت", fa: "افتاد پایین" },
-  { tati: "تَرکی", fa: "علف نرم دور علف خشک هنگام حمل" },
-  { tati: "پیر شَوِست", fa: "پیر بشی (دعای خیر)" },
-  { tati: "پُوزَه", fa: "پاشنه پا" },
-  { tati: "وَل", fa: "کج" },
-  { tati: "تی شارین", fa: "مثل تو" },
-  { tati: "مینی شارین", fa: "مثل من" },
-  { tati: "پَی شنبه", fa: "پنج‌شنبه" },
-  { tati: "کَش تُفَینگ", fa: "تیر و کمان کشی" },
-  { tati: "را کَو", fa: "راه بیفت" },
-  { tati: "بِزاست", fa: "زائید" },
-  { tati: "هادین", fa: "بده" },
-  { tati: "بیامُو", fa: "آمد" },
-  { tati: "نیامُو", fa: "نیامد" },
-  { tati: "مِجَک", fa: "مژه" },
-  { tati: "میجَه", fa: "گوسفندی که بره‌اش از دست رفته و شیرش را می‌دوشند" },
-  { tati: "هیمَه", fa: "هیزم" },
-  { tati: "قِلِنجی", fa: "رنگ درهم" },
-  { tati: "چُولَه", fa: "چوب خیلی ریز (کبریت چوله)" },
-  { tati: "وَزَینگ", fa: "هل دادن" },
-  { tati: "واموتی", fa: "حالت گزیدگی روی بدن" },
-  { tati: "اَنگُلاس", fa: "چوب سرخمیده برای کشیدن شاخه درختان" },
-  { tati: "بِشانِست", fa: "ریخت" },
-  { tati: "دِپاچ", fa: "بپاش" },
-  { tati: "اِسبِج", fa: "شپش" },
-  { tati: "آغوز", fa: "گردو" },
-  { tati: "آغوز دار", fa: "درخت گردو" },
-  { tati: "تُونَکَه", fa: "شلوارک" },
-  { tati: "هَمسَرمال", fa: "هم‌سن‌وسال" },
-  { tati: "شَب چَره", fa: "تنقلات شب‌نشینی" },
-  { tati: "مُکاویج", fa: "بلال" },
-  { tati: "ناک", fa: "سقف دهان" },
-  { tati: "لَپُس", fa: "پهلو" },
-  { tati: "بیشتی", fa: "ته‌دیگ" },
-  { tati: "رادیان", fa: "رادیو" },
-  { tati: "بَینُم", fa: "ببینم" },
-  { tati: "دازَه", fa: "پره‌های ریز خوشه گندم" },
-  { tati: "وَزِرِست", fa: "چاک خورد، پاره شد" },
-  { tati: "دَس پیته", fa: "دستگیره برای برداشتن اجسام داغ" },
-  { tati: "کِریش", fa: "کشیدن اجسام روی زمین" },
-  { tati: "بَتِرکی", fa: "ترکید" },
-  { tati: "بَزیام", fa: "زدم" },
-  { tati: "بِشکاج", fa: "بشکاف" },
-  { tati: "اُشکُم پر", fa: "آبستن" },
-  { tati: "بِفَهمِست", fa: "فهمید" },
-  { tati: "بَگِنِست", fa: "برخورد کرد" },
-  { tati: "بَلِکان", fa: "تکان بده" },
-  { tati: "بیچوآل", fa: "دست و پا چلفتی" },
-  { tati: "پَی نَکِوی", fa: "عقب نمانی" },
-  { tati: "پیت بَخوردی", fa: "پیچ خورده" },
-  { tati: "خَف بَکُردی", fa: "کمین کرده" },
-  { tati: "دَش کُن", fa: "دور بریز" },
-  { tati: "دِلَو", fa: "بیا تو" },
-  { tati: "دَنِکِت", fa: "جا نیفتاد" },
-  { tati: "دُو آرد", fa: "قیچی پشم‌زنی" },
-  { tati: "رانِکی", fa: "قسمتی از پالان" },
-  { tati: "خِرماشَه", fa: "صدای حیوانات" },
-  { tati: "رُشتَ", fa: "نخ" },
-  { tati: "اِنجار", fa: "دنده پهلو" },
-  { tati: "نیم دَری", fa: "پنجره" },
-  { tati: "مورچانَه", fa: "مورچه" }
-];
+    <!-- نوار الفبا -->
+    <div class="alphabet-bar" id="alphabetBar"></div>
 
-const wordsList = document.getElementById('wordsList');
-const searchInput = document.getElementById('searchInput');
-const countDisplay = document.getElementById('countDisplay');
+    <div class="container">
+      <div class="count-badge" id="countBadge">در حال بارگذاری...</div>
+      <div id="wordListContainer"></div>
+      <div class="empty-state" id="emptyState" style="display: none;">واژه‌ای یافت نشد.</div>
+    </div>
+  </div>
 
-function render(list) {
-  wordsList.innerHTML = '';
-  countDisplay.textContent = `نمایش ${list.length} واژه از ${words.length} واژه`;
+  <script src="data.js"></script>
 
-  if (list.length === 0) {
-    wordsList.innerHTML = '<div class="empty">واژه‌ای با این مشخصات پیدا نشد.</div>';
-    return;
-  }
+  <script>
+    /* ========================================================
+       ۱. بخش امنیت و جلوگیری از کپی / راست‌کلیک / پیست
+       ======================================================== */
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('copy', e => e.preventDefault());
+    document.addEventListener('cut', e => e.preventDefault());
+    document.addEventListener('selectstart', e => {
+      if (e.target.tagName !== 'INPUT') e.preventDefault();
+    });
+    document.addEventListener('keydown', e => {
+      // غیرفعال کردن کلیدهای F12, Ctrl+U, Ctrl+C, Ctrl+S, Ctrl+A
+      if (
+        e.key === 'F12' ||
+        ((e.ctrlKey || e.metaKey) && ['u', 's', 'c', 'p', 'a'].includes(e.key.toLowerCase()))
+      ) {
+        e.preventDefault();
+      }
+    });
 
-  list.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'word-card';
-    card.innerHTML = `
-      <div class="word-tati">${item.tati}</div>
-      <div class="word-fa">${item.fa}</div>
-    `;
-    wordsList.appendChild(card);
-  });
-}
+    /* ========================================================
+       ۲. سیستم رمزنگاری و احراز هویت با هش SHA-256
+       ======================================================== */
+    // رمز عبور پیش‌فرض: ایزگیرینی۱۴۰۴
+    const PW_HASH = "8095b5832a76f2ff8390623a3ce4e0c90494eb753f2c525f053229b16bbd2417";
 
-searchInput.addEventListener('input', (e) => {
-  const q = e.target.value.trim().toLowerCase();
-  if (!q) {
-    render(words);
-    return;
-  }
-  const filtered = words.filter(w => 
-    w.tati.toLowerCase().includes(q) || w.fa.toLowerCase().includes(q)
-  );
-  render(filtered);
-});
+    async function sha256(str) {
+      const buf = new TextEncoder().encode(str);
+      const hash = await crypto.subtle.digest('SHA-256', buf);
+      return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
 
-render(words);
-</script>
+    const lockScreen = document.getElementById('lockScreen');
+    const appContent = document.getElementById('appContent');
+    const passInput = document.getElementById('passInput');
+    const unlockBtn = document.getElementById('unlockBtn');
+    const errorMsg = document.getElementById('errorMsg');
 
+    async function checkPassword() {
+      const entered = passInput.value.trim();
+      const hash = await sha256(entered);
+      if (hash === PW_HASH) {
+        sessionStorage.setItem('unlocked', 'true');
+        showApp();
+      } else {
+        errorMsg.style.display = 'block';
+        passInput.value = '';
+        passInput.focus();
+      }
+    }
+
+    function showApp() {
+      lockScreen.style.display = 'none';
+      appContent.style.display = 'block';
+      initDictionary();
+    }
+
+    unlockBtn.addEventListener('click', checkPassword);
+    passInput.addEventListener('keypress', e => {
+      if (e.key === 'Enter') checkPassword();
+    });
+
+    if (sessionStorage.getItem('unlocked') === 'true') {
+      showApp();
+    }
+
+    /* ========================================================
+       ۳. مرتب‌سازی الفبایی و نمایش لغات
+       ======================================================== */
+    let rawWords = (typeof dictionaryData !== 'undefined') ? dictionaryData : [];
+    let selectedLetter = 'ALL';
+
+    function initDictionary() {
+      // مرتب‌سازی کل لغات بر اساس الفبای تاتی
+      rawWords.sort((a, b) => a.tati.localeCompare(b.tati, 'fa'));
+
+      buildAlphabetBar();
+      renderWords(rawWords);
+
+      document.getElementById('searchInput').addEventListener('input', handleFilter);
+    }
+
+    function getFirstLetter(word) {
+      const ch = word.trim().charAt(0);
+      if (ch === 'آ' || ch === 'ا') return 'الف';
+      return ch;
+    }
+
+    function buildAlphabetBar() {
+      const bar = document.getElementById('alphabetBar');
+      bar.innerHTML = '';
+
+      const letters = new Set();
+      rawWords.forEach(w => {
+        if (w.tati) letters.add(getFirstLetter(w.tati));
+      });
+
+      const sortedLetters = Array.from(letters).sort((a, b) => a.localeCompare(b, 'fa'));
+
+      const allBtn = document.createElement('button');
+      allBtn.className = 'alpha-btn active';
+      allBtn.textContent = 'همه';
+      allBtn.onclick = () => filterByLetter('ALL', allBtn);
+      bar.appendChild(allBtn);
+
+      sortedLetters.forEach(ltr => {
+        const btn = document.createElement('button');
+        btn.className = 'alpha-btn';
+        btn.textContent = ltr;
+        btn.onclick = () => filterByLetter(ltr, btn);
+        bar.appendChild(btn);
+      });
+    }
+
+    function filterByLetter(letter, btnElement) {
+      selectedLetter = letter;
+      document.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
+      btnElement.classList.add('active');
+      handleFilter();
+    }
+
+    function handleFilter() {
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      
+      let filtered = rawWords;
+
+      if (selectedLetter !== 'ALL') {
+        filtered = filtered.filter(item => getFirstLetter(item.tati) === selectedLetter);
+      }
+
+      if (q) {
+        filtered = filtered.filter(item => 
+          item.tati.toLowerCase().includes(q) || 
+          item.farsi.toLowerCase().includes(q)
+        );
+      }
+
+      renderWords(filtered);
+    }
+
+    function renderWords(list) {
+      const container = document.getElementById('wordListContainer');
+      const countBadge = document.getElementById('countBadge');
+      const emptyState = document.getElementById('emptyState');
+
+      container.innerHTML = '';
+      countBadge.textContent = `${list.length} واژه`;
+
+      if (list.length === 0) {
+        emptyState.style.display = 'block';
+        return;
+      }
+      emptyState.style.display = 'none';
+
+      // گروه‌بندی بر اساس حرف
+      const groups = {};
+      list.forEach(item => {
+        const ltr = getFirstLetter(item.tati);
+        if (!groups[ltr]) groups[ltr] = [];
+        groups[ltr].push(item);
+      });
+
+      Object.keys(groups).forEach(letter => {
+        const grpDiv = document.createElement('div');
+        grpDiv.className = 'letter-group';
+
+        const title = document.createElement('div');
+        title.className = 'letter-header';
+        title.textContent = letter;
+        grpDiv.appendChild(title);
+
+        const listDiv = document.createElement('div');
+        listDiv.className = 'word-list';
+
+        groups[letter].forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'word-card';
+          card.innerHTML = `
+            <span class="word-tati">${item.tati}</span>
+            <span class="word-farsi">${item.farsi}</span>
+          `;
+          listDiv.appendChild(card);
+        });
+
+        grpDiv.appendChild(listDiv);
+        container.appendChild(grpDiv);
+      });
+    }
+  </script>
 </body>
 </html>
