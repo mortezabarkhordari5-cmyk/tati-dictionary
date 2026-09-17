@@ -2,17 +2,16 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>واژه‌نامه تاتی (ایزگیرینی)</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#2563eb">
   <style>
-    /* جلوگیری از انتخاب متن و کپی */
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: system-ui, -apple-system, sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
@@ -20,56 +19,59 @@
       -webkit-touch-callout: none;
     }
     input {
-      -webkit-user-select: auto;
-      user-select: auto;
+      -webkit-user-select: auto !important;
+      -moz-user-select: auto !important;
+      -ms-user-select: auto !important;
+      user-select: auto !important;
     }
     body {
       background-color: #f8fafc;
       color: #1e293b;
-      padding-bottom: 40px;
+      padding-bottom: 30px;
     }
-
     header {
       background: #2563eb;
       color: white;
-      padding: 18px 16px;
+      padding: 16px;
       text-align: center;
       position: sticky;
       top: 0;
-      z-index: 10;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      z-index: 20;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
     }
     h1 {
-      font-size: 1.25rem;
-      margin-bottom: 12px;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      font-weight: 700;
     }
     .search-box {
       width: 100%;
-      max-width: 480px;
+      max-width: 500px;
       margin: 0 auto;
     }
     .search-box input {
       width: 100%;
-      padding: 12px 18px;
+      padding: 11px 18px;
       border-radius: 25px;
       border: none;
       font-size: 0.95rem;
       outline: none;
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      background: #ffffff;
+      color: #0f172a;
     }
-
-    /* نوار فیلتر الفبا */
     .alphabet-bar {
       display: flex;
       gap: 6px;
       overflow-x: auto;
-      padding: 12px 16px;
+      padding: 10px 14px;
       background: #ffffff;
       border-bottom: 1px solid #e2e8f0;
       position: sticky;
-      top: 105px;
-      z-index: 9;
+      top: 93px;
+      z-index: 10;
       white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
       scrollbar-width: thin;
     }
     .alpha-btn {
@@ -80,67 +82,68 @@
       color: #334155;
       font-size: 0.88rem;
       cursor: pointer;
-      font-weight: 500;
+      font-weight: 600;
+      flex-shrink: 0;
     }
     .alpha-btn.active {
       background: #2563eb;
       color: white;
       border-color: #2563eb;
     }
-
     .container {
       max-width: 540px;
-      margin: 16px auto;
-      padding: 0 16px;
+      margin: 14px auto;
+      padding: 0 14px;
     }
     .count-badge {
       font-size: 0.85rem;
       color: #64748b;
-      margin-bottom: 12px;
-      text-align: left;
+      margin-bottom: 10px;
+      font-weight: 500;
     }
     .letter-group {
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
     .letter-header {
       background: #e2e8f0;
       color: #1e3a8a;
-      font-weight: bold;
-      padding: 4px 14px;
-      border-radius: 8px;
-      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
       margin-bottom: 8px;
       display: inline-block;
     }
     .word-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
     .word-card {
       background: white;
-      padding: 12px 16px;
-      border-radius: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
       border: 1px solid #e2e8f0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
     }
     .word-tati {
-      font-weight: bold;
+      font-weight: 700;
       color: #1e3a8a;
-      font-size: 1.05rem;
+      font-size: 1.02rem;
     }
     .word-farsi {
       color: #475569;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       text-align: left;
     }
     .empty-state {
       text-align: center;
       color: #94a3b8;
       padding: 40px 16px;
+      font-size: 0.95rem;
     }
   </style>
 </head>
@@ -153,7 +156,6 @@
     </div>
   </header>
 
-  <!-- نوار الفبا -->
   <div class="alphabet-bar" id="alphabetBar"></div>
 
   <div class="container">
@@ -162,13 +164,10 @@
     <div class="empty-state" id="emptyState" style="display: none;">واژه‌ای یافت نشد.</div>
   </div>
 
-  <!-- بارگذاری واژه‌ها از data.js -->
   <script src="data.js"></script>
 
   <script>
-    /* ========================================================
-       ۱. بخش ضد کپی، ضد پیست و مسدودسازی راست‌کلیک و کلیدها
-       ======================================================== */
+    // کل قفل‌های ضد کپی و ضد پیست
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('copy', e => e.preventDefault());
     document.addEventListener('cut', e => e.preventDefault());
@@ -177,18 +176,19 @@
       if (e.target.tagName !== 'INPUT') e.preventDefault();
     });
     document.addEventListener('keydown', e => {
-      if (
-        e.key === 'F12' ||
-        ((e.ctrlKey || e.metaKey) && ['u', 's', 'c', 'p', 'a'].includes(e.key.toLowerCase()))
-      ) {
+      if (e.key === 'F12' || ((e.ctrlKey || e.metaKey) && ['u', 's', 'c', 'p', 'a'].includes(e.key.toLowerCase()))) {
         e.preventDefault();
       }
     });
 
-    /* ========================================================
-       ۲. مرتب‌سازی الفبایی و نمایش لغات
-       ======================================================== */
-    let rawWords = (typeof dictionaryData !== 'undefined') ? dictionaryData : [];
+    // بارگذاری واژه‌ها (اگر data.js لود شود از آن می‌خواند، وگرنه از پشتیبان)
+    let wordsData = [];
+    if (typeof dictionaryData !== 'undefined' && Array.isArray(dictionaryData) && dictionaryData.length > 0) {
+      wordsData = dictionaryData;
+    } else if (typeof words !== 'undefined' && Array.isArray(words) && words.length > 0) {
+      wordsData = words;
+    }
+
     let selectedLetter = 'ALL';
 
     function getFirstLetter(word) {
@@ -199,12 +199,9 @@
     }
 
     function initDictionary() {
-      // مرتب‌سازی خودکار بر اساس الفبای تاتی
-      rawWords.sort((a, b) => a.tati.localeCompare(b.tati, 'fa'));
-
+      wordsData.sort((a, b) => a.tati.localeCompare(b.tati, 'fa'));
       buildAlphabetBar();
-      renderWords(rawWords);
-
+      renderWords(wordsData);
       document.getElementById('searchInput').addEventListener('input', handleFilter);
     }
 
@@ -213,7 +210,7 @@
       bar.innerHTML = '';
 
       const letters = new Set();
-      rawWords.forEach(w => {
+      wordsData.forEach(w => {
         if (w.tati) letters.add(getFirstLetter(w.tati));
       });
 
@@ -243,7 +240,7 @@
 
     function handleFilter() {
       const q = document.getElementById('searchInput').value.trim().toLowerCase();
-      let filtered = rawWords;
+      let filtered = wordsData;
 
       if (selectedLetter !== 'ALL') {
         filtered = filtered.filter(item => getFirstLetter(item.tati) === selectedLetter);
@@ -251,8 +248,8 @@
 
       if (q) {
         filtered = filtered.filter(item => 
-          item.tati.toLowerCase().includes(q) || 
-          item.farsi.toLowerCase().includes(q)
+          (item.tati && item.tati.toLowerCase().includes(q)) || 
+          (item.farsi && item.farsi.toLowerCase().includes(q))
         );
       }
 
@@ -273,7 +270,6 @@
       }
       emptyState.style.display = 'none';
 
-      // گروه‌بندی بر اساس حرف اول
       const groups = {};
       list.forEach(item => {
         const ltr = getFirstLetter(item.tati);
@@ -308,10 +304,8 @@
       });
     }
 
-    // راه‌اندازی برنامه
     initDictionary();
 
-    // فعال‌سازی حالت آفلاین
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js').catch(() => {});
     }
