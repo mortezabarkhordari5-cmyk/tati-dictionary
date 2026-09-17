@@ -2,46 +2,62 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>واژه‌نامه تاتی الموتی</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>واژه‌نامه تاتی (ایزگیرینی)</title>
     <style>
-        body { font-family: Tahoma; padding: 20px; }
-        .container { max-width: 600px; margin: auto; }
-        input { width: 100%; padding: 15px; margin-bottom: 20px; border: 1px solid #ccc; }
-        table { width: 100%; border-collapse: collapse; }
-        td, th { border: 1px solid #ddd; padding: 10px; text-align: right; }
+        body { font-family: Tahoma, sans-serif; padding: 15px; background-color: #f7f9fa; }
+        .container { max-width: 700px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #2c3e50; font-size: 22px; margin-bottom: 20px; }
+        input { width: 100%; box-sizing: border-box; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px; outline: none; }
+        input:focus { border-color: #007bff; }
+        .count { text-align: left; color: #777; font-size: 13px; margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 5px; }
+        th, td { border: 1px solid #eee; padding: 10px 12px; text-align: right; }
         th { background-color: #007bff; color: white; }
+        tr:nth-child(even) { background-color: #fafafa; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>واژه‌نامه تاتی الموتی</h1>
-        <input type="text" id="searchInput" placeholder="جستجو کنید...">
+        <h1>واژه‌نامه تاتی (ایزگیرینی)</h1>
+        <input type="text" id="searchInput" placeholder="جستجوی واژه تاتی یا معنی فارسی...">
+        <div class="count" id="wordCount"></div>
         <table>
-            <thead><tr><th>واژه تاتی</th><th>معنی فارسی</th></tr></thead>
+            <thead>
+                <tr>
+                    <th style="width: 35%;">واژه تاتی</th>
+                    <th>معنی فارسی</th>
+                </tr>
+            </thead>
             <tbody id="tableBody"></tbody>
         </table>
     </div>
 
-    <!-- این فایل data.js را می‌خواند -->
     <script src="data.js"></script>
     <script>
         const tableBody = document.getElementById("tableBody");
         const searchInput = document.getElementById("searchInput");
+        const wordCount = document.getElementById("wordCount");
 
         function render(filter = "") {
             tableBody.innerHTML = "";
-            // جستجو در لیست
-            const filtered = words.filter(item => 
-                item[0].includes(filter) || item[1].includes(filter)
-            );
+            const query = filter.trim();
             
+            const filtered = words.filter(item => 
+                item[0].includes(query) || item[1].includes(query)
+            );
+
+            wordCount.innerText = `تعداد واژه‌ها: ${filtered.length}`;
+
             filtered.forEach(item => {
-                tableBody.innerHTML += `<tr><td>${item[0]}</td><td>${item[1]}</td></tr>`;
+                const tr = document.createElement("tr");
+                tr.innerHTML = `<td><strong>${item[0]}</strong></td><td>${item[1]}</td>`;
+                tableBody.appendChild(tr);
             });
         }
 
-        render(); // نمایش لیست کامل در ابتدا
+        render();
 
         searchInput.addEventListener("input", function() {
             render(this.value);
