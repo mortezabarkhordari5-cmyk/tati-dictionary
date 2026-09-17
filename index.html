@@ -35,5 +35,30 @@
         searchInput.addEventListener('input', (e) => render(e.target.value));
         render("");
     </script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    // پیدا کردن جدول و ردیف‌ها
+    const table = document.querySelector('table');
+    if (!table) return;
+
+    const tbody = table.querySelector('tbody') || table;
+    const rows = Array.from(tbody.querySelectorAll('tr')).filter(row => row.querySelector('td'));
+
+    // تابع برای پاک کردن اِعراب (فتحه، ضمه، کسره و...) جهت مرتب‌سازی دقیق
+    const cleanWord = (str) => {
+      return str.replace(/[\u064B-\u065F\u0670]/g, '').trim();
+    };
+
+    // مرتب‌سازی بر اساس ستون اول (واژه تاتی) بر اساس الفبای فارسی
+    rows.sort((a, b) => {
+      const wordA = cleanWord(a.children[0].textContent);
+      const wordB = cleanWord(b.children[0].textContent);
+      return wordA.localeCompare(wordB, 'fa');
+    });
+
+    // قرار دادن دوباره ردیف‌ها در جدول با ترتیب الفبایی
+    rows.forEach(row => tbody.appendChild(row));
+  });
+</script>
 </body>
 </html>
