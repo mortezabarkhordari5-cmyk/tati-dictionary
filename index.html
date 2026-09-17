@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>واژه‌نامه تاتی الموتی</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body { font-family: Tahoma; padding: 20px; }
         .container { max-width: 600px; margin: auto; }
@@ -13,7 +14,6 @@
     </style>
 </head>
 <body>
-
     <div class="container">
         <h1>واژه‌نامه تاتی الموتی</h1>
         <input type="text" id="searchInput" placeholder="جستجو کنید...">
@@ -23,31 +23,27 @@
         </table>
     </div>
 
-    <script src="data.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const words = window.words; 
-            const searchInput = document.getElementById("searchInput");
-            const tableBody = document.getElementById("tableBody");
+        // اینجا مقادیر خود را از بخش Project Settings > API در Supabase کپی کن
+        const supabase = supabase.createClient('YOUR_SUPABASE_URL', 'YOUR_ANON_KEY');
 
-            words.sort((a, b) => a[0].localeCompare(b[0]));
+        const tableBody = document.getElementById("tableBody");
+        const searchInput = document.getElementById("searchInput");
 
-            function render(filter) {
-                tableBody.innerHTML = "";
-                words.forEach(item => {
-                    if (item[0].includes(filter) || item[1].includes(filter)) {
-                        let row = `<tr><td>${item[0]}</td><td>${item[1]}</td></tr>`;
-                        tableBody.innerHTML += row;
-                    }
-                });
+        async function fetchWords(filter = "") {
+            let query = supabase.from('dictionary').select('*');
+            if (filter) {
+                query = query.or(`tati_word.ilike.%${filter}%,persian_meaning.ilike.%${filter}%`);
             }
-
-            render("");
-
-            searchInput.addEventListener("input", function() {
-                render(this.value);
+            const { data } = await query;
+            tableBody.innerHTML = "";
+            data?.forEach(item => {
+                tableBody.innerHTML += `<tr><td>${item.tati_word}</td><td>${item.persian_meaning}</td></tr>`;
             });
-        });
+        }
+
+        fetchWords();
+        searchInput.addEventListener("input", (e) => fetchWords(e.target.value));
     </script>
 </body>
 </html>
