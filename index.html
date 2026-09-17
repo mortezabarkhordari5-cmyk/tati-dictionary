@@ -31,8 +31,6 @@ input {
 
     <script src="data.js"></script>
    <script>
-    const words = JSON.parse(decodeURIComponent(escape(atob(rawWordsData))));
-
     words.sort((a, b) => a[0].localeCompare(b[0], 'fa'));
 
     const searchInput = document.getElementById("searchInput");
