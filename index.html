@@ -1,21 +1,15 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="fa">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>واژه‌نامه تاتی</title>
     <style>
-        body { font-family: Tahoma, sans-serif; padding: 20px; }
-        input { width: 100%; padding: 10px; margin-bottom: 20px; box-sizing: border-box; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #999; padding: 8px; text-align: right; }
-        th { background-color: #f2f2f2; }
-    </style>
-</head>
-<body>
-
-    <h1>واژه‌نامه تاتی</h1>
-    <input type="text" id="searchInput" placeholder="جستجوی کلمه (تاتی یا فارسی)..." onkeyup="filterTable()">
+        body { font-family: Tahoma, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; }
+        h1 { margin-bottom: 20px; }
+        input { width: 100%; max-width: 400px; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 20px; outline: none; box-sizing: border-box; }
+        table { width: 100%; max-width: 500px; margin: 0 auto; border-collapse: collapse; background: #fff; }
+        th, td { border: 1px solidوی کلمه (تاتی یا فارسی)...">
 
     <table id="dictionaryTable">
         <thead>
@@ -30,15 +24,12 @@
     </table>
 
     <script>
-        let dictionaryData = [];
-
-        // بارگذاری داده‌ها از فایل JSON
-        fetch('data.json')
-            .then(response => response.json())
-            .then(data => {
-                dictionaryData = data;
-                renderTable(dictionaryData);
-            });
+        // کلمات خود را مستقیم اینجا اضافه کنید
+        const dictionaryData = [
+            { tati: "برا", farsi: "برادر" },
+            { tati: "خوا", farsi: "خواهر" },
+            { tati: "چمه", farsi: "مال من" }
+        ];
 
         function renderTable(data) {
             const tbody = document.getElementById('tableBody');
@@ -53,14 +44,16 @@
         }
 
         function filterTable() {
-            const input = document.getElementById('searchInput').value.toLowerCase();
+            const input = document.getElementById('searchInput').value.trim().toLowerCase();
             const filtered = dictionaryData.filter(item => 
                 item.tati.toLowerCase().includes(input) || 
                 item.farsi.toLowerCase().includes(input)
             );
             renderTable(filtered);
         }
+
+        // اجرا در اولین بارگذاری
+        renderTable(dictionaryData);
     </script>
 </body>
 </html>
-
