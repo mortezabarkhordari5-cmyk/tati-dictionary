@@ -2,37 +2,65 @@
 <html dir="rtl" lang="fa">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>واژه‌نامه تاتی</title>
     <style>
-        body { font-family: Tahoma, sans-serif; padding: 20px; line-height: 1.6; }
-        input { width: 100%; padding: 10px; font-size: 18px; margin-bottom: 20px; border: 2px solid #ccc; border-radius: 5px; }
-        .word { border-bottom: 1px solid #eee; padding: 10px 0; }
-        strong { color: #d32f2f; }
+        body { font-family: Tahoma, sans-serif; padding: 20px; }
+        input { width: 100%; padding: 10px; margin-bottom: 20px; box-sizing: border-box; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #999; padding: 8px; text-align: right; }
+        th { background-color: #f2f2f2; }
     </style>
 </head>
 <body>
+
     <h1>واژه‌نامه تاتی</h1>
-    <input type="text" id="search" placeholder="جستجوی کلمه...">
-    <div id="results"></div>
+    <input type="text" id="searchInput" placeholder="جستجوی کلمه (تاتی یا فارسی)..." onkeyup="filterTable()">
 
-    <script src="data.js"></script>
+    <table id="dictionaryTable">
+        <thead>
+            <tr>
+                <th>تاتی</th>
+                <th>فارسی</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- کلمات اینجا بارگذاری می‌شوند -->
+        </tbody>
+    </table>
+
     <script>
-        const resultsDiv = document.getElementById('results');
-        const searchInput = document.getElementById('search');
+        let dictionaryData = [];
 
-        function displayWords(filter = "") {
-            resultsDiv.innerHTML = "";
-            const filtered = words.filter(w => (w[0] && w[0].includes(filter)) || (w[1] && w[1].includes(filter)));
-            filtered.forEach(w => {
-                const div = document.createElement('div');
-                div.className = 'word';
-                div.innerHTML = `<strong>${w[0]}</strong>: ${w[1]}`;
-                resultsDiv.appendChild(div);
+        // بارگذاری داده‌ها از فایل JSON
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                dictionaryData = data;
+                renderTable(dictionaryData);
+            });
+
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            data.forEach(item => {
+                let row = `<tr>
+                    <td>${item.tati}</td>
+                    <td>${item.farsi}</td>
+                </tr>`;
+                tbody.innerHTML += row;
             });
         }
 
-        searchInput.addEventListener('input', (e) => displayWords(e.target.value));
-        displayWords();
+        function filterTable() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = dictionaryData.filter(item => 
+                item.tati.toLowerCase().includes(input) || 
+                item.farsi.toLowerCase().includes(input)
+            );
+            renderTable(filtered);
+        }
     </script>
 </body>
 </html>
+
