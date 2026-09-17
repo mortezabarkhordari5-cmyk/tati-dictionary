@@ -30,22 +30,33 @@ input {
     </div>
 
     <script src="data.js"></script>
-    <script>
-        const tbody = document.getElementById('tableBody');
-        const searchInput = document.getElementById('searchInput');
+   <script>
+    const words = JSON.parse(decodeURIComponent(escape(atob(rawWordsData))));
 
-        function render(q) {
-            const filtered = words.filter(w => w[0].includes(q) || w[1].includes(q));
-            tbody.innerHTML = filtered.map(w => `<tr><td>${w[0]}</td><td>${w[1]}</td></tr>`).join('');
-        }
+    words.sort((a, b) => a[0].localeCompare(b[0], 'fa'));
 
-        searchInput.addEventListener('input', (e) => render(e.target.value));
-        words.sort((a, b) => a[0].localeCompare(b[0], 'fa'));
-        render("");
-    </script>
-    <script>
-  document.addEventListener('contextmenu', event => event.preventDefault());
-  document.addEventListener('copy', event => event.preventDefault());
+    const searchInput = document.getElementById("searchInput");
+    const tableBody = document.getElementById("tableBody");
+
+    function render(filter) {
+        tableBody.innerHTML = "";
+        words.forEach(item => {
+            if (item[0].includes(filter) || item[1].includes(filter)) {
+                let row = `<tr><td>${item[0]}</td><td>${item[1]}</td></tr>`;
+                tableBody.innerHTML += row;
+            }
+        });
+    }
+
+    render("");
+
+    searchInput.addEventListener("input", function() {
+        render(this.value);
+    });
+
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.addEventListener('copy', event => event.preventDefault());
 </script>
+ 
 </body>
 </html>
