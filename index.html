@@ -5,50 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>واژه‌نامه تاتی (ایزگیرینی)</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
     body { background-color: #f4f6f9; color: #333; padding-bottom: 40px; }
-    
-    /* سربرگ */
     .header {
-      background: #1976d2;
-      color: white;
-      text-align: center;
-      padding: 24px 16px;
-      border-bottom-left-radius: 20px;
-      border-bottom-right-radius: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      background: #1976d2; color: white; text-align: center;
+      padding: 24px 16px; border-radius: 0 0 20px 20px;
     }
     .header h1 { font-size: 1.4rem; margin-bottom: 14px; }
-    
-    /* کادر جستجو */
     .search-box {
-      width: 100%;
-      max-width: 450px;
-      padding: 12px 18px;
-      border-radius: 25px;
-      border: none;
-      outline: none;
-      font-size: 1rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      width: 100%; max-width: 450px; padding: 12px 18px;
+      border-radius: 25px; border: none; outline: none; font-size: 1rem;
     }
-    
-    /* لیست کلمات */
     .container { max-width: 500px; margin: 20px auto; padding: 0 16px; }
-    
     .word-card {
-      background: white;
-      padding: 14px 18px;
-      margin-bottom: 10px;
-      border-radius: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background: white; padding: 14px 18px; margin-bottom: 10px;
+      border-radius: 12px; display: flex; justify-content: space-between;
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
     .word-tati { font-size: 1.15rem; font-weight: bold; color: #1976d2; }
     .word-farsi { font-size: 1rem; color: #555; }
-    
-    .status-msg { text-align: center; color: #777; margin-top: 40px; font-size: 1rem; }
+    .status-msg { text-align: center; color: #777; margin-top: 40px; }
     .count-badge { text-align: center; font-size: 0.85rem; color: #888; margin-bottom: 12px; }
   </style>
 </head>
@@ -64,21 +40,28 @@
     <div id="wordsList"></div>
   </div>
 
-  <!-- اتصال به فایل کلمات -->
-  <script src="data.js"></script>
-
   <script>
+    // ✏️ کلمات اینجا هستند. برای اضافه کردن کلمه جدید، فقط یک خط مثل خط‌های زیر اضافه کن
+    const wordsData = [
+      { tati: "پرا", farsi: "پرنده" },
+      { tati: "خوا", farsi: "خواهر" },
+      { tati: "پیه", farsi: "پدر" },
+      { tati: "مابه", farsi: "مادر" },
+      { tati: "کیه", farsi: "خانه" },
+      { tati: "نان", farsi: "نان" },
+      { tati: "او", farsi: "آب" }
+    ];
+
     const searchInput = document.getElementById('searchInput');
     const wordsList = document.getElementById('wordsList');
     const countBadge = document.getElementById('countBadge');
 
     function renderWords(words) {
-      if (!words || words.length === 0) {
+      if (words.length === 0) {
         wordsList.innerHTML = '<div class="status-msg">هیچ کلمه‌ای یافت نشد.</div>';
         countBadge.textContent = '';
         return;
       }
-
       countBadge.textContent = `تعداد واژه‌ها: ${words.length}`;
       wordsList.innerHTML = words.map(item => `
         <div class="word-card">
@@ -88,29 +71,12 @@
       `).join('');
     }
 
-    function init() {
-      // بررسی وجود داده‌ها
-      if (typeof window.wordsData === 'undefined' || !Array.isArray(window.wordsData)) {
-        wordsList.innerHTML = '<div class="status-msg" style="color:red;">خطا: فایل کلمات (data.js) پیدا نشد!</div>';
-        return;
-      }
+    renderWords(wordsData);
 
-      // نمایش اولیه همه کلمات
-      renderWords(window.wordsData);
-
-      // جستجوی خودکار هنگام تایپ
-      searchInput.addEventListener('input', (e) => {
-        const query = e.target.value.trim().toLowerCase();
-        const filtered = window.wordsData.filter(item => 
-          item.tati.toLowerCase().includes(query) || 
-          item.farsi.toLowerCase().includes(query)
-        );
-        renderWords(filtered);
-      });
-    }
-
-    // اجرا پس از لود شدن کامل صفحه
-    window.addEventListener('DOMContentLoaded', init);
+    searchInput.addEventListener('input', (e) => {
+      const q = e.target.value.trim();
+      renderWords(wordsData.filter(item => item.tati.includes(q) || item.farsi.includes(q)));
+    });
   </script>
 </body>
 </html>
