@@ -2,313 +2,115 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>واژه‌نامه تاتی (ایزگیرینی)</title>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#2563eb">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      -webkit-touch-callout: none;
-    }
-    input {
-      -webkit-user-select: auto !important;
-      -moz-user-select: auto !important;
-      -ms-user-select: auto !important;
-      user-select: auto !important;
-    }
-    body {
-      background-color: #f8fafc;
-      color: #1e293b;
-      padding-bottom: 30px;
-    }
-    header {
-      background: #2563eb;
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: #f4f6f9; color: #333; padding-bottom: 40px; }
+    
+    /* سربرگ */
+    .header {
+      background: #1976d2;
       color: white;
-      padding: 16px;
       text-align: center;
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      padding: 24px 16px;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    h1 {
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
+    .header h1 { font-size: 1.4rem; margin-bottom: 14px; }
+    
+    /* کادر جستجو */
     .search-box {
       width: 100%;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-    .search-box input {
-      width: 100%;
-      padding: 11px 18px;
+      max-width: 450px;
+      padding: 12px 18px;
       border-radius: 25px;
       border: none;
-      font-size: 0.95rem;
       outline: none;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      background: #ffffff;
-      color: #0f172a;
+      font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
-    .alphabet-bar {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding: 10px 14px;
-      background: #ffffff;
-      border-bottom: 1px solid #e2e8f0;
-      position: sticky;
-      top: 93px;
-      z-index: 10;
-      white-space: nowrap;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
-    }
-    .alpha-btn {
-      padding: 6px 14px;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
-      background: #f8fafc;
-      color: #334155;
-      font-size: 0.88rem;
-      cursor: pointer;
-      font-weight: 600;
-      flex-shrink: 0;
-    }
-    .alpha-btn.active {
-      background: #2563eb;
-      color: white;
-      border-color: #2563eb;
-    }
-    .container {
-      max-width: 540px;
-      margin: 14px auto;
-      padding: 0 14px;
-    }
-    .count-badge {
-      font-size: 0.85rem;
-      color: #64748b;
-      margin-bottom: 10px;
-      font-weight: 500;
-    }
-    .letter-group {
-      margin-bottom: 16px;
-    }
-    .letter-header {
-      background: #e2e8f0;
-      color: #1e3a8a;
-      font-weight: 700;
-      padding: 4px 12px;
-      border-radius: 6px;
-      font-size: 0.9rem;
-      margin-bottom: 8px;
-      display: inline-block;
-    }
-    .word-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+    
+    /* لیست کلمات */
+    .container { max-width: 500px; margin: 20px auto; padding: 0 16px; }
+    
     .word-card {
       background: white;
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: 1px solid #e2e8f0;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      border-radius: 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
-    .word-tati {
-      font-weight: 700;
-      color: #1e3a8a;
-      font-size: 1.02rem;
-    }
-    .word-farsi {
-      color: #475569;
-      font-size: 0.92rem;
-      text-align: left;
-    }
-    .empty-state {
-      text-align: center;
-      color: #94a3b8;
-      padding: 40px 16px;
-      font-size: 0.95rem;
-    }
+    .word-tati { font-size: 1.15rem; font-weight: bold; color: #1976d2; }
+    .word-farsi { font-size: 1rem; color: #555; }
+    
+    .status-msg { text-align: center; color: #777; margin-top: 40px; font-size: 1rem; }
+    .count-badge { text-align: center; font-size: 0.85rem; color: #888; margin-bottom: 12px; }
   </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
-  <header>
+  <div class="header">
     <h1>واژه‌نامه تاتی (ایزگیرینی)</h1>
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="جستجوی واژه تاتی یا فارسی..." autocomplete="off">
-    </div>
-  </header>
-
-  <div class="alphabet-bar" id="alphabetBar"></div>
-
-  <div class="container">
-    <div class="count-badge" id="countBadge">در حال بارگذاری...</div>
-    <div id="wordListContainer"></div>
-    <div class="empty-state" id="emptyState" style="display: none;">واژه‌ای یافت نشد.</div>
+    <input type="text" id="searchInput" class="search-box" placeholder="جستجوی واژه تاتی یا فارسی...">
   </div>
 
+  <div class="container">
+    <div id="countBadge" class="count-badge"></div>
+    <div id="wordsList"></div>
+  </div>
+
+  <!-- اتصال به فایل کلمات -->
   <script src="data.js"></script>
 
   <script>
-    // کل قفل‌های ضد کپی و ضد پیست
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('copy', e => e.preventDefault());
-    document.addEventListener('cut', e => e.preventDefault());
-    document.addEventListener('dragstart', e => e.preventDefault());
-    document.addEventListener('selectstart', e => {
-      if (e.target.tagName !== 'INPUT') e.preventDefault();
-    });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'F12' || ((e.ctrlKey || e.metaKey) && ['u', 's', 'c', 'p', 'a'].includes(e.key.toLowerCase()))) {
-        e.preventDefault();
-      }
-    });
+    const searchInput = document.getElementById('searchInput');
+    const wordsList = document.getElementById('wordsList');
+    const countBadge = document.getElementById('countBadge');
 
-    // بارگذاری واژه‌ها (اگر data.js لود شود از آن می‌خواند، وگرنه از پشتیبان)
-    let wordsData = [];
-    if (typeof dictionaryData !== 'undefined' && Array.isArray(dictionaryData) && dictionaryData.length > 0) {
-      wordsData = dictionaryData;
-    } else if (typeof words !== 'undefined' && Array.isArray(words) && words.length > 0) {
-      wordsData = words;
-    }
-
-    let selectedLetter = 'ALL';
-
-    function getFirstLetter(word) {
-      if (!word) return '';
-      const ch = word.trim().charAt(0);
-      if (ch === 'آ' || ch === 'ا') return 'الف';
-      return ch;
-    }
-
-    function initDictionary() {
-      wordsData.sort((a, b) => a.tati.localeCompare(b.tati, 'fa'));
-      buildAlphabetBar();
-      renderWords(wordsData);
-      document.getElementById('searchInput').addEventListener('input', handleFilter);
-    }
-
-    function buildAlphabetBar() {
-      const bar = document.getElementById('alphabetBar');
-      bar.innerHTML = '';
-
-      const letters = new Set();
-      wordsData.forEach(w => {
-        if (w.tati) letters.add(getFirstLetter(w.tati));
-      });
-
-      const sortedLetters = Array.from(letters).sort((a, b) => a.localeCompare(b, 'fa'));
-
-      const allBtn = document.createElement('button');
-      allBtn.className = 'alpha-btn active';
-      allBtn.textContent = 'همه';
-      allBtn.onclick = () => filterByLetter('ALL', allBtn);
-      bar.appendChild(allBtn);
-
-      sortedLetters.forEach(ltr => {
-        const btn = document.createElement('button');
-        btn.className = 'alpha-btn';
-        btn.textContent = ltr;
-        btn.onclick = () => filterByLetter(ltr, btn);
-        bar.appendChild(btn);
-      });
-    }
-
-    function filterByLetter(letter, btnElement) {
-      selectedLetter = letter;
-      document.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
-      btnElement.classList.add('active');
-      handleFilter();
-    }
-
-    function handleFilter() {
-      const q = document.getElementById('searchInput').value.trim().toLowerCase();
-      let filtered = wordsData;
-
-      if (selectedLetter !== 'ALL') {
-        filtered = filtered.filter(item => getFirstLetter(item.tati) === selectedLetter);
-      }
-
-      if (q) {
-        filtered = filtered.filter(item => 
-          (item.tati && item.tati.toLowerCase().includes(q)) || 
-          (item.farsi && item.farsi.toLowerCase().includes(q))
-        );
-      }
-
-      renderWords(filtered);
-    }
-
-    function renderWords(list) {
-      const container = document.getElementById('wordListContainer');
-      const countBadge = document.getElementById('countBadge');
-      const emptyState = document.getElementById('emptyState');
-
-      container.innerHTML = '';
-      countBadge.textContent = `${list.length} واژه`;
-
-      if (list.length === 0) {
-        emptyState.style.display = 'block';
+    function renderWords(words) {
+      if (!words || words.length === 0) {
+        wordsList.innerHTML = '<div class="status-msg">هیچ کلمه‌ای یافت نشد.</div>';
+        countBadge.textContent = '';
         return;
       }
-      emptyState.style.display = 'none';
 
-      const groups = {};
-      list.forEach(item => {
-        const ltr = getFirstLetter(item.tati);
-        if (!groups[ltr]) groups[ltr] = [];
-        groups[ltr].push(item);
-      });
+      countBadge.textContent = `تعداد واژه‌ها: ${words.length}`;
+      wordsList.innerHTML = words.map(item => `
+        <div class="word-card">
+          <span class="word-tati">${item.tati}</span>
+          <span class="word-farsi">${item.farsi}</span>
+        </div>
+      `).join('');
+    }
 
-      Object.keys(groups).forEach(letter => {
-        const grpDiv = document.createElement('div');
-        grpDiv.className = 'letter-group';
+    function init() {
+      // بررسی وجود داده‌ها
+      if (typeof window.wordsData === 'undefined' || !Array.isArray(window.wordsData)) {
+        wordsList.innerHTML = '<div class="status-msg" style="color:red;">خطا: فایل کلمات (data.js) پیدا نشد!</div>';
+        return;
+      }
 
-        const title = document.createElement('div');
-        title.className = 'letter-header';
-        title.textContent = letter;
-        grpDiv.appendChild(title);
+      // نمایش اولیه همه کلمات
+      renderWords(window.wordsData);
 
-        const listDiv = document.createElement('div');
-        listDiv.className = 'word-list';
-
-        groups[letter].forEach(item => {
-          const card = document.createElement('div');
-          card.className = 'word-card';
-          card.innerHTML = `
-            <span class="word-tati">${item.tati}</span>
-            <span class="word-farsi">${item.farsi}</span>
-          `;
-          listDiv.appendChild(card);
-        });
-
-        grpDiv.appendChild(listDiv);
-        container.appendChild(grpDiv);
+      // جستجوی خودکار هنگام تایپ
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.trim().toLowerCase();
+        const filtered = window.wordsData.filter(item => 
+          item.tati.toLowerCase().includes(query) || 
+          item.farsi.toLowerCase().includes(query)
+        );
+        renderWords(filtered);
       });
     }
 
-    initDictionary();
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').catch(() => {});
-    }
+    // اجرا پس از لود شدن کامل صفحه
+    window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
