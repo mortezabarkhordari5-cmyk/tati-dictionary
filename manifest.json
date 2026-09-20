@@ -1,18 +1,15 @@
 {
-  "name": "دیکشنری تاتی - فارسی",
-  "short_name": "دیکشنری تاتی",
+  "name": "لغت‌نامه تاتی الموتی",
+  "short_name": "تاتی",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#2563eb",
-  "orientation": "portrait",
+  "theme_color": "#000000",
   "icons": [
     {
-      "src": "icon-512.png",
+      "src": "image_gen_d09a2146-2bf7-4b25-913e-c7f9cbb127e7_0.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
-
