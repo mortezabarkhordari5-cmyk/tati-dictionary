@@ -6,6 +6,20 @@
     <title>لغت‌نامه تاتی الموتی</title>
     <link rel="manifest" href="manifest.json">
     <style>
+        /* قابلیت ضد کپی */
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        input {
+            -webkit-user-select: auto;
+            -moz-user-select: auto;
+            -ms-user-select: auto;
+            user-select: auto;
+        }
+
         body { font-family: Tahoma, sans-serif; padding: 15px; background: #f4f4f9; direction: rtl; text-align: right; font-size: 18px; }
         .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         h2 { text-align: center; color: #145f58; margin-bottom: 5px; }
@@ -19,7 +33,7 @@
         footer { margin-top: 20px; font-size: 14px; color: #888; text-align: center; }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
     <div class="container">
         <!-- دکمه نصب -->
         <button id="installBtn">نصب برنامه روی گوشی</button>
@@ -37,25 +51,23 @@
         <footer>لغت‌نامه آفلاین تاتی الموتی</footer>
     </div>
 
-    <!-- بارگذاری مستقیم کلمات از فایل data.js -->
+    <!-- بارگذاری داده‌ها -->
     <script src="data.js"></script>
 
     <script>
-        // ثبت سرویس ورکر برای حالت آفلاین
+        // فعال‌سازی حالت آفلاین
         if ('serviceWorker' in navigator) { 
             navigator.serviceWorker.register('sw.js'); 
         }
 
-        // منطق دکمه نصب PWA
+        // دکمه نصب PWA
         let deferredPrompt;
         const installBtn = document.getElementById('installBtn');
-
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
             installBtn.style.display = 'block';
         });
-
         installBtn.addEventListener('click', () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
@@ -68,43 +80,49 @@
             }
         });
 
-        // تابع نمایش و جستجو و مرتب‌سازی الفبایی
+        // خواندن هوشمند داده‌ها (سازگار با wordsData، words، farsi، fa، persian)
+        function getRawData() {
+            if (typeof wordsData !== 'undefined') return wordsData;
+            if (typeof words !== 'undefined') return words;
+            return [];
+        }
+
+        // تابع رندر و مرتب‌سازی الفبایی
         function render(filter = '') {
             const tbody = document.getElementById('results');
             tbody.innerHTML = '';
             
-            // دسترسی به متغیر کلمات
-            const list = typeof words !== 'undefined' ? words : [];
+            const list = getRawData();
             
-            // یکپارچه‌سازی معنی (چه با نام fa باشد چه persian)
+            // یکپارچه‌سازی نام فیلدها
             const normalizedList = list.map(item => ({
                 tati: item.tati || '',
-                persian: item.persian || item.fa || ''
+                persian: item.farsi || item.persian || item.fa || ''
             }));
 
-            // مرتب‌سازی به ترتیب حروف الفبا
+            // مرتب‌سازی الفبایی دقیق
             const sortedWords = normalizedList.sort((a, b) => a.tati.localeCompare(b.tati, 'fa'));
             
-            // فیلتر جستجو (تاتی یا فارسی)
+            // فیلتر جستجو
             const filtered = sortedWords.filter(w => 
                 w.tati.toLowerCase().includes(filter.toLowerCase()) || 
                 w.persian.toLowerCase().includes(filter.toLowerCase())
             );
 
-            // شمارنده تعداد
+            // نمایش تعداد
             document.getElementById('count').innerText = 'تعداد کل: ' + list.length;
 
-            // ساخت ردیف‌های جدول
+            // ساخت جدول
             filtered.forEach((w, i) => {
                 const row = `<tr><td>${i + 1}</td><td>${w.tati}</td><td>${w.persian}</td></tr>`;
                 tbody.insertAdjacentHTML('beforeend', row);
             });
         }
 
-        // رویداد جستجو
+        // جستجو با تایپ کردن
         document.getElementById('search').oninput = (e) => render(e.target.value);
 
-        // اجرای اولیه هنگام باز شدن صفحه
+        // اجرای اولیه
         render();
     </script>
 </body>
