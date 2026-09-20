@@ -6,123 +6,85 @@
     <title>لغت‌نامه تاتی الموتی</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        /* قابلیت ضد کپی */
-        * {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        input {
-            -webkit-user-select: auto;
-            -moz-user-select: auto;
-            -ms-user-select: auto;
-            user-select: auto;
-        }
-
-        body { font-family: Tahoma, sans-serif; padding: 15px; background: #f4f4f9; direction: rtl; text-align: right; font-size: 18px; }
+        * { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        input, textarea { -webkit-user-select: auto; -moz-user-select: auto; -ms-user-select: auto; user-select: auto; }
+        body { font-family: Tahoma, sans-serif; padding: 15px; background: #f4f4f9; direction: rtl; text-align: right; font-size: 16px; }
         .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #145f58; margin-bottom: 5px; }
-        .author { text-align: center; color: #555; font-size: 16px; margin-bottom: 20px; font-weight: bold; }
-        input { width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #145f58; border-radius: 8px; box-sizing: border-box; font-size: 18px; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 15px; text-align: right; font-size: 18px; }
-        th { background: #145f58; color: white; position: sticky; top: 0; }
-        tr:nth-child(even) { background: #f9f9f9; }
-        #installBtn { display: none; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; width: 100%; margin-bottom: 20px; font-size: 18px; font-weight: bold; cursor: pointer; }
-        footer { margin-top: 20px; font-size: 14px; color: #888; text-align: center; }
+        h2 { text-align: center; color: #145f58; }
+        .section-title { color: #145f58; border-bottom: 2px solid #145f58; padding-bottom: 5px; margin-top: 30px; }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #145f58; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #145f58; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        #outputSentence { margin-top: 15px; padding: 15px; background: #e8f5e9; border-radius: 8px; min-height: 50px; border: 1px dashed #145f58; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
+        th { background: #145f58; color: white; }
     </style>
 </head>
 <body oncontextmenu="return false;">
     <div class="container">
-        <!-- دکمه نصب -->
-        <button id="installBtn">نصب برنامه روی گوشی</button>
-
         <h2>لغت‌نامه تاتی الموتی</h2>
-        <div class="author">اثر: مرتضی برخورداری</div>
-        
-        <input type="text" id="search" placeholder="جستجو (تاتی یا فارسی)...">
-        <div id="count" style="margin-bottom:10px; font-weight:bold; color: #145f58;">تعداد کل: ۰</div>
-        
+
+        <!-- بخش مترجم -->
+        <div class="section-title">مترجم کلمه‌به‌کلمه</div>
+        <textarea id="inputSentence" rows="2" placeholder="جمله را بنویسید (مثال: بیا بریم)..."></textarea>
+        <button onclick="translateText()">ترجمه کن</button>
+        <div id="outputSentence">نتیجه ترجمه اینجا نمایش داده می‌شود...</div>
+
+        <!-- بخش جستجو -->
+        <div class="section-title">جستجو در لغت‌نامه</div>
+        <input type="text" id="search" placeholder="کلمه را وارد کنید...">
+        <div id="count">تعداد کل: ۰</div>
         <table id="wordTable">
-            <thead><tr><th>ردیف</th><th>لغت تاتی</th><th>معنی فارسی</th></tr></thead>
+            <thead><tr><th>تاتی</th><th>فارسی</th></tr></thead>
             <tbody id="results"></tbody>
         </table>
-        <footer>لغت‌نامه آفلاین تاتی الموتی</footer>
     </div>
 
-    <!-- بارگذاری داده‌ها -->
     <script src="data.js"></script>
-
     <script>
-        // فعال‌سازی حالت آفلاین
-        if ('serviceWorker' in navigator) { 
-            navigator.serviceWorker.register('sw.js'); 
-        }
-
-        // دکمه نصب PWA
-        let deferredPrompt;
-        const installBtn = document.getElementById('installBtn');
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installBtn.style.display = 'block';
-        });
-        installBtn.addEventListener('click', () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        installBtn.style.display = 'none';
-                    }
-                    deferredPrompt = null;
-                });
-            }
-        });
-
-        // خواندن هوشمند داده‌ها (سازگار با wordsData، words، farsi، fa، persian)
         function getRawData() {
-            if (typeof wordsData !== 'undefined') return wordsData;
-            if (typeof words !== 'undefined') return words;
-            return [];
+            return (typeof wordsData !== 'undefined') ? wordsData : (typeof words !== 'undefined' ? words : []);
         }
 
-        // تابع رندر و مرتب‌سازی الفبایی
+        // عملکرد مترجم
+        function translateText() {
+            const input = document.getElementById('inputSentence').value;
+            const wordsList = getRawData();
+            const wordsArray = input.split(' ');
+            
+            const translated = wordsArray.map(word => {
+                // پیدا کردن کلمه در دیتابیس (چه تاتی چه فارسی)
+                const match = wordsList.find(item => 
+                    item.tati === word || (item.farsi || item.fa || item.persian) === word
+                );
+                
+                if (match) {
+                    // اگر کلمه تاتی وارد شد، فارسی برگردان و برعکس
+                    return (match.tati === word) ? (match.farsi || match.fa || match.persian) : match.tati;
+                }
+                return word; // اگر در لغت‌نامه نبود، خودش را برگردان
+            });
+
+            document.getElementById('outputSentence').innerText = translated.join(' ');
+        }
+
+        // عملکرد جستجو
         function render(filter = '') {
             const tbody = document.getElementById('results');
             tbody.innerHTML = '';
-            
             const list = getRawData();
-            
-            // یکپارچه‌سازی نام فیلدها
-            const normalizedList = list.map(item => ({
-                tati: item.tati || '',
-                persian: item.farsi || item.persian || item.fa || ''
-            }));
-
-            // مرتب‌سازی الفبایی دقیق
-            const sortedWords = normalizedList.sort((a, b) => a.tati.localeCompare(b.tati, 'fa'));
-            
-            // فیلتر جستجو
-            const filtered = sortedWords.filter(w => 
-                w.tati.toLowerCase().includes(filter.toLowerCase()) || 
-                w.persian.toLowerCase().includes(filter.toLowerCase())
-            );
-
-            // نمایش تعداد
             document.getElementById('count').innerText = 'تعداد کل: ' + list.length;
-
-            // ساخت جدول
-            filtered.forEach((w, i) => {
-                const row = `<tr><td>${i + 1}</td><td>${w.tati}</td><td>${w.persian}</td></tr>`;
+            
+            list.filter(w => 
+                (w.tati || '').includes(filter) || 
+                (w.farsi || w.fa || w.persian || '').includes(filter)
+            ).forEach(w => {
+                const row = `<tr><td>${w.tati}</td><td>${w.farsi || w.fa || w.persian}</td></tr>`;
                 tbody.insertAdjacentHTML('beforeend', row);
             });
         }
 
-        // جستجو با تایپ کردن
         document.getElementById('search').oninput = (e) => render(e.target.value);
-
-        // اجرای اولیه
         render();
     </script>
 </body>
