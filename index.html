@@ -2,31 +2,33 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لغت‌نامه تاتی الموتی</title>
-    <link rel="manifest" href="manifest.json">
-    <style>
-        /* قابلیت ضد کپی */
-        * {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        input {
-            -webkit-user-select: auto;
-            -moz-user-select: auto;
-            -ms-user-select: auto;
-            user-select: auto;
-        }
+</head>
+<body style="font-family: Tahoma; text-align: center; padding: 20px;">
+    <h2>لغت‌نامه تاتی الموتی</h2>
+    <div id="status" style="color:red;">در حال بارگذاری...</div>
+    <table id="wordTable" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <tbody id="results"></tbody>
+    </table>
 
-        body { font-family: Tahoma, sans-serif; padding: 15px; background: #f4f4f9; direction: rtl; text-align: right; font-size: 18px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #145f58; margin-bottom: 5px; }
-        .author { text-align: center; color: #555; font-size: 16px; margin-bottom: 20px; font-weight: bold; }
-        input { width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #145f58; border-radius: 8px; box-sizing: border-box; font-size: 18px; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 15px; text-align: right; font-size: 18px; }
-        th { background: #145f58; color: white; position: sticky; top: 0; }
-        tr:nth-child(even) { background: #f9f9f9; }
-        #installBtn { display: none; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; width: 100%; margin-bottom: 20px; font-size: 18px;
+    <script src="data.js"></script>
+    <script>
+        // تست اینکه آیا data.js درست لود شده یا نه
+        try {
+            const list = (typeof words !== 'undefined') ? words : [];
+            const tbody = document.getElementById('results');
+            
+            if (list.length === 0) {
+                document.getElementById('status').innerText = "خطا: داده‌ای یافت نشد. فایل data.js را چک کنید.";
+            } else {
+                document.getElementById('status').style.display = 'none';
+                list.forEach((w, i) => {
+                    tbody.innerHTML += `<tr><td>${i + 1}</td><td>${w.tati}</td><td>${w.farsi}</td></tr>`;
+                });
+            }
+        } catch (e) {
+            document.getElementById('status').innerText = "خطا در بارگذاری: " + e.message;
+        }
+    </script>
+</body>
+</html>
