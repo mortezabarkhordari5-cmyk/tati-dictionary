@@ -16,17 +16,24 @@
         }
         h1 { color: #2c3e50; margin-bottom: 5px; }
         #author { font-size: 16px; font-weight: bold; color: #555; margin-bottom: 20px; }
-        
-        /* استایل کادر جستجو */
+
         #search-input {
             width: 90%;
             max-width: 400px;
             padding: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             border: 2px solid #3498db;
             border-radius: 8px;
             font-size: 16px;
             outline: none;
+        }
+        #search-input:focus { border-color: #2c3e50; }
+
+        #result-count {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 15px;
+            min-height: 20px;
         }
 
         table {
@@ -45,6 +52,7 @@
         }
         th { background-color: #3498db; color: white; }
         tr:nth-child(even) { background-color: #f2f6f8; }
+        .not-found { text-align: center; color: #c0392b; }
     </style>
 </head>
 <body>
@@ -53,7 +61,8 @@
     <div id="author">اثر: مرتضی برخورداری</div>
 
     <!-- کادر جستجو -->
-    <input type="text" id="search-input" placeholder="جستجو در تاتی یا فارسی..." onkeyup="filterTable()">
+    <input type="text" id="search-input" placeholder="جستجو در تاتی یا فارسی..." autocomplete="off">
+    <div id="result-count"></div>
 
     <table id="dictionary-table">
         <thead>
@@ -62,46 +71,98 @@
                 <th>فارسی</th>
             </tr>
         </thead>
-        <tbody id="table-body">
-            <!-- کلمات اینجا لود می‌شوند -->
-        </tbody>
+        <tbody id="table-body"></tbody>
     </table>
 
+    <!-- فایل دیتا -->
     <script src="data.js"></script>
     <script>
-        const tableBody = document.getElementById('table-body');
-        
-        // مرتب‌سازی اولیه کلمات
-        const sortedWords = typeof words !== 'undefined' ? [...words].sort((a, b) => a.tati.localeCompare(b.tati, 'fa')) : [];
+        /* ---------- ۱) ابزار یکسان‌سازی متن ---------- */
+        // اعراب، تشدید، سکون، تنوین، الف مقصوره کوچک و کشیده (ـ)
+        const DIACRITICS = /[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g;
+        // نیم‌فاصله، فاصله مجازی، کاراکترهای کنترلی راست‌به‌چپ
+        const INVISIBLE  = /[\u200B-\u200F\u202A-\u202E\u2060\uFEFF]/g;
+        // تبدیل حروف عربی به فارسی
+        const LETTER_MAP = {
+            'ي': 'ی', 'ى': 'ی', 'ئ': 'ی', 'ك': 'ک',
+            'أ': 'ا', 'إ': 'ا', 'آ': 'ا', 'ٱ': 'ا',
+            'ة': 'ه', 'ۀ': 'ه', 'ؤ': 'و'
+        };
 
-        // تابع نمایش کلمات
-        function renderTable(dataArray) {
-            tableBody.innerHTML = '';
-            if (dataArray.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="2" style="text-align:center; color:red;">کلمه‌ای یافت نشد.</td></tr>`;
-                return;
-            }
-            dataArray.forEach(item => {
-                const row = `<tr><td>${item.tati}</td><td>${item.farsi}</td></tr>`;
-                tableBody.innerHTML += row;
-            });
+        function normalizeText(text) {
+            if (!text) return '';
+            return String(text)
+                .replace(DIACRITICS, '')                       // حذف اعراب و کشیده
+                .replace(INVISIBLE, '')                        // حذف نیم‌فاصله و کنترلی‌ها
+                .replace(/[يىئكأإآٱةۀؤ]/g, ch => LETTER_MAP[ch] || ch)
+                .replace(/[٠-٩]/g, d => String.fromCharCode(d.charCodeAt(0) - 0x0660 + 0x06F0)) // ارقام عربی → فارسی
+                .replace(/\s+/g, ' ')                          // فاصله‌های تکراری
+                .trim();
         }
 
-        // تابع جستجو
+        function escapeHtml(str) {
+            return String(str).replace(/[&<>"']/g, c => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[c]);
+        }
+
+        /* ---------- ۲) آماده‌سازی داده‌ها ---------- */
+        const tableBody   = document.getElementById('table-body');
+        const searchInput = document.getElementById('search-input');
+        const countBox    = document.getElementById('result-count');
+
+        const rawData = (typeof words !== 'undefined' && Array.isArray(words)) ? words : [];
+
+        // برای هر کلمه یک «کلید جستجو» بدون اعراب می‌سازیم
+        const dictionary = rawData.map(item => ({
+            tati:     item.tati,
+            farsi:    item.farsi,
+            tatiKey:  normalizeText(item.tati),
+            farsiKey: normalizeText(item.farsi)
+        }));
+
+        // مرتب‌سازی الفبایی بر اساس شکل بدون اعراب (تا «بَ» کنار «ب» بیاید)
+        dictionary.sort((a, b) => a.tatiKey.localeCompare(b.tatiKey, 'fa'));
+
+        /* ---------- ۳) نمایش و جستجو ---------- */
+        function render(list, query) {
+            if (list.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="2" class="not-found">کلمه‌ای یافت نشد.</td></tr>';
+                countBox.textContent = '';
+                return;
+            }
+
+            let html = '';
+            for (const item of list) {
+                html += `<tr><td>${escapeHtml(item.tati)}</td><td>${escapeHtml(item.farsi)}</td></tr>`;
+            }
+            tableBody.innerHTML = html;
+
+            countBox.textContent = query
+                ? `${list.length} نتیجه برای «${query}»`
+                : `تعداد کل کلمات: ${list.length}`;
+        }
+
         function filterTable() {
-            const query = document.getElementById('search-input').value.trim();
+            const query = normalizeText(searchInput.value);
             if (query === '') {
-                renderTable(sortedWords);
+                render(dictionary, '');
                 return;
             }
-            const filtered = sortedWords.filter(item => 
-                item.tati.includes(query) || item.farsi.includes(query)
+            const result = dictionary.filter(item =>
+                item.tatiKey.includes(query) || item.farsiKey.includes(query)
             );
-            renderTable(filtered);
+            render(result, searchInput.value.trim());
         }
 
-        // بارگذاری اولیه
-        renderTable(sortedWords);
+        /* ---------- ۴) راه‌اندازی ---------- */
+        searchInput.addEventListener('input', filterTable);
+
+        if (dictionary.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="2" class="not-found">خطا: داده‌ای یافت نشد.</td></tr>';
+        } else {
+            render(dictionary, '');
+        }
     </script>
 
 </body>
