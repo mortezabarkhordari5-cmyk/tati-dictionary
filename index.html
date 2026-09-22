@@ -5,12 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لغت‌نامه تاتی الموتی</title>
     <style>
-        /* غیرفعال کردن انتخاب متن برای جلوگیری از کپی و پیست */
         body {
             user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
             font-family: Tahoma, Arial, sans-serif;
             background-color: #f9f9f9;
             color: #333;
@@ -18,16 +14,21 @@
             padding: 15px;
             text-align: center;
         }
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
-        #author {
-            font-size: 16px;
-            font-weight: bold;
-            color: #555;
+        h1 { color: #2c3e50; margin-bottom: 5px; }
+        #author { font-size: 16px; font-weight: bold; color: #555; margin-bottom: 20px; }
+        
+        /* استایل کادر جستجو */
+        #search-input {
+            width: 90%;
+            max-width: 400px;
+            padding: 12px;
             margin-bottom: 20px;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -38,23 +39,21 @@
         }
         th, td {
             border: 1px solid #e0e0e0;
-            padding: 14px;
+            padding: 12px;
             text-align: right;
-            font-size: 19px; /* فونت بزرگتر و خواناتر */
+            font-size: 18px;
         }
-        th {
-            background-color: #3498db;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f6f8;
-        }
+        th { background-color: #3498db; color: white; }
+        tr:nth-child(even) { background-color: #f2f6f8; }
     </style>
 </head>
 <body>
 
     <h1>لغت‌نامه تاتی الموتی</h1>
     <div id="author">اثر: مرتضی برخورداری</div>
+
+    <!-- کادر جستجو -->
+    <input type="text" id="search-input" placeholder="جستجو در تاتی یا فارسی..." onkeyup="filterTable()">
 
     <table id="dictionary-table">
         <thead>
@@ -63,32 +62,46 @@
                 <th>فارسی</th>
             </tr>
         </thead>
-        <tbody>
-            <!-- کلمات از فایل data.js اینجا لود می‌شوند -->
+        <tbody id="table-body">
+            <!-- کلمات اینجا لود می‌شوند -->
         </tbody>
     </table>
 
-    <!-- فایل دیتا -->
     <script src="data.js"></script>
     <script>
-        const tbody = document.querySelector('#dictionary-table tbody');
+        const tableBody = document.getElementById('table-body');
         
-        if (typeof words !== 'undefined' && Array.isArray(words)) {
-            // مرتب‌سازی کلمات بر اساس حروف الفبای تاتی (آ تا ی)
-            const sortedWords = [...words].sort((a, b) => {
-                return a.tati.localeCompare(b.tati, 'fa');
-            });
+        // مرتب‌سازی اولیه کلمات
+        const sortedWords = typeof words !== 'undefined' ? [...words].sort((a, b) => a.tati.localeCompare(b.tati, 'fa')) : [];
 
-            // ساخت و اضافه کردن سطرها به جدول
-            let rowsHtml = '';
-            sortedWords.forEach(item => {
-                rowsHtml += `<tr><td>${item.tati}</td><td>${item.farsi}</td></tr>`;
+        // تابع نمایش کلمات
+        function renderTable(dataArray) {
+            tableBody.innerHTML = '';
+            if (dataArray.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="2" style="text-align:center; color:red;">کلمه‌ای یافت نشد.</td></tr>`;
+                return;
+            }
+            dataArray.forEach(item => {
+                const row = `<tr><td>${item.tati}</td><td>${item.farsi}</td></tr>`;
+                tableBody.innerHTML += row;
             });
-            tbody.innerHTML = rowsHtml;
-            
-        } else {
-            tbody.innerHTML = `<tr><td colspan="2" style="text-align:center; color:red;">خطا: داده‌ای یافت نشد.</td></tr>`;
         }
+
+        // تابع جستجو
+        function filterTable() {
+            const query = document.getElementById('search-input').value.trim();
+            if (query === '') {
+                renderTable(sortedWords);
+                return;
+            }
+            const filtered = sortedWords.filter(item => 
+                item.tati.includes(query) || item.farsi.includes(query)
+            );
+            renderTable(filtered);
+        }
+
+        // بارگذاری اولیه
+        renderTable(sortedWords);
     </script>
 
 </body>
