@@ -1,34 +1,24 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>لغت‌نامه تاتی الموتی</title>
-</head>
-<body style="font-family: Tahoma; text-align: center; padding: 20px;">
-    <h2>لغت‌نامه تاتی الموتی</h2>
-    <div id="status" style="color:red;">در حال بارگذاری...</div>
-    <table id="wordTable" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-        <tbody id="results"></tbody>
+<body>
+    <h1>لغت‌نامه تاتی الموتی</h1>
+    <div id="author">اثر: مرتضی برخورداری</div>
+    
+    <table id="dictionary-table">
+        <thead>
+            <tr>
+                <th>تاتی</th>
+                <th>فارسی</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- کلمات اینجا لود می‌شوند -->
+        </tbody>
     </table>
 
-    <script src="data.js"></script>
     <script>
-        // تست اینکه آیا data.js درست لود شده یا نه
-        try {
-            const list = (typeof words !== 'undefined') ? words : [];
-            const tbody = document.getElementById('results');
-            
-            if (list.length === 0) {
-                document.getElementById('status').innerText = "خطا: داده‌ای یافت نشد. فایل data.js را چک کنید.";
-            } else {
-                document.getElementById('status').style.display = 'none';
-                list.forEach((w, i) => {
-                    tbody.innerHTML += `<tr><td>${i + 1}</td><td>${w.tati}</td><td>${w.farsi}</td></tr>`;
-                });
-            }
-        } catch (e) {
-            document.getElementById('status').innerText = "خطا در بارگذاری: " + e.message;
-        }
+        const tbody = document.querySelector('#dictionary-table tbody');
+        window.words.forEach(item => {
+            const row = `<tr><td>${item.tati}</td><td>${item.farsi}</td></tr>`;
+            tbody.innerHTML += row;
+        });
     </script>
 </body>
-</html>
