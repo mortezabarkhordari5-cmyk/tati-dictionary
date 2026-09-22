@@ -1,7 +1,61 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لغت‌نامه تاتی الموتی</title>
+    <style>
+        /* غیرفعال کردن انتخاب متن برای جلوگیری از کپی و پیست */
+        body {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            font-family: Tahoma, Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 15px;
+            text-align: center;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        #author {
+            font-size: 16px;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            border: 1px solid #e0e0e0;
+            padding: 14px;
+            text-align: right;
+            font-size: 19px; /* فونت بزرگتر و خواناتر */
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f6f8;
+        }
+    </style>
+</head>
 <body>
+
     <h1>لغت‌نامه تاتی الموتی</h1>
     <div id="author">اثر: مرتضی برخورداری</div>
-    
+
     <table id="dictionary-table">
         <thead>
             <tr>
@@ -10,15 +64,23 @@
             </tr>
         </thead>
         <tbody>
-            <!-- کلمات اینجا لود می‌شوند -->
+            <!-- کلمات از فایل data.js اینجا لود می‌شوند -->
         </tbody>
     </table>
 
+    <!-- فایل دیتا -->
+    <script src="data.js"></script>
     <script>
         const tbody = document.querySelector('#dictionary-table tbody');
-        window.words.forEach(item => {
-            const row = `<tr><td>${item.tati}</td><td>${item.farsi}</td></tr>`;
-            tbody.innerHTML += row;
-        });
+        if (typeof words !== 'undefined' && Array.isArray(words)) {
+            words.forEach(item => {
+                const row = `<tr><td>${item.tati}</td><td>${item.farsi}</td></tr>`;
+                tbody.innerHTML += row;
+            });
+        } else {
+            tbody.innerHTML = `<tr><td colspan="2" style="text-align:center; color:red;">خطا: داده‌ای یافت نشد.</td></tr>`;
+        }
     </script>
+
 </body>
+</html>
