@@ -72,11 +72,20 @@
     <script src="data.js"></script>
     <script>
         const tbody = document.querySelector('#dictionary-table tbody');
+        
         if (typeof words !== 'undefined' && Array.isArray(words)) {
-            words.forEach(item => {
-                const row = `<tr><td>${item.tati}</td><td>${item.farsi}</td></tr>`;
-                tbody.innerHTML += row;
+            // مرتب‌سازی کلمات بر اساس حروف الفبای تاتی (آ تا ی)
+            const sortedWords = [...words].sort((a, b) => {
+                return a.tati.localeCompare(b.tati, 'fa');
             });
+
+            // ساخت و اضافه کردن سطرها به جدول
+            let rowsHtml = '';
+            sortedWords.forEach(item => {
+                rowsHtml += `<tr><td>${item.tati}</td><td>${item.farsi}</td></tr>`;
+            });
+            tbody.innerHTML = rowsHtml;
+            
         } else {
             tbody.innerHTML = `<tr><td colspan="2" style="text-align:center; color:red;">خطا: داده‌ای یافت نشد.</td></tr>`;
         }
