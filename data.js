@@ -2,6 +2,7 @@ var words = window.words = [
         { "tati": "بَرَساندَن", "farsi": "رساندن" },
   { "tati": "بَرَسُستَن", "farsi": "رسیدن" },
   { "tati": "خانه", "farsi": "سرا" },
+    { "tati": "آبشار مانند", "farsi": "چُرِ" },
   { "tati": "جلو", "farsi": "پیش" },
   { "tati": "علف", "farsi": "واش" },
   { "tati": "سوزن", "farsi": "درزن" },
