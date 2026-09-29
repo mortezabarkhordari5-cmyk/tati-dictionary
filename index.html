@@ -64,7 +64,7 @@
             font-size: 18px;
         }
         
-        /* ثابت ماندن سرستون جدول تاتی و فارسی */
+        /* ثابت ماندن سرستون جدول */
         thead th {
             position: -webkit-sticky;
             position: sticky;
@@ -111,7 +111,7 @@
             backdrop-filter: blur(2px);
         }
 
-        /* کادر پاپ‌آپ فرم پیشنهاد */
+        /* پنجره پاپ‌آپ فرم پیشنهاد */
         #suggestModal {
             display: none;
             position: fixed;
@@ -212,13 +212,13 @@
     <h1>لغت‌نامه تاتی الموتی</h1>
     <div id="author">اثر: مرتضی برخورداری</div>
 
-    <!-- کادر ثابت جستجو -->
+    <!-- کادر جستجو و شمارنده -->
     <div class="sticky-header">
         <input type="text" id="search-input" placeholder="جستجو در تاتی یا فارسی..." autocomplete="off">
         <div id="result-count"></div>
     </div>
 
-    <!-- جدول واژه‌ها -->
+    <!-- جدول واژگان -->
     <table id="dictionary-table">
         <thead>
             <tr>
@@ -234,7 +234,7 @@
         <span>➕</span> پیشنهاد واژه جدید
     </button>
 
-    <!-- پنجره پاپ‌آپ ثبت واژه -->
+    <!-- پنجره پاپ‌آپ -->
     <div id="suggestOverlay"></div>
     <div id="suggestModal">
         <div class="modal-header">
@@ -270,10 +270,10 @@
         </div>
     </div>
 
-    <!-- بارگذاری داده‌ها -->
+    <!-- فایل داده‌ها -->
     <script src="data.js"></script>
     <script>
-        /* ۱) یکسان‌سازی متن و نرمال‌سازی */
+        /* ۱) یکسان‌سازی متن */
         const DIACRITICS = /[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g;
         const INVISIBLE  = /[\u200B-\u200F\u202A-\u202E\u2060\uFEFF]/g;
         const LETTER_MAP = {
@@ -299,7 +299,7 @@
             })[c]);
         }
 
-        /* ۲) آماده‌سازی واژه‌ها و حذف تکراری‌ها */
+        /* ۲) فیلتر تکراری‌ها و مرتب‌سازی */
         const tableBody   = document.getElementById('table-body');
         const searchInput = document.getElementById('search-input');
         const countBox    = document.getElementById('result-count');
@@ -366,7 +366,7 @@
             render(dictionary, '');
         }
 
-        /* ۴) اتصال فرم به پیام‌رسان ایتا (@MortezaBarkhordari) */
+        /* ۴) اتصال مستقیم فرم به پیام‌رسان بله (@MortezaBarkhordari) */
         const btn = document.getElementById('suggestBtn');
         const overlay = document.getElementById('suggestOverlay');
         const modal = document.getElementById('suggestModal');
@@ -408,20 +408,25 @@
                 return;
             }
 
-            // آماده‌سازی متن پیام برای ایتا
+            // آماده‌سازی متن ارسالی برای بله
             let message = `سلام، پیشنهاد واژه برای لغت‌نامه تاتی الموتی:\n\n`;
             message += `🔹 واژه تاتی: ${tatiVal}\n`;
             message += `🔹 معنی فارسی: ${farsiVal}\n`;
             if (exampleVal) message += `🔹 توضیحات/مثال: ${exampleVal}\n`;
             if (senderVal) message += `🔹 فرستنده: ${senderVal}\n`;
 
-            // لینک اختصاصی ایتا به آیدی @MortezaBarkhordari
-            const eitaaUrl = `https://eitaa.com/MortezaBarkhordari?text=${encodeURIComponent(message)}`;
+            // کپی متن در کلیپ‌بورد برای اطمینان بیشتر در گوشی
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(message).catch(() => {});
+            }
 
-            window.open(eitaaUrl, '_blank');
+            // لینک باز شدن مستقیم در پیام‌رسان بله
+            const baleUrl = `https://ble.ir/MortezaBarkhordari?text=${encodeURIComponent(message)}`;
+
+            window.open(baleUrl, '_blank');
             closeModal();
 
-            // خالی کردن فرم
+            // ریست کردن ورودی‌ها
             tatiInput.value = '';
             farsiInput.value = '';
             exampleInput.value = '';
