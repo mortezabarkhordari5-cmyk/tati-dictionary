@@ -133,7 +133,7 @@
             top: 50%;
             transform: translate(-50%, -50%);
             z-index: 10002;
-            width: min(92vw, 520px);
+            width: min(94vw, 540px);
             max-height: 88vh;
             background: #fff;
             border-radius: 14px;
@@ -141,13 +141,14 @@
             text-align: right;
             padding: 16px;
             box-sizing: border-box;
-            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
         .modal-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             border-bottom: 1px solid #eee;
             padding-bottom: 8px;
         }
@@ -168,7 +169,6 @@
             width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid #ccc;
             border-radius: 8px; font-family: inherit; font-size: 14px; outline: none;
         }
-        .form-group input:focus, .form-group textarea:focus { border-color: #3498db; }
         .modal-actions { display: flex; gap: 10px; margin-top: 15px; }
         .btn-submit {
             flex: 1; background: #27ae60; color: #fff; border: none; padding: 10px;
@@ -180,13 +180,56 @@
         }
         #sugMsg { font-size: 13px; color: #e74c3c; margin-bottom: 8px; min-height: 18px; }
 
+        /* جستجو و فیلتر روستاها */
+        #village-search {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 9px 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            margin-bottom: 8px;
+            outline: none;
+        }
+        #village-search:focus { border-color: #3498db; }
+
+        .filter-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 6px 4px;
+            font-size: 12px;
+            border: 1px solid #dce4ec;
+            background: #f8fafc;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            color: #555;
+        }
+        .tab-btn.active {
+            background: #3498db;
+            color: #fff;
+            border-color: #3498db;
+            font-weight: bold;
+        }
+
+        #villages-container {
+            max-height: 55vh;
+            overflow-y: auto;
+            padding-left: 4px;
+        }
+
         /* آیتم‌های روستا */
         .village-item {
             background: #fff;
-            border: 1px solid #dce4ec;
-            border-radius: 10px;
-            padding: 12px 14px;
-            margin-bottom: 10px;
+            border: 1px solid #e5e9ed;
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
@@ -196,21 +239,25 @@
         .village-item:hover, .village-item:active {
             background: #f4f8fb;
             border-color: #3498db;
-            transform: translateX(-3px);
         }
-        .village-title { font-size: 16px; font-weight: bold; color: #2c3e50; }
+        .village-info { display: flex; flex-direction: column; gap: 3px; }
+        .village-title { font-size: 15px; font-weight: bold; color: #2c3e50; }
         .badge {
             background: #e8f4fd;
             color: #2980b9;
-            font-size: 12px;
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-weight: normal;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            width: fit-content;
         }
-        .arrow-icon { color: #3498db; font-size: 18px; }
+        .arrow-icon { color: #3498db; font-size: 16px; font-weight: bold; }
 
         /* صفحه جزئیات روستا */
-        #village-details-view { display: none; }
+        #village-details-view {
+            display: none;
+            overflow-y: auto;
+            max-height: 70vh;
+        }
         .back-btn {
             display: inline-flex;
             align-items: center;
@@ -226,7 +273,6 @@
             margin-bottom: 12px;
             font-weight: bold;
         }
-        .back-btn:hover { background: #dfe6e9; }
         .detail-section-title {
             font-size: 14px;
             font-weight: bold;
@@ -236,40 +282,6 @@
             padding-bottom: 4px;
         }
         .detail-text { font-size: 14px; line-height: 1.7; color: #444; margin: 0; }
-        
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-            margin-top: 8px;
-        }
-        .gallery-item {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .gallery-item img {
-            width: 100%;
-            max-height: 220px;
-            object-fit: cover;
-            display: block;
-        }
-        .gallery-caption {
-            padding: 6px 10px;
-            font-size: 12px;
-            color: #555;
-            background: #fff;
-        }
-        .proverb-item {
-            background: #fef9e7;
-            border-right: 4px solid #f39c12;
-            padding: 8px 12px;
-            border-radius: 4px;
-            margin-bottom: 6px;
-            font-size: 13px;
-            line-height: 1.6;
-        }
     </style>
 </head>
 <body>
@@ -334,12 +346,17 @@
     <!-- پاپ‌آپ الموت‌شناسی -->
     <div id="moreModal" class="custom-modal">
         <div class="modal-header">
-            <h3 id="modal-main-title">روستاهای الموت</h3>
+            <h3 id="modal-main-title">روستاهای الموت (۱۵۸ روستا)</h3>
             <button class="close-btn" id="moreClose">&times;</button>
         </div>
 
         <div id="villages-list-view">
-            <p style="font-size:13px; color:#666; margin-top:0;">برای مشاهده تصاویر و ضرب‌المثل‌ها روی روستا بزنید:</p>
+            <input type="text" id="village-search" placeholder="جستجوی نام روستا...">
+            <div class="filter-tabs">
+                <button class="tab-btn active" onclick="setSectionFilter('همه')">همه</button>
+                <button class="tab-btn" onclick="setSectionFilter('رودبار الموت شرقی')">الموت شرقی</button>
+                <button class="tab-btn" onclick="setSectionFilter('رودبار الموت غربی')">الموت غربی</button>
+            </div>
             <div id="villages-container"></div>
         </div>
 
@@ -349,12 +366,12 @@
         </div>
     </div>
 
-    <!-- بارگذاری داده‌های کلمات و روستاها -->
-    <script src="data.js"></script>
-    <script src="places.js"></script>
+    <!-- بارگذاری داده‌ها با نسخه جدید جهت جلوگیری از کش مرورگر -->
+    <script src="data.js?v=2"></script>
+    <script src="places.js?v=2"></script>
 
     <script>
-        /* ۱) یکسان‌سازی و لغت‌نامه */
+        /* ۱) لغت‌نامه */
         const DIACRITICS = /[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g;
         const INVISIBLE  = /[\u200B-\u200F\u202A-\u202E\u2060\uFEFF]/g;
         const LETTER_MAP = {
@@ -375,7 +392,7 @@
         }
 
         function escapeHtml(str) {
-            return String(str).replace(/[&<>"']/g, c => ({
+            return String(str || '').replace(/[&<>"']/g, c => ({
                 '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
             })[c]);
         }
@@ -437,12 +454,7 @@
         }
 
         searchInput.addEventListener('input', filterTable);
-
-        if (dictionary.length === 0) {
-            tableBody.innerHTML = '<tr><td colspan="2" class="not-found">خطا: داده‌ای یافت نشد.</td></tr>';
-        } else {
-            render(dictionary, '');
-        }
+        render(dictionary, '');
 
         /* ۲) مدیریت پاپ‌آپ‌ها */
         const overlay      = document.getElementById('overlay');
@@ -471,7 +483,7 @@
         btnSuggest.addEventListener('click', function() {
             msg.textContent = '';
             overlay.style.display = 'block';
-            suggestModal.style.display = 'block';
+            suggestModal.style.display = 'flex';
             setTimeout(() => tatiInput.focus(), 80);
         });
 
@@ -495,10 +507,6 @@
             if (exampleVal) message += `🔹 توضیحات/مثال: ${exampleVal}\n`;
             if (senderVal) message += `🔹 فرستنده: ${senderVal}\n`;
 
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(message).catch(() => {});
-            }
-
             const baleUrl = `https://ble.ir/MortezaBarkhordari?text=${encodeURIComponent(message)}`;
             window.open(baleUrl, '_blank');
             closeAllModals();
@@ -509,7 +517,7 @@
             senderInput.value = '';
         });
 
-        /* ۳) الموت‌شناسی با استفاده از فایل places.js */
+        /* ۳) الموت‌شناسی و لیست روستاها */
         const btnMore   = document.getElementById('moreBtn');
         const closeMore = document.getElementById('moreClose');
         const villagesContainer = document.getElementById('villages-container');
@@ -517,27 +525,39 @@
         const detailsView = document.getElementById('village-details-view');
         const villageContent = document.getElementById('village-content');
         const modalTitle = document.getElementById('modal-main-title');
+        const villageSearch = document.getElementById('village-search');
 
         const villageList = (typeof villages !== 'undefined' && Array.isArray(villages)) ? villages : [];
+        let currentSectionFilter = 'همه';
 
         btnMore.addEventListener('click', function() {
             backToVillagesList();
             overlay.style.display = 'block';
-            moreModal.style.display = 'block';
+            moreModal.style.display = 'flex';
         });
 
         closeMore.addEventListener('click', closeAllModals);
 
         function renderVillagesList() {
-            if (villageList.length === 0) {
-                villagesContainer.innerHTML = '<p style="text-align:center; color:#888;">روستایی در فایل places.js تعریف نشده است.</p>';
+            const searchVal = normalizeText(villageSearch ? villageSearch.value : '');
+            
+            const filtered = villageList.filter(v => {
+                const matchSection = (currentSectionFilter === 'همه') || (v.section === currentSectionFilter);
+                const matchSearch  = normalizeText(v.name).includes(searchVal) || normalizeText(v.tag || '').includes(searchVal);
+                return matchSection && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                villagesContainer.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">روستایی یافت نشد.</p>';
                 return;
             }
+
             let html = '';
-            villageList.forEach((v, index) => {
+            filtered.forEach(v => {
+                const realIndex = villageList.indexOf(v);
                 html += `
-                    <div class="village-item" onclick="openVillageDetails(${index})">
-                        <div>
+                    <div class="village-item" onclick="openVillageDetails(${realIndex})">
+                        <div class="village-info">
                             <span class="village-title">${escapeHtml(v.name)}</span>
                             ${v.tag ? `<span class="badge">${escapeHtml(v.tag)}</span>` : ''}
                         </div>
@@ -548,39 +568,28 @@
             villagesContainer.innerHTML = html;
         }
 
+        function setSectionFilter(sec) {
+            currentSectionFilter = sec;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.includes(sec === 'همه' ? 'همه' : (sec.includes('شرقی') ? 'شرقی' : 'غربی')));
+            });
+            renderVillagesList();
+        }
+
+        if (villageSearch) {
+            villageSearch.addEventListener('input', renderVillagesList);
+        }
+
         function openVillageDetails(index) {
             const v = villageList[index];
             modalTitle.textContent = `روستای ${v.name}`;
             
             let html = `
+                <div class="detail-section-title">📍 بخش و موقعیت</div>
+                <p class="detail-text"><strong>بخش:</strong> ${escapeHtml(v.section)}<br><strong>دهستان:</strong> ${escapeHtml(v.tag || 'ثبت نشده')}</p>
                 <div class="detail-section-title">📖 درباره روستا</div>
-                <p class="detail-text">${escapeHtml(v.desc || 'توضیحاتی ثبت نشده است.')}</p>
+                <p class="detail-text">${escapeHtml(v.desc || 'اطلاعات تکمیلی این روستا به زودی درج خواهد شد.')}</p>
             `;
-
-            if (v.images && v.images.length > 0) {
-                html += `<div class="detail-section-title">📷 تصاویر</div><div class="gallery-grid">`;
-                v.images.forEach(img => {
-                    html += `
-                        <div class="gallery-item">
-                            <img src="${img.url}" alt="${escapeHtml(img.title || v.name)}" loading="lazy">
-                            ${img.title ? `<div class="gallery-caption">${escapeHtml(img.title)}</div>` : ''}
-                        </div>
-                    `;
-                });
-                html += `</div>`;
-            }
-
-            if (v.proverbs && v.proverbs.length > 0) {
-                html += `<div class="detail-section-title">💬 ضرب‌المثل‌ها و کنایه‌ها</div>`;
-                v.proverbs.forEach(p => {
-                    html += `
-                        <div class="proverb-item">
-                            <strong>«${escapeHtml(p.text)}»</strong><br>
-                            <span>معنی: ${escapeHtml(p.meaning)}</span>
-                        </div>
-                    `;
-                });
-            }
 
             villageContent.innerHTML = html;
             listView.style.display = 'none';
@@ -588,7 +597,7 @@
         }
 
         function backToVillagesList() {
-            modalTitle.textContent = 'روستاهای الموت';
+            modalTitle.textContent = 'روستاهای الموت (۱۵۸ روستا)';
             detailsView.style.display = 'none';
             listView.style.display = 'block';
         }
