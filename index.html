@@ -5,283 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لغت‌نامه تاتی الموتی</title>
     <style>
-        body {
-            user-select: none;
-            font-family: Tahoma, Arial, sans-serif;
-            background-color: #f9f9f9;
-            color: #333;
-            margin: 0;
-            padding: 15px;
-            padding-bottom: 85px;
-            text-align: center;
-        }
+        body { user-select: none; font-family: Tahoma, Arial, sans-serif; background-color: #f9f9f9; color: #333; margin: 0; padding: 15px; padding-bottom: 85px; text-align: center; }
         h1 { color: #2c3e50; margin-bottom: 5px; }
         #author { font-size: 16px; font-weight: bold; color: #555; margin-bottom: 15px; }
-
-        /* جستجو و هدر ثابت */
-        .sticky-header {
-            position: -webkit-sticky;
-            position: sticky;
-            top: 0;
-            background-color: #f9f9f9;
-            padding-top: 10px;
-            padding-bottom: 5px;
-            z-index: 1000;
-        }
-        #search-input {
-            width: 90%;
-            max-width: 400px;
-            padding: 12px;
-            margin-bottom: 8px;
-            border: 2px solid #3498db;
-            border-radius: 8px;
-            font-size: 16px;
-            outline: none;
-            box-sizing: border-box;
-            background: #fff;
-        }
-        #search-input:focus { border-color: #2c3e50; }
-        #result-count {
-            font-size: 14px;
-            color: #777;
-            margin-bottom: 8px;
-            min-height: 20px;
-        }
-
-        /* جدول واژگان */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            border-radius: 8px;
-            overflow: visible;
-        }
-        th, td {
-            border: 1px solid #e0e0e0;
-            padding: 12px;
-            text-align: right;
-            font-size: 18px;
-        }
-        thead th {
-            position: -webkit-sticky;
-            position: sticky;
-            top: 86px;
-            background-color: #3498db;
-            color: white;
-            z-index: 999;
-        }
+        .sticky-header { position: sticky; top: 0; background-color: #f9f9f9; padding-top: 10px; padding-bottom: 5px; z-index: 1000; }
+        #search-input { width: 90%; max-width: 400px; padding: 12px; margin-bottom: 8px; border: 2px solid #3498db; border-radius: 8px; font-size: 16px; outline: none; background: #fff; }
+        table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 8px; }
+        th, td { border: 1px solid #e0e0e0; padding: 12px; text-align: right; font-size: 18px; }
+        thead th { position: sticky; top: 86px; background-color: #3498db; color: white; z-index: 999; }
         tr:nth-child(even) { background-color: #f2f6f8; }
-        .not-found { text-align: center; color: #c0392b; }
-
-        /* دکمه‌های شناور */
-        #suggestBtn {
-            position: fixed;
-            left: 16px;
-            bottom: 16px;
-            z-index: 10000;
-            padding: 11px 16px;
-            border: none;
-            border-radius: 25px;
-            background: #27ae60;
-            color: #fff;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        #suggestBtn:hover { background: #219150; }
-
-        #moreBtn {
-            position: fixed;
-            right: 16px;
-            bottom: 16px;
-            z-index: 10000;
-            padding: 11px 16px;
-            border: none;
-            border-radius: 25px;
-            background: #2980b9;
-            color: #fff;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        #moreBtn:hover { background: #1c638e; }
-
-        /* پاپ‌آپ‌ها */
-        .overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 10001;
-            background: rgba(0,0,0,0.55);
-            backdrop-filter: blur(2px);
-        }
-        .custom-modal {
-            display: none;
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 10002;
-            width: min(94vw, 540px);
-            max-height: 88vh;
-            background: #fff;
-            border-radius: 14px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            text-align: right;
-            padding: 16px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-        }
-        .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 8px;
-        }
-        .modal-header h3 { margin: 0; font-size: 17px; color: #2c3e50; }
-        .close-btn {
-            border: none;
-            background: transparent;
-            font-size: 26px;
-            line-height: 1;
-            color: #888;
-            cursor: pointer;
-        }
-
-        /* فرم پیشنهاد واژه */
-        .form-group { margin-bottom: 12px; text-align: right; }
-        .form-group label { display: block; font-size: 13px; color: #444; margin-bottom: 5px; font-weight: bold; }
-        .form-group input, .form-group textarea {
-            width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid #ccc;
-            border-radius: 8px; font-family: inherit; font-size: 14px; outline: none;
-        }
-        .modal-actions { display: flex; gap: 10px; margin-top: 15px; }
-        .btn-submit {
-            flex: 1; background: #27ae60; color: #fff; border: none; padding: 10px;
-            border-radius: 8px; font-family: inherit; font-size: 15px; cursor: pointer; font-weight: bold;
-        }
-        .btn-cancel {
-            background: #e0e0e0; color: #333; border: none; padding: 10px 16px;
-            border-radius: 8px; font-family: inherit; font-size: 15px; cursor: pointer;
-        }
-        #sugMsg { font-size: 13px; color: #e74c3c; margin-bottom: 8px; min-height: 18px; }
-
-        /* جستجو و فیلتر روستاها */
-        #village-search {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 9px 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 14px;
-            margin-bottom: 8px;
-            outline: none;
-        }
-        #village-search:focus { border-color: #3498db; }
-
-        .filter-tabs {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 10px;
-        }
-        .tab-btn {
-            flex: 1;
-            padding: 6px 4px;
-            font-size: 12px;
-            border: 1px solid #dce4ec;
-            background: #f8fafc;
-            border-radius: 6px;
-            cursor: pointer;
-            font-family: inherit;
-            color: #555;
-        }
-        .tab-btn.active {
-            background: #3498db;
-            color: #fff;
-            border-color: #3498db;
-            font-weight: bold;
-        }
-
-        #villages-container {
-            max-height: 55vh;
-            overflow-y: auto;
-            padding-left: 4px;
-        }
-
-        /* آیتم‌های روستا */
-        .village-item {
-            background: #fff;
-            border: 1px solid #e5e9ed;
-            border-radius: 8px;
-            padding: 10px 12px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .village-item:hover, .village-item:active {
-            background: #f4f8fb;
-            border-color: #3498db;
-        }
-        .village-info { display: flex; flex-direction: column; gap: 3px; }
-        .village-title { font-size: 15px; font-weight: bold; color: #2c3e50; }
-        .badge {
-            background: #e8f4fd;
-            color: #2980b9;
-            font-size: 11px;
-            padding: 2px 6px;
-            border-radius: 4px;
-            width: fit-content;
-        }
-        .arrow-icon { color: #3498db; font-size: 16px; font-weight: bold; }
-
-        /* صفحه جزئیات روستا */
-        #village-details-view {
-            display: none;
-            overflow-y: auto;
-            max-height: 70vh;
-        }
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: #ecf0f1;
-            color: #2c3e50;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 13px;
-            cursor: pointer;
-            margin-bottom: 12px;
-            font-weight: bold;
-        }
-        .detail-section-title {
-            font-size: 14px;
-            font-weight: bold;
-            color: #2980b9;
-            margin: 14px 0 6px 0;
-            border-bottom: 1px dashed #cbd5e1;
-            padding-bottom: 4px;
-        }
-        .detail-text { font-size: 14px; line-height: 1.7; color: #444; margin: 0; }
+        .btn-float { position: fixed; bottom: 16px; z-index: 1000; padding: 11px 16px; border: none; border-radius: 25px; cursor: pointer; color: #fff; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.25); display: flex; align-items: center; gap: 6px; }
+        #suggestBtn { left: 16px; background: #27ae60; }
+        #moreBtn { right: 16px; background: #2980b9; }
+        .overlay { display: none; position: fixed; inset: 0; z-index: 10001; background: rgba(0,0,0,0.55); backdrop-filter: blur(2px); }
+        .custom-modal { display: none; position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 10002; width: min(94vw, 540px); max-height: 85vh; background: #fff; border-radius: 14px; padding: 16px; overflow-y: auto; text-align: right; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 8px; margin-bottom: 10px; }
+        .close-btn { border: none; background: transparent; font-size: 26px; cursor: pointer; color: #888; }
+        #village-search { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 10px; box-sizing: border-box; }
+        .filter-tabs { display: flex; gap: 6px; margin-bottom: 10px; }
+        .tab-btn { flex: 1; padding: 8px; border: 1px solid #dce4ec; background: #f8fafc; border-radius: 6px; cursor: pointer; }
+        .tab-btn.active { background: #3498db; color: #fff; }
+        .village-item { padding: 12px; border: 1px solid #eee; border-radius: 8px; margin-bottom: 6px; cursor: pointer; display: flex; justify-content: space-between; }
+        .village-item:hover { background: #f4f8fb; }
     </style>
 </head>
 <body>
@@ -290,319 +35,125 @@
     <div id="author">اثر: مرتضی برخورداری</div>
 
     <div class="sticky-header">
-        <input type="text" id="search-input" placeholder="جستجو در تاتی یا فارسی..." autocomplete="off">
+        <input type="text" id="search-input" placeholder="جستجو در تاتی یا فارسی...">
         <div id="result-count"></div>
     </div>
 
     <table id="dictionary-table">
-        <thead>
-            <tr>
-                <th>تاتی</th>
-                <th>فارسی</th>
-            </tr>
-        </thead>
+        <thead><tr><th>تاتی</th><th>فارسی</th></tr></thead>
         <tbody id="table-body"></tbody>
     </table>
 
-    <button id="suggestBtn">
-        <span>➕</span> پیشنهاد واژه
-    </button>
-
-    <button id="moreBtn">
-        <span>📚</span> الموت‌شناسی
-    </button>
+    <button id="suggestBtn" class="btn-float"><span>➕</span> پیشنهاد واژه</button>
+    <button id="moreBtn" class="btn-float"><span>📚</span> الموت‌شناسی</button>
 
     <div id="overlay" class="overlay"></div>
 
-    <!-- پاپ‌آپ پیشنهاد واژه -->
+    <!-- Modal Suggest -->
     <div id="suggestModal" class="custom-modal">
-        <div class="modal-header">
-            <h3>پیشنهاد واژه جدید</h3>
-            <button class="close-btn" id="suggestClose">&times;</button>
-        </div>
-        <div id="sugMsg"></div>
-        <div class="form-group">
-            <label for="sugTati">واژه تاتی (الزامی):</label>
-            <input type="text" id="sugTati" placeholder="مثال: کیجیک">
-        </div>
-        <div class="form-group">
-            <label for="sugFarsi">معنی فارسی (الزامی):</label>
-            <input type="text" id="sugFarsi" placeholder="مثال: دختر">
-        </div>
-        <div class="form-group">
-            <label for="sugExample">مثال، تلفظ یا توضیحات (اختیاری):</label>
-            <textarea id="sugExample" rows="2" placeholder="توضیح یا مثال در جمله..."></textarea>
-        </div>
-        <div class="form-group">
-            <label for="sugSender">نام شما یا روستا (اختیاری):</label>
-            <input type="text" id="sugSender" placeholder="مثال: علی از گازرخان">
-        </div>
-        <div class="modal-actions">
-            <button class="btn-submit" id="sugSubmit">ثبت و ارسال</button>
-            <button class="btn-cancel" id="sugCancel">انصراف</button>
-        </div>
+        <div class="modal-header"><h3>پیشنهاد واژه جدید</h3><button class="close-btn" onclick="closeAllModals()">&times;</button></div>
+        <input type="text" id="sugTati" placeholder="واژه تاتی" style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box;">
+        <input type="text" id="sugFarsi" placeholder="معنی فارسی" style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box;">
+        <button id="sugSubmit" style="width:100%; padding:10px; background:#27ae60; color:white; border:none; border-radius:8px;">ارسال در بله</button>
     </div>
 
-    <!-- پاپ‌آپ الموت‌شناسی -->
+    <!-- Modal Villages -->
     <div id="moreModal" class="custom-modal">
-        <div class="modal-header">
-            <h3 id="modal-main-title">روستاهای الموت (۱۵۸ روستا)</h3>
-            <button class="close-btn" id="moreClose">&times;</button>
-        </div>
-
-        <div id="villages-list-view">
+        <div class="modal-header"><h3 id="modal-title">روستاهای الموت</h3><button class="close-btn" onclick="closeAllModals()">&times;</button></div>
+        
+        <div id="list-view">
             <input type="text" id="village-search" placeholder="جستجوی نام روستا...">
             <div class="filter-tabs">
-                <button class="tab-btn active" onclick="setSectionFilter('همه')">همه</button>
-                <button class="tab-btn" onclick="setSectionFilter('رودبار الموت شرقی')">الموت شرقی</button>
-                <button class="tab-btn" onclick="setSectionFilter('رودبار الموت غربی')">الموت غربی</button>
+                <button class="tab-btn active" onclick="filterVillages('همه')">همه</button>
+                <button class="tab-btn" onclick="filterVillages('شرقی')">شرقی</button>
+                <button class="tab-btn" onclick="filterVillages('غربی')">غربی</button>
             </div>
             <div id="villages-container"></div>
         </div>
-
-        <div id="village-details-view">
-            <button class="back-btn" onclick="backToVillagesList()">🔙 بازگشت به لیست روستاها</button>
-            <div id="village-content"></div>
+        
+        <div id="detail-view" style="display:none;">
+            <button onclick="backToList()" style="margin-bottom:10px;">🔙 بازگشت</button>
+            <div id="village-detail-content"></div>
         </div>
     </div>
 
-    <!-- بارگذاری داده‌ها با نسخه جدید جهت جلوگیری از کش مرورگر -->
-    <script src="data.js?v=2"></script>
-    <script src="places.js?v=2"></script>
+    <!-- Data Loading -->
+    <script src="data.js?v=3"></script>
+    <script src="places.js?v=3"></script>
 
     <script>
-        /* ۱) لغت‌نامه */
-        const DIACRITICS = /[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g;
-        const INVISIBLE  = /[\u200B-\u200F\u202A-\u202E\u2060\uFEFF]/g;
-        const LETTER_MAP = {
-            'ي': 'ی', 'ى': 'ی', 'ئ': 'ی', 'ك': 'ک',
-            'أ': 'ا', 'إ': 'ا', 'آ': 'ا', 'ٱ': 'ا',
-            'ة': 'ه', 'ۀ': 'ه', 'ؤ': 'و'
-        };
-
-        function normalizeText(text) {
-            if (!text) return '';
-            return String(text)
-                .replace(DIACRITICS, '')
-                .replace(INVISIBLE, '')
-                .replace(/[يىئكأإآٱةۀؤ]/g, ch => LETTER_MAP[ch] || ch)
-                .replace(/[٠-٩]/g, d => String.fromCharCode(d.charCodeAt(0) - 0x0660 + 0x06F0))
-                .replace(/\s+/g, ' ')
-                .trim();
-        }
-
-        function escapeHtml(str) {
-            return String(str || '').replace(/[&<>"']/g, c => ({
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-            })[c]);
-        }
-
-        const tableBody   = document.getElementById('table-body');
+        // Dictionary Logic
+        const tableBody = document.getElementById('table-body');
         const searchInput = document.getElementById('search-input');
-        const countBox    = document.getElementById('result-count');
-
-        const rawData = (typeof words !== 'undefined' && Array.isArray(words)) ? words : [];
-        const uniqueSet = new Set();
-        const cleanData = [];
-
-        for (const item of rawData) {
-            if (!item || !item.tati || !item.farsi) continue;
-            const key = item.tati.trim() + '|||' + item.farsi.trim();
-            if (!uniqueSet.has(key)) {
-                uniqueSet.add(key);
-                cleanData.push(item);
-            }
+        
+        function renderDict() {
+            const val = searchInput.value.toLowerCase();
+            tableBody.innerHTML = words.filter(w => w.tati.toLowerCase().includes(val) || w.farsi.toLowerCase().includes(val))
+                .map(w => `<tr><td>${w.tati}</td><td>${w.farsi}</td></tr>`).join('');
         }
+        searchInput.addEventListener('input', renderDict);
+        renderDict();
 
-        const dictionary = cleanData.map(item => ({
-            tati:     item.tati,
-            farsi:    item.farsi,
-            tatiKey:  normalizeText(item.tati),
-            farsiKey: normalizeText(item.farsi)
-        }));
-
-        dictionary.sort((a, b) => a.tatiKey.localeCompare(b.tatiKey, 'fa'));
-
-        function render(list, query) {
-            if (list.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="2" class="not-found">کلمه‌ای یافت نشد.</td></tr>';
-                countBox.textContent = '';
-                return;
-            }
-
-            let html = '';
-            for (const item of list) {
-                html += `<tr><td>${escapeHtml(item.tati)}</td><td>${escapeHtml(item.farsi)}</td></tr>`;
-            }
-            tableBody.innerHTML = html;
-
-            countBox.textContent = query
-                ? `${list.length} نتیجه برای «${query}»`
-                : `تعداد کل کلمات: ${list.length}`;
+        // Modal Logic
+        const overlay = document.getElementById('overlay');
+        function openModal(id) {
+            overlay.style.display = 'block';
+            document.getElementById(id).style.display = 'block';
         }
-
-        function filterTable() {
-            const query = normalizeText(searchInput.value);
-            if (query === '') {
-                render(dictionary, '');
-                return;
-            }
-            const result = dictionary.filter(item =>
-                item.tatiKey.includes(query) || item.farsiKey.includes(query)
-            );
-            render(result, searchInput.value.trim());
-        }
-
-        searchInput.addEventListener('input', filterTable);
-        render(dictionary, '');
-
-        /* ۲) مدیریت پاپ‌آپ‌ها */
-        const overlay      = document.getElementById('overlay');
-        const suggestModal = document.getElementById('suggestModal');
-        const moreModal    = document.getElementById('moreModal');
-
         function closeAllModals() {
             overlay.style.display = 'none';
-            suggestModal.style.display = 'none';
-            moreModal.style.display = 'none';
+            document.querySelectorAll('.custom-modal').forEach(m => m.style.display = 'none');
+            document.getElementById('detail-view').style.display = 'none';
+            document.getElementById('list-view').style.display = 'block';
         }
+        document.getElementById('suggestBtn').onclick = () => openModal('suggestModal');
+        document.getElementById('moreBtn').onclick = () => { openModal('moreModal'); renderVillages('همه'); };
+        overlay.onclick = closeAllModals;
 
-        overlay.addEventListener('click', closeAllModals);
-
-        const btnSuggest   = document.getElementById('suggestBtn');
-        const closeSuggest = document.getElementById('suggestClose');
-        const cancelSuggest= document.getElementById('sugCancel');
-        const submitSuggest= document.getElementById('sugSubmit');
-        const msg          = document.getElementById('sugMsg');
-
-        const tatiInput    = document.getElementById('sugTati');
-        const farsiInput   = document.getElementById('sugFarsi');
-        const exampleInput = document.getElementById('sugExample');
-        const senderInput  = document.getElementById('sugSender');
-
-        btnSuggest.addEventListener('click', function() {
-            msg.textContent = '';
-            overlay.style.display = 'block';
-            suggestModal.style.display = 'flex';
-            setTimeout(() => tatiInput.focus(), 80);
-        });
-
-        closeSuggest.addEventListener('click', closeAllModals);
-        cancelSuggest.addEventListener('click', closeAllModals);
-
-        submitSuggest.addEventListener('click', function () {
-            const tatiVal = tatiInput.value.trim();
-            const farsiVal = farsiInput.value.trim();
-            const exampleVal = exampleInput.value.trim();
-            const senderVal = senderInput.value.trim();
-
-            if (!tatiVal || !farsiVal) {
-                msg.textContent = 'لطفاً واژه تاتی و معنی فارسی را بنویسید.';
-                return;
-            }
-
-            let message = `سلام، پیشنهاد واژه برای لغت‌نامه تاتی الموتی:\n\n`;
-            message += `🔹 واژه تاتی: ${tatiVal}\n`;
-            message += `🔹 معنی فارسی: ${farsiVal}\n`;
-            if (exampleVal) message += `🔹 توضیحات/مثال: ${exampleVal}\n`;
-            if (senderVal) message += `🔹 فرستنده: ${senderVal}\n`;
-
-            const baleUrl = `https://ble.ir/MortezaBarkhordari?text=${encodeURIComponent(message)}`;
-            window.open(baleUrl, '_blank');
-            closeAllModals();
-
-            tatiInput.value = '';
-            farsiInput.value = '';
-            exampleInput.value = '';
-            senderInput.value = '';
-        });
-
-        /* ۳) الموت‌شناسی و لیست روستاها */
-        const btnMore   = document.getElementById('moreBtn');
-        const closeMore = document.getElementById('moreClose');
-        const villagesContainer = document.getElementById('villages-container');
-        const listView = document.getElementById('villages-list-view');
-        const detailsView = document.getElementById('village-details-view');
-        const villageContent = document.getElementById('village-content');
-        const modalTitle = document.getElementById('modal-main-title');
-        const villageSearch = document.getElementById('village-search');
-
-        const villageList = (typeof villages !== 'undefined' && Array.isArray(villages)) ? villages : [];
-        let currentSectionFilter = 'همه';
-
-        btnMore.addEventListener('click', function() {
-            backToVillagesList();
-            overlay.style.display = 'block';
-            moreModal.style.display = 'flex';
-        });
-
-        closeMore.addEventListener('click', closeAllModals);
-
-        function renderVillagesList() {
-            const searchVal = normalizeText(villageSearch ? villageSearch.value : '');
+        // Villages Logic
+        function renderVillages(filter, search = '') {
+            const container = document.getElementById('villages-container');
+            const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
             
-            const filtered = villageList.filter(v => {
-                const matchSection = (currentSectionFilter === 'همه') || (v.section === currentSectionFilter);
-                const matchSearch  = normalizeText(v.name).includes(searchVal) || normalizeText(v.tag || '').includes(searchVal);
-                return matchSection && matchSearch;
+            const filtered = list.filter(v => {
+                const matchFilter = (filter === 'همه') || (v.section.includes(filter));
+                const matchSearch = v.name.includes(search);
+                return matchFilter && matchSearch;
             });
 
-            if (filtered.length === 0) {
-                villagesContainer.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">روستایی یافت نشد.</p>';
-                return;
-            }
-
-            let html = '';
-            filtered.forEach(v => {
-                const realIndex = villageList.indexOf(v);
-                html += `
-                    <div class="village-item" onclick="openVillageDetails(${realIndex})">
-                        <div class="village-info">
-                            <span class="village-title">${escapeHtml(v.name)}</span>
-                            ${v.tag ? `<span class="badge">${escapeHtml(v.tag)}</span>` : ''}
-                        </div>
-                        <span class="arrow-icon">‹</span>
-                    </div>
-                `;
-            });
-            villagesContainer.innerHTML = html;
+            container.innerHTML = filtered.map((v, index) => `
+                <div class="village-item" onclick="showDetail(${index})">
+                    <span>${v.name}</span>
+                    <span>${v.section}</span>
+                </div>
+            `).join('');
         }
 
-        function setSectionFilter(sec) {
-            currentSectionFilter = sec;
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.textContent.includes(sec === 'همه' ? 'همه' : (sec.includes('شرقی') ? 'شرقی' : 'غربی')));
-            });
-            renderVillagesList();
+        function filterVillages(f) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.innerText.includes(f)));
+            renderVillages(f, document.getElementById('village-search').value);
         }
 
-        if (villageSearch) {
-            villageSearch.addEventListener('input', renderVillagesList);
-        }
+        document.getElementById('village-search').addEventListener('input', (e) => {
+            const activeTab = document.querySelector('.tab-btn.active').innerText;
+            renderVillages(activeTab, e.target.value);
+        });
 
-        function openVillageDetails(index) {
-            const v = villageList[index];
-            modalTitle.textContent = `روستای ${v.name}`;
-            
-            let html = `
-                <div class="detail-section-title">📍 بخش و موقعیت</div>
-                <p class="detail-text"><strong>بخش:</strong> ${escapeHtml(v.section)}<br><strong>دهستان:</strong> ${escapeHtml(v.tag || 'ثبت نشده')}</p>
-                <div class="detail-section-title">📖 درباره روستا</div>
-                <p class="detail-text">${escapeHtml(v.desc || 'اطلاعات تکمیلی این روستا به زودی درج خواهد شد.')}</p>
+        function showDetail(index) {
+            const v = alamutVillages[index];
+            document.getElementById('list-view').style.display = 'none';
+            document.getElementById('detail-view').style.display = 'block';
+            document.getElementById('village-detail-content').innerHTML = `
+                <h3>${v.name}</h3>
+                <p><strong>بخش:</strong> ${v.section}</p>
+                <p>${v.desc || 'توضیحاتی موجود نیست.'}</p>
+                <img src="${v.photos[0] || 'placeholder.jpg'}" style="width:100%; border-radius:8px;">
             `;
-
-            villageContent.innerHTML = html;
-            listView.style.display = 'none';
-            detailsView.style.display = 'block';
         }
-
-        function backToVillagesList() {
-            modalTitle.textContent = 'روستاهای الموت (۱۵۸ روستا)';
-            detailsView.style.display = 'none';
-            listView.style.display = 'block';
+        function backToList() {
+            document.getElementById('detail-view').style.display = 'none';
+            document.getElementById('list-view').style.display = 'block';
         }
-
-        renderVillagesList();
     </script>
 </body>
 </html>
