@@ -133,7 +133,7 @@
         <textarea id="sugDesc" placeholder="مثال، تلفظ یا توضیحات (اختیاری)..." style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box; height:80px; font-family:inherit;"></textarea>
         <input type="text" id="sugVillage" placeholder="نام شما یا روستای مربوطه (اختیاری)" style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box;">
         
-        <button id="sugSubmit" onclick="sendToBale()" style="width:100%; padding:12px; background:#27ae60; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">ارسال در بله</button>
+        <button id="sugSubmit" onclick="sendSuggestion()" style="width:100%; padding:12px; background:#27ae60; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size:15px;">ارسال پیشنهاد</button>
     </div>
 
     <!-- مودال الموت شناسی -->
@@ -184,7 +184,7 @@
                        farsiClean.includes(val);
             });
 
-            // ۲. مرتب‌سازی دقیق بر اساس الفبای فارسی (آ تا ی) بر پایه ستون تاتی
+            // ۲. مرتب‌سازی الفبایی دقیق (آ تا ی) بر اساس ستون تاتی
             filtered.sort((a, b) => {
                 const aClean = cleanDiacritics(a.tati);
                 const bClean = cleanDiacritics(b.tati);
@@ -214,11 +214,12 @@
         document.getElementById('moreBtn').onclick = () => { openModal('moreModal'); renderVillages('همه'); };
         overlay.onclick = closeAllModals;
 
-        function sendToBale() {
-            const tati = document.getElementById('sugTati').value;
-            const farsi = document.getElementById('sugFarsi').value;
-            const desc = document.getElementById('sugDesc').value;
-            const village = document.getElementById('sugVillage').value;
+        // تابع ارسال پیشنهاد هوشمند و بدون گیر کردن در صفحه سفید بله
+        async function sendSuggestion() {
+            const tati = document.getElementById('sugTati').value.trim();
+            const farsi = document.getElementById('sugFarsi').value.trim();
+            const desc = document.getElementById('sugDesc').value.trim();
+            const village = document.getElementById('sugVillage').value.trim();
 
             if (!tati || !farsi) {
                 alert("لطفاً واژه تاتی و معنی فارسی را وارد کنید.");
@@ -226,10 +227,31 @@
             }
 
             const text = `سلام، پیشنهاد واژه برای لغت‌نامه تاتی الموتی:\n\n🔹 واژه تاتی: ${tati}\n🔹 معنی فارسی: ${farsi}\n🔹 توضیح: ${desc}\n🔹 نام/روستا: ${village}`;
-            const myId = "MortezaBarkhordari"; 
-            const url = `https://ble.ir/${myId}?text=${encodeURIComponent(text)}`;
+            const myId = "MortezaBarkhordari";
+
+            // ۱. اگر اشتراک‌گذاری گوشی فعال باشد، لیست پیام‌رسان‌ها را برای کاربر باز می‌کند
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'پیشنهاد واژه تاتی',
+                        text: text
+                    });
+                    closeAllModals();
+                    return;
+                } catch (err) {
+                    // در صورت انصراف کاربر کاری انجام نمی‌شود
+                }
+            }
+
+            // ۲. روش جایگزین: باز کردن مستقیم بله
+            const appUrl = `ble://chat?username=${myId}&text=${encodeURIComponent(text)}`;
+            const webUrl = `https://ble.ir/${myId}?text=${encodeURIComponent(text)}`;
             
-            window.location.href = url;
+            window.location.href = appUrl;
+            setTimeout(() => {
+                window.location.href = webUrl;
+            }, 800);
+
             closeAllModals();
         }
 
