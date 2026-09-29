@@ -124,10 +124,15 @@
                 return;
             }
 
-            const text = `واژه جدید: ${tati}\nمعنی: ${farsi}\nتوضیح: ${desc}\nنام/روستا: ${village}`;
-            // حتماً YOUR_ID_HERE را با آیدی بله خودتان عوض کنید
-            const url = `https://ble.ir/YOUR_ID_HERE?text=${encodeURIComponent(text)}`;
-            window.open(url, '_blank');
+            // متن دقیق و ایموجی‌ها طبق عکس شما
+            const text = `سلام، پیشنهاد واژه برای لغت‌نامه تاتی الموتی:\n\n🔹 واژه تاتی: ${tati}\n🔹 معنی فارسی: ${farsi}\n🔹 توضیح: ${desc}\n🔹 نام/روستا: ${village}`;
+            
+            // آیدی شما جایگذاری شد
+            const myId = "MortezaBarkhordari"; 
+            const url = `https://ble.ir/${myId}?text=${encodeURIComponent(text)}`;
+            
+            window.location.href = url;
+            closeAllModals();
         }
 
         // Villages Logic
