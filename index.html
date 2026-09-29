@@ -64,7 +64,7 @@
             font-size: 18px;
         }
         
-        /* ثابت ماندن سرستون جدول تاتی و فارسی زیر کادر جستجو */
+        /* ثابت ماندن سرستون جدول تاتی و فارسی */
         thead th {
             position: -webkit-sticky;
             position: sticky;
@@ -77,7 +77,7 @@
         tr:nth-child(even) { background-color: #f2f6f8; }
         .not-found { text-align: center; color: #c0392b; }
 
-        /* استایل‌های اختصاصی دکمه و فرم پیشنهاد واژه */
+        /* دکمه شناور پیشنهاد واژه */
         #suggestBtn {
             position: fixed;
             left: 16px;
@@ -101,6 +101,7 @@
             background: #219150;
         }
 
+        /* لایه تیره پس‌زمینه */
         #suggestOverlay {
             display: none;
             position: fixed;
@@ -110,6 +111,7 @@
             backdrop-filter: blur(2px);
         }
 
+        /* کادر پاپ‌آپ فرم پیشنهاد */
         #suggestModal {
             display: none;
             position: fixed;
@@ -210,12 +212,13 @@
     <h1>لغت‌نامه تاتی الموتی</h1>
     <div id="author">اثر: مرتضی برخورداری</div>
 
-    <!-- کادر ثابت بالای صفحه -->
+    <!-- کادر ثابت جستجو -->
     <div class="sticky-header">
         <input type="text" id="search-input" placeholder="جستجو در تاتی یا فارسی..." autocomplete="off">
         <div id="result-count"></div>
     </div>
 
+    <!-- جدول واژه‌ها -->
     <table id="dictionary-table">
         <thead>
             <tr>
@@ -267,10 +270,10 @@
         </div>
     </div>
 
-    <!-- فایل دیتا -->
+    <!-- بارگذاری داده‌ها -->
     <script src="data.js"></script>
     <script>
-        /* ---------- ۱) ابزار یکسان‌سازی متن ---------- */
+        /* ۱) یکسان‌سازی متن و نرمال‌سازی */
         const DIACRITICS = /[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g;
         const INVISIBLE  = /[\u200B-\u200F\u202A-\u202E\u2060\uFEFF]/g;
         const LETTER_MAP = {
@@ -296,14 +299,13 @@
             })[c]);
         }
 
-        /* ---------- ۲) آماده‌سازی داده‌ها و حذف موارد تکراری ---------- */
+        /* ۲) آماده‌سازی واژه‌ها و حذف تکراری‌ها */
         const tableBody   = document.getElementById('table-body');
         const searchInput = document.getElementById('search-input');
         const countBox    = document.getElementById('result-count');
 
         const rawData = (typeof words !== 'undefined' && Array.isArray(words)) ? words : [];
 
-        // حذف خودکار موارد کاملاً تکراری
         const uniqueSet = new Set();
         const cleanData = [];
 
@@ -316,7 +318,6 @@
             }
         }
 
-        // برای هر کلمه کلید جستجو بدون اعراب می‌سازیم
         const dictionary = cleanData.map(item => ({
             tati:     item.tati,
             farsi:    item.farsi,
@@ -324,10 +325,9 @@
             farsiKey: normalizeText(item.farsi)
         }));
 
-        // مرتب‌سازی الفبایی
         dictionary.sort((a, b) => a.tatiKey.localeCompare(b.tatiKey, 'fa'));
 
-        /* ---------- ۳) نمایش و جستجو ---------- */
+        /* ۳) نمایش و جستجو */
         function render(list, query) {
             if (list.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="2" class="not-found">کلمه‌ای یافت نشد.</td></tr>';
@@ -358,7 +358,6 @@
             render(result, searchInput.value.trim());
         }
 
-        /* ---------- ۴) راه‌اندازی لغت‌نامه ---------- */
         searchInput.addEventListener('input', filterTable);
 
         if (dictionary.length === 0) {
@@ -367,7 +366,7 @@
             render(dictionary, '');
         }
 
-        /* ---------- ۵) منطق ارسال پیشنهاد به GitHub Issues ---------- */
+        /* ۴) اتصال فرم به پیام‌رسان ایتا (@MortezaBarkhordari) */
         const btn = document.getElementById('suggestBtn');
         const overlay = document.getElementById('suggestOverlay');
         const modal = document.getElementById('suggestModal');
@@ -409,19 +408,20 @@
                 return;
             }
 
-            const issueTitle = encodeURIComponent(`پیشنهاد واژه: ${tatiVal} = ${farsiVal}`);
-            let bodyText = `### پیشنهاد واژه جدید\n\n`;
-            bodyText += `- **واژه تاتی:** ${tatiVal}\n`;
-            bodyText += `- **معنی فارسی:** ${farsiVal}\n`;
-            if (exampleVal) bodyText += `- **توضیحات/مثال:** ${exampleVal}\n`;
-            if (senderVal) bodyText += `- **پیشنهاد دهنده:** ${senderVal}\n`;
+            // آماده‌سازی متن پیام برای ایتا
+            let message = `سلام، پیشنهاد واژه برای لغت‌نامه تاتی الموتی:\n\n`;
+            message += `🔹 واژه تاتی: ${tatiVal}\n`;
+            message += `🔹 معنی فارسی: ${farsiVal}\n`;
+            if (exampleVal) message += `🔹 توضیحات/مثال: ${exampleVal}\n`;
+            if (senderVal) message += `🔹 فرستنده: ${senderVal}\n`;
 
-            const issueBody = encodeURIComponent(bodyText);
-            const githubUrl = `https://github.com/mortezabarkhordari5-cmyk/tati-dictionary/issues/new?title=${issueTitle}&body=${issueBody}`;
+            // لینک اختصاصی ایتا به آیدی @MortezaBarkhordari
+            const eitaaUrl = `https://eitaa.com/MortezaBarkhordari?text=${encodeURIComponent(message)}`;
 
-            window.open(githubUrl, '_blank');
+            window.open(eitaaUrl, '_blank');
             closeModal();
 
+            // خالی کردن فرم
             tatiInput.value = '';
             farsiInput.value = '';
             exampleInput.value = '';
