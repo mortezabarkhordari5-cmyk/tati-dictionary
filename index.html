@@ -68,7 +68,7 @@
         thead th {
             position: -webkit-sticky;
             position: sticky;
-            top: 86px; /* ارتفاع متناسب تا دقیقاً زیر کادر جستجو بچسبد */
+            top: 86px;
             background-color: #3498db;
             color: white;
             z-index: 999;
@@ -76,6 +76,133 @@
 
         tr:nth-child(even) { background-color: #f2f6f8; }
         .not-found { text-align: center; color: #c0392b; }
+
+        /* استایل‌های اختصاصی دکمه و فرم پیشنهاد واژه */
+        #suggestBtn {
+            position: fixed;
+            left: 16px;
+            bottom: 16px;
+            z-index: 10000;
+            padding: 11px 16px;
+            border: none;
+            border-radius: 25px;
+            background: #27ae60;
+            color: #fff;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        #suggestBtn:hover {
+            background: #219150;
+        }
+
+        #suggestOverlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10001;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(2px);
+        }
+
+        #suggestModal {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10002;
+            width: min(90vw, 440px);
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: right;
+            padding: 18px;
+            box-sizing: border-box;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .modal-header h3 {
+            margin: 0;
+            font-size: 17px;
+            color: #2c3e50;
+        }
+        .close-btn {
+            border: none;
+            background: transparent;
+            font-size: 24px;
+            line-height: 1;
+            color: #888;
+            cursor: pointer;
+        }
+        .form-group {
+            margin-bottom: 12px;
+            text-align: right;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: #444;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #3498db;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .btn-submit {
+            flex: 1;
+            background: #27ae60;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-cancel {
+            background: #e0e0e0;
+            color: #333;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        #sugMsg {
+            font-size: 13px;
+            color: #e74c3c;
+            margin-bottom: 8px;
+            min-height: 18px;
+        }
     </style>
 </head>
 <body>
@@ -98,6 +225,47 @@
         </thead>
         <tbody id="table-body"></tbody>
     </table>
+
+    <!-- دکمه شناور پیشنهاد واژه -->
+    <button id="suggestBtn">
+        <span>➕</span> پیشنهاد واژه جدید
+    </button>
+
+    <!-- پنجره پاپ‌آپ ثبت واژه -->
+    <div id="suggestOverlay"></div>
+    <div id="suggestModal">
+        <div class="modal-header">
+            <h3>پیشنهاد واژه جدید</h3>
+            <button class="close-btn" id="suggestClose">&times;</button>
+        </div>
+
+        <div id="sugMsg"></div>
+
+        <div class="form-group">
+            <label for="sugTati">واژه تاتی (الزامی):</label>
+            <input type="text" id="sugTati" placeholder="مثال: کیجیک">
+        </div>
+
+        <div class="form-group">
+            <label for="sugFarsi">معنی فارسی (الزامی):</label>
+            <input type="text" id="sugFarsi" placeholder="مثال: دختر">
+        </div>
+
+        <div class="form-group">
+            <label for="sugExample">مثال، تلفظ یا توضیحات (اختیاری):</label>
+            <textarea id="sugExample" rows="2" placeholder="توضیح یا مثال در جمله..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="sugSender">نام شما یا روستای مربوطه (اختیاری):</label>
+            <input type="text" id="sugSender" placeholder="مثال: علی از آتان">
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn-submit" id="sugSubmit">ثبت در گیت‌هاب</button>
+            <button class="btn-cancel" id="sugCancel">انصراف</button>
+        </div>
+    </div>
 
     <!-- فایل دیتا -->
     <script src="data.js"></script>
@@ -190,7 +358,7 @@
             render(result, searchInput.value.trim());
         }
 
-        /* ---------- ۴) راه‌اندازی ---------- */
+        /* ---------- ۴) راه‌اندازی لغت‌نامه ---------- */
         searchInput.addEventListener('input', filterTable);
 
         if (dictionary.length === 0) {
@@ -198,7 +366,72 @@
         } else {
             render(dictionary, '');
         }
-    </script>
 
+        /* ---------- ۵) منطق ارسال پیشنهاد به GitHub Issues ---------- */
+        const btn = document.getElementById('suggestBtn');
+        const overlay = document.getElementById('suggestOverlay');
+        const modal = document.getElementById('suggestModal');
+        const closeBtn = document.getElementById('suggestClose');
+        const cancelBtn = document.getElementById('sugCancel');
+        const submitBtn = document.getElementById('sugSubmit');
+        const msg = document.getElementById('sugMsg');
+
+        const tatiInput = document.getElementById('sugTati');
+        const farsiInput = document.getElementById('sugFarsi');
+        const exampleInput = document.getElementById('sugExample');
+        const senderInput = document.getElementById('sugSender');
+
+        function openModal() {
+            msg.textContent = '';
+            overlay.style.display = 'block';
+            modal.style.display = 'block';
+            setTimeout(() => tatiInput.focus(), 80);
+        }
+
+        function closeModal() {
+            overlay.style.display = 'none';
+            modal.style.display = 'none';
+        }
+
+        btn.addEventListener('click', openModal);
+        overlay.addEventListener('click', closeModal);
+        closeBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+
+        submitBtn.addEventListener('click', function () {
+            const tatiVal = tatiInput.value.trim();
+            const farsiVal = farsiInput.value.trim();
+            const exampleVal = exampleInput.value.trim();
+            const senderVal = senderInput.value.trim();
+
+            if (!tatiVal || !farsiVal) {
+                msg.textContent = 'لطفاً واژه تاتی و معنی فارسی را بنویسید.';
+                return;
+            }
+
+            // ساخت عنوان و متن گزارش برای مخزن شما
+            const issueTitle = encodeURIComponent(`پیشنهاد واژه: ${tatiVal} = ${farsiVal}`);
+            let bodyText = `### پیشنهاد واژه جدید\n\n`;
+            bodyText += `- **واژه تاتی:** ${tatiVal}\n`;
+            bodyText += `- **معنی فارسی:** ${farsiVal}\n`;
+            if (exampleVal) bodyText += `- **توضیحات/مثال:** ${exampleVal}\n`;
+            if (senderVal) bodyText += `- **پیشنهاد دهنده:** ${senderVal}\n`;
+
+            const issueBody = encodeURIComponent(bodyText);
+
+            // لینک باز شدن مستقیم ساخت Issue در مخزن شما
+            const githubUrl = `https://github.com/mortezabarkhordari5-cmyk/tati-dictionary/issues/new?title=${issueTitle}&body=${issueBody}`;
+
+            // هدایت به صفحه ثبت گیت‌هاب در برگه جدید
+            window.open(githubUrl, '_blank');
+            closeModal();
+
+            // پاک کردن فرم
+            tatiInput.value = '';
+            farsiInput.value = '';
+            exampleInput.value = '';
+            senderInput.value = '';
+        });
+    </script>
 </body>
 </html>
