@@ -1,934 +1,164 @@
-// ========================================================
-// بانک جامع اطلاعات و روستاهای الموت شرقی و غربی (۱۵۸ روستا)
-// ========================================================
+// دیتابیس کامل ۱۵۸ روستای الموت
+const alamutVillages = [
+  // الموت شرقی
+  { id: 1, name: "معلم کلایه", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "مرکز بخش الموت شرقی." },
+  { id: 2, name: "گازرخان", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستای پای قلعه حسن صباح." },
+  { id: 3, name: "گرمارود سینا", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 4, name: "گرمارود پیر", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 5, name: "آتان", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "ماسوله الموت با بافت پلکانی." },
+  { id: 6, name: "کلایه", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 7, name: "هنیز", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "مبداء صعود به قله سیالان." },
+  { id: 8, name: "چلاسر", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 9, name: "شترخان", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 10, name: "اویرک", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 11, name: "ورک", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 12, name: "انوه", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 13, name: "اندج", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "دره و صخره‌های زیبای اندج." },
+  { id: 14, name: "کوچین", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 15, name: "دیکین", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در نزدیکی دریاچه اوان." },
+  { id: 16, name: "زرآباد", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستای درخت خونبار زرآباد." },
+  { id: 17, name: "اوان", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستای دریاچه زیبای اوان." },
+  { id: 18, name: "زوارک", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 19, name: "حسن‌آباد", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 20, name: "محمودآباد", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 21, name: "شهرک", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 22, name: "شمس کلایه", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 23, name: "علی‌آباد", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 24, name: "میانه", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 25, name: "خشکچال", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 26, name: "آفتابدر", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 27, name: "طاله", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 28, name: "رجایی دشت", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "از مراکز مهم و پرجمعیت الموت." },
+  { id: 29, name: "اسپیدول", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 30, name: "تیرگ", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 31, name: "جوستان", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 32, name: "سفیددره", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 33, name: "سوهان", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 34, name: "سیاهدشت", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 35, name: "عسل محله", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 36, name: "مدان", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 37, name: "هرانک", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 38, name: "باغدشت", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 39, name: "بالاروچ", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 40, name: "پایین‌روچ", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 41, name: "پیچ بن", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "گردنه و کاروانسرای تاریخی پیچ‌بن." },
+  { id: 42, name: "تنوره", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 43, name: "توجان", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 44, name: "جولاده", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 45, name: "چریشک", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 46, name: "حسین‌آباد", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 47, name: "خسروبان", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 48, name: "دهک", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 49, name: "دربند", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 50, name: "دشتک", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 51, name: "دیلمدشت", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 52, name: "زردچال", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 53, name: "سردشت", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 54, name: "سلطان دشت", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 55, name: "سلمبار", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در گردنه سلمبار." },
+  { id: 56, name: "سیردان", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 57, name: "شترک", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 58, name: "شورستان", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 59, name: "طاهرآباد", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 60, name: "عناپ", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 61, name: "فلار", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 62, name: "قسطین", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 63, name: "کلمین", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 64, name: "کوشک", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 65, name: "گورار", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 66, name: "میراخور", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 67, name: "مینودشت", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 68, name: "ناوه", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 69, name: "نسا", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 70, name: "وارک", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 71, name: "وانقین", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 72, name: "ویرجان", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 73, name: "هریف", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 74, name: "یوج", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 75, name: "آتان کلا", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 76, name: "اوات", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 77, name: "ایلاق", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 78, name: "باغ کلایه", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 79, name: "تلاتر", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 80, name: "جلوان", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 81, name: "سرخه ده", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 82, name: "سفیدآب", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 83, name: "شمس‌آباد", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 84, name: "عباس‌آباد", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 85, name: "قسطین رود", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 86, name: "کارندچال", section: "الموت شرقی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
 
-const villages = [
-  // ==========================================
-  // بخش رودبار الموت شرقی (مرکزیت: معلم‌کلایه)
-  // ==========================================
-  {
-    id: "atan",
-    name: "آتان",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "روستای تاریخی و ماسوله‌ای آتان در الموت شرقی؛ دارای معماری پلکانی صخره‌ای، باغات گردو و گیلاس و بافت سنتی ارزشمند.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "azad-rud",
-    name: "آزاد رود",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "aftabdar-sharghi",
-    name: "آفتابدر",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "aghagir",
-    name: "آقاگیر",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "ayin",
-    name: "آیین",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان معلم‌کلایه",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "esfaran",
-    name: "اسفاران",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان معلم‌کلایه",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "akbarabad",
-    name: "اکبرآباد",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "amshek",
-    name: "امشک",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "andaj",
-    name: "اندج",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "روستای توریستی اندج؛ مشهور به صخره‌های عظیم شگفت‌انگیز، دره سرسبز اندج‌رود، باغات فندق و اقلیم کوهستانی چشم‌نواز.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "ovan",
-    name: "اوان (دریاچه اوان)",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان معلم‌کلایه",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "نگین گردشگری الموت؛ روستای مجاور دریاچه طبیعی اوان با چشمه‌های جوشان زیرزمینی و طبیعت بی‌نظیر.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "avanak",
-    name: "اوانک",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "aveh",
-    name: "اوه (آوه)",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "ilan",
-    name: "ایلان",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "bagh-dasht",
-    name: "باغ‌دشت",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "bagh-kalayeh",
-    name: "باغ‌کلایه",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "bala-ruch",
-    name: "بالاروچ",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "از روستاهای مرتفع و کهن الموت شرقی، هم‌جوار دره‌های الموت‌رود و باغات میوه.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "bukan",
-    name: "بوکان",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "bideli",
-    name: "بیدلی",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "paeen-ruch",
-    name: "پایین‌روچ",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "pich-bon",
-    name: "پیج‌بن",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "مرتفع‌ترین روستای مرزی الموت و مازندران، مشهور به کاروانسرای تاریخی پیچ‌بن و دشت‌های چمن‌زار سرسبز کوهستانی.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "torkan",
-    name: "ترکان",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "tavan",
-    name: "توان",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "tudaran",
-    name: "توداران",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "jutan",
-    name: "جوتان",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "juladak",
-    name: "جولادک",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "chaleh",
-    name: "چاله",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "hasanabad-sharghi",
-    name: "حسن‌آباد",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "khoshkchal",
-    name: "خشکچال",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "روستایی سرسبز با باغات فندق و گردو و مراتع زیبا در دامنه البرز شرقی.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "khuban",
-    name: "خوبان",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "dehak",
-    name: "دهک",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "dikin",
-    name: "دیکین",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان معلم‌کلایه",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "روستای دیکین در جوار دریاچه اوان با مزارع کشاورزی و باغداری فعال.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "dinehkooh",
-    name: "دینه‌کوه",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "معروف به روستای نمونه هدف گردشگری و پاک، دارای سنت‌های کهن و بافت بازسازی‌شده تمیز.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "dinerood",
-    name: "دینه‌رود",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "zarabad",
-    name: "زرآباد",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان معلم‌کلایه",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "روستای مذهبی و تاریخی الموت؛ مشهور به درخت خون‌بار زرآباد و بارگاه امامزاده علی‌اصغر (ع).",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "zardchin",
-    name: "زردچین",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "zavardasht",
-    name: "زواردشت",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان معلم‌کلایه",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "روستایی در مجاورت دریاچه اوان با مزارع و مراتع سرسبز.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "zavarak",
-    name: "زوارک",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "sorkhkooleh",
-    name: "سرخ‌کوله",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "sorkhehdazak",
-    name: "سرخه دزک",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان معلم‌کلایه",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "soleymanabad",
-    name: "سلیمان‌آباد",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "sharifabad",
-    name: "شریف‌آباد",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "shamskalayeh",
-    name: "شمس‌کلایه",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان معلم‌کلایه",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "روستایی باستانی در مجاورت شهر معلم‌کلایه با برج‌ها و محوطه‌های تاریخی کهن.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "shahrak",
-    name: "شهرک",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "مرکز تجاری و مواصلاتی بخش الموت بالا، در مسیر دسترسی به دره سه هزار و قلعه حسن صباح.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "shurastan-bala",
-    name: "شورستان بالا (علیا)",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "shurastan-paeen",
-    name: "شورستان پایین (سفلی)",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "shirkooh",
-    name: "شیرکوه",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "saeenkalayeh",
-    name: "صائین‌کلایه",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "aliabad-sharghi",
-    name: "علی‌آباد",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان معلم‌کلایه",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "fishan",
-    name: "فیشان",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "ghazimahalleh",
-    name: "قاضی‌محله",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "gazorkhan",
-    name: "گازرخان",
-    section: "رودبار الموت شرقی",
-    tag: "دژ حسن صباح و دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "میزبان دژ تاریخی و نامدار قلعه حسن صباح (قلعه الموت)، مهد تمدن اسماعیلیان با باغات آلبالو، گیلاس و گردو.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "kalayeh-sharghi",
-    name: "کلایه",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "روستایی تاریخی با بافت کهن و کوهستانی در الموت شرقی.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "kolangsar",
-    name: "کلنگ‌سر",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان معلم‌کلایه",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "kandansar",
-    name: "کندان‌سر",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "kushk",
-    name: "کوشک",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان معلم‌کلایه",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "روستای کوشک؛ دارای دره‌ها و صخره‌های زیبا و مزارع باصفا در نزدیکی معلم‌کلایه.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "kuchnan",
-    name: "کوچنان",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "kueejan",
-    name: "کویی‌جان",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "garmarud-bala",
-    name: "گرمارود بالا (علیا)",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "روستای گردشگری و بن‌بست دره الموت با آبشار باشکوه گرمارود و صخره‌های سر به فلک کشیده.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "garmarud-paeen",
-    name: "گرمارود پایین (سفلی)",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "madan",
-    name: "مدان",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "mahmudabad",
-    name: "محمودآباد",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "mardanchal",
-    name: "مردان‌چال",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "masoudabad",
-    name: "مسعودآباد",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "moallem-kalayeh",
-    name: "معلم‌کلایه",
-    section: "رودبار الموت شرقی",
-    tag: "مرکز بخش رودبار الموت شرقی",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "شهر تاریخی و مرکز اداری و اقتصادی بخش رودبار الموت شرقی، با سابقه کهن و امکانات رفاهی و گردشگری.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "mollakalayeh",
-    name: "ملاکلایه",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "mehran",
-    name: "مهران",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "mianan",
-    name: "میانان",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "miankhani",
-    name: "میانخانی",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان معلم‌کلایه",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "minudasht",
-    name: "مینودشت (شترخان)",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "nesa-bala",
-    name: "نسا بالا (علیا)",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "nesa-paeen",
-    name: "نسا پایین (سفلی)",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "nezambagh",
-    name: "نظام‌باغ",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "varbon",
-    name: "وربن",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "vartavan",
-    name: "ورتوان",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان معلم‌کلایه",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "vark",
-    name: "ورک",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان معلم‌کلایه",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "vanash-bala",
-    name: "وناش بالا",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "روستایی بکر در انتهای دره الموت با مراتع کوهپایه‌ای و گویش اصیل تاتی.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "vanash-paeen",
-    name: "وناش پایین",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "vikan",
-    name: "ویکان",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "haranak",
-    name: "هرانک",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "روستایی با صفا در نزدیکی معلم‌کلایه با مردمانی خونگرم و گویشوران اصیل زبان تاتی.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "honiz",
-    name: "هنیز",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت پایین",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "مبداء اصلی صعود به قله باشکوه سیالان (بام الموت)، با چشم‌انداز بی‌نظیر طبیعی و چشمه‌های خنک.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "yerek",
-    name: "یرک",
-    section: "رودبار الموت شرقی",
-    tag: "دهستان الموت بالا",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-
-  // ==========================================
-  // بخش رودبار الموت غربی (مرکزیت: شهر رازمیان)
-  // ==========================================
-  {
-    id: "aftabdar-gharbi",
-    name: "آفتابدر غربی",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار شهرستان",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "azganin-bala",
-    name: "ازگنین بالا (علیا)",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار محمدزمانی",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "روستایی کوهپایه‌ای با چشمه‌های طبیعی و باغداری پربار در حوزه محمدزمانی.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "azganin-paeen",
-    name: "ازگنین پایین (سفلی)",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار محمدزمانی",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "روستایی خوش آب و هوا در الموت غربی، دارای باغات فندق، گردو و زغال‌اخته.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "aminabad",
-    name: "امین‌آباد",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار محمدزمانی",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "oviyarak",
-    name: "اویرک",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار محمدزمانی",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "baghestan",
-    name: "باغستان",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار محمدزمانی",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "bala-ruch-gharbi",
-    name: "بالاروچ غربی",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار شهرستان",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "bayer-rood",
-    name: "بایررود",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار محمدزمانی",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "bahramabad",
-    name: "بهرام‌آباد",
-    section: "رودبار الموت غربی",
-    tag: "دهستان دستجرد",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "روستایی در دهستان دستجرد با اقلیمی گرم‌تر و باغات برنج، انار و زیتون در حاشیه شاهرود.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "paeen-ruch-gharbi",
-    name: "پایین‌روچ غربی",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار شهرستان",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "parandlat",
-    name: "پرندلات",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار محمدزمانی",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "parachan",
-    name: "پراچان",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار محمدزمانی",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "palangeh",
-    name: "پلنگه",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار شهرستان",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "telater",
-    name: "تلاتر",
-    section: "رودبار الموت غربی",
-    tag: "دهستان دستجرد",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "روستایی کهن و بااصالت، دارای درخت چنار کهنسال تاریخی و مزارع سرسبز.",
-    status: "تکمیل اولیه"
-  },
-  {
-    id: "tanooreh",
-    name: "تنوره",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار محمدزمانی",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "juving",
-    name: "جوینگ",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار محمدزمانی",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "chosar",
-    name: "چوسر",
-    section: "رودبار الموت غربی",
-    tag: "دهستان دستجرد",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "hasanabad-rudbar",
-    name: "حسن‌آباد رودبار",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار شهرستان",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "khanjarbolagh",
-    name: "خنجربلاغ",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار محمدزمانی",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "khoshkrud",
-    name: "خشکرود",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار محمدزمانی",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "darak",
-    name: "درک",
-    section: "رودبار الموت غربی",
-    tag: "دهستان رودبار محمدزمانی",
-    photos: { cover: "images/villages/placeholder.jpg", gallery: [] },
-    desc: "اطلاعات تکمیلی این روستا در دست تکمیل است.",
-    status: "در دست تکمیل"
-  },
-  {
-    id: "dastjerd-bala",
-    name: "دستجرد بالا (علیا)",
-    section: "رودبار الموت غربی",
+  // الموت غربی
+  { id: 87, name: "رازمیان", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "مرکز بخش الموت غربی و باغات فندق و خرمالو." },
+  { id: 88, name: "بهرام آباد", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 89, name: "هیر", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "پایتخت زغال‌اخته ایران با باغات سرسبز." },
+  { id: 90, name: "ویار", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی با چشمه‌ها و طبیعت کوهستانی زیبا." },
+  { id: 91, name: "سپارده", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "مرز بین قزوین و مازندران." },
+  { id: 92, name: "فلار غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 93, name: "یوج غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 94, name: "آکوجان", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی با غار طبیعی و باغات فندق." },
+  { id: 95, name: "دستجرد", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 96, name: "لات", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 97, name: "علندر", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 98, name: "کنگرین", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 99, name: "رجین", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 100, name: "فشک", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 101, name: "قسطین لار", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 102, name: "سیاهکوه", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 103, name: "تلاتر غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 104, name: "کاظم‌آباد", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 105, name: "خوشکاب", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 106, name: "قسطین ناحیه", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 107, name: "ارکن ترک", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 108, name: "ارکن کرد", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 109, name: "اسپیددر", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 110, name: "ازگنین بالا", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 111, name: "ازگنین پایین", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 112, name: "اشترک", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 113, name: "امامزاده هارون", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 114, name: "امیرآباد", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 115, name: "اواتر", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 116, name: "بادمجین", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 117, name: "برسر", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 118, name: "بلکان", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 119, name: "بنگین", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 120, name: "پروش", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 121, name: "پشتروک", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 122, name: "تله سر", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 123, name: "تنوره غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 124, name: "چاله", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 125, name: "حسن‌آباد غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 126, name: "حسین‌آباد غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 127, name: "خسروبان غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 128, name: "خلندر", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 129, name: "دارسر", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 130, name: "درچاک", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 131, name: "دربی کلا", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 132, name: "دستجرد علیا", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 133, name: "دستجرد سفلی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 134, name: "دوران", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 135, name: "دهک غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 136, name: "دیدار", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 137, name: "رباط", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 138, name: "زرآباد غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 139, name: "سردشت غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 140, name: "سرخه ده غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 141, name: "سفیددره غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 142, name: "سلطان‌آباد", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 143, name: "سیاهدشت غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 144, name: "شترک غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 145, name: "شمس‌آباد غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 146, name: "شورستان غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 147, name: "طاهرآباد غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 148, name: "عباس‌آباد غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت شرقی." },
+  { id: 149, name: "علی‌آباد غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 150, name: "قاسم‌آباد", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 151, name: "کاکوهستان", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 152, name: "کشرود", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 153, name: "کلات", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 154, name: "کنگرین سفلی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 155, name: "گورار غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 156, name: "مارکین", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 157, name: "میراخور غربی", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." },
+  { id: 158, name: "نیارک", section: "الموت غربی", status: "در دست تکمیل", photos: { cover: "images/villages/placeholder.jpg", gallery: [] }, desc: "روستایی در الموت غربی." }
+];
