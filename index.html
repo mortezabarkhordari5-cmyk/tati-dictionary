@@ -262,7 +262,7 @@
         </div>
 
         <div class="modal-actions">
-            <button class="btn-submit" id="sugSubmit">ثبت در گیت‌هاب</button>
+            <button class="btn-submit" id="sugSubmit">ثبت</button>
             <button class="btn-cancel" id="sugCancel">انصراف</button>
         </div>
     </div>
@@ -409,7 +409,6 @@
                 return;
             }
 
-            // ساخت عنوان و متن گزارش برای مخزن شما
             const issueTitle = encodeURIComponent(`پیشنهاد واژه: ${tatiVal} = ${farsiVal}`);
             let bodyText = `### پیشنهاد واژه جدید\n\n`;
             bodyText += `- **واژه تاتی:** ${tatiVal}\n`;
@@ -418,15 +417,11 @@
             if (senderVal) bodyText += `- **پیشنهاد دهنده:** ${senderVal}\n`;
 
             const issueBody = encodeURIComponent(bodyText);
-
-            // لینک باز شدن مستقیم ساخت Issue در مخزن شما
             const githubUrl = `https://github.com/mortezabarkhordari5-cmyk/tati-dictionary/issues/new?title=${issueTitle}&body=${issueBody}`;
 
-            // هدایت به صفحه ثبت گیت‌هاب در برگه جدید
             window.open(githubUrl, '_blank');
             closeModal();
 
-            // پاک کردن فرم
             tatiInput.value = '';
             farsiInput.value = '';
             exampleInput.value = '';
