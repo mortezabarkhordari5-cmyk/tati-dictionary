@@ -77,12 +77,10 @@
         </div>
     </div>
 
-    <!-- Data Loading -->
-    <script src="data.js?v=3"></script>
-    <script src="places.js?v=3"></script>
+    <script src="data.js?v=4"></script>
+    <script src="places.js?v=4"></script>
 
     <script>
-        // Dictionary Logic
         const tableBody = document.getElementById('table-body');
         const searchInput = document.getElementById('search-input');
         
@@ -94,12 +92,8 @@
         searchInput.addEventListener('input', renderDict);
         renderDict();
 
-        // Modal Logic
         const overlay = document.getElementById('overlay');
-        function openModal(id) {
-            overlay.style.display = 'block';
-            document.getElementById(id).style.display = 'block';
-        }
+        function openModal(id) { overlay.style.display = 'block'; document.getElementById(id).style.display = 'block'; }
         function closeAllModals() {
             overlay.style.display = 'none';
             document.querySelectorAll('.custom-modal').forEach(m => m.style.display = 'none');
@@ -110,7 +104,7 @@
         document.getElementById('moreBtn').onclick = () => { openModal('moreModal'); renderVillages('همه'); };
         overlay.onclick = closeAllModals;
 
-        // Villages Logic
+        // اصلاح اصلی اینجا انجام شد: استفاده از نام روستا به جای ایندکس
         function renderVillages(filter, search = '') {
             const container = document.getElementById('villages-container');
             const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
@@ -121,8 +115,8 @@
                 return matchFilter && matchSearch;
             });
 
-            container.innerHTML = filtered.map((v, index) => `
-                <div class="village-item" onclick="showDetail(${index})">
+            container.innerHTML = filtered.map((v) => `
+                <div class="village-item" onclick="showDetail('${v.name}')">
                     <span>${v.name}</span>
                     <span>${v.section}</span>
                 </div>
@@ -139,21 +133,28 @@
             renderVillages(activeTab, e.target.value);
         });
 
-        function showDetail(index) {
-            const v = alamutVillages[index];
+        function showDetail(vName) {
+            // پیدا کردن دقیق روستا در لیست اصلی بر اساس نام
+            const v = alamutVillages.find(item => item.name === vName);
+            if (!v) return;
+
+            document.getElementById('list-view').style.display = 'none';
+            document.getElementById('
+
+        document.getElementById('village-search').addEventListener('input', (e) => {
+            const activeTab = document.querySelector('.tab-btn.active').innerText;
+            renderVillages(activeTab, e.target.value);
+        });
+
+        function showDetail(vName) {
+            // پیدا کردن دقیق روستا در لیست اصلی بر اساس نام
+            const v = alamutVillages.find(item => item.name === vName);
+            if (!v) return;
+
             document.getElementById('list-view').style.display = 'none';
             document.getElementById('detail-view').style.display = 'block';
             document.getElementById('village-detail-content').innerHTML = `
                 <h3>${v.name}</h3>
                 <p><strong>بخش:</strong> ${v.section}</p>
                 <p>${v.desc || 'توضیحاتی موجود نیست.'}</p>
-                <img src="${v.photos[0] || 'placeholder.jpg'}" style="width:100%; border-radius:8px;">
-            `;
-        }
-        function backToList() {
-            document.getElementById('detail-view').style.display = 'none';
-            document.getElementById('list-view').style.display = 'block';
-        }
-    </script>
-</body>
-</html>
+                <img src
