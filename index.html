@@ -12,6 +12,7 @@
             color: #333;
             margin: 0;
             padding: 15px;
+            padding-bottom: 80px; /* فاصله از پایین برای دکمه‌های شناور */
             text-align: center;
         }
         h1 { color: #2c3e50; margin-bottom: 5px; }
@@ -77,7 +78,7 @@
         tr:nth-child(even) { background-color: #f2f6f8; }
         .not-found { text-align: center; color: #c0392b; }
 
-        /* دکمه شناور پیشنهاد واژه */
+        /* دکمه شناور پیشنهاد واژه (سمت چپ) */
         #suggestBtn {
             position: fixed;
             left: 16px;
@@ -89,7 +90,7 @@
             background: #27ae60;
             color: #fff;
             font-family: inherit;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0,0,0,0.25);
@@ -97,43 +98,66 @@
             align-items: center;
             gap: 6px;
         }
-        #suggestBtn:hover {
-            background: #219150;
-        }
+        #suggestBtn:hover { background: #219150; }
 
-        /* لایه تیره پس‌زمینه */
-        #suggestOverlay {
+        /* دکمه شناور موارد دیگر (سمت راست) */
+        #moreBtn {
+            position: fixed;
+            right: 16px;
+            bottom: 16px;
+            z-index: 10000;
+            padding: 11px 16px;
+            border: none;
+            border-radius: 25px;
+            background: #2980b9;
+            color: #fff;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        #moreBtn:hover { background: #1c638e; }
+
+        /* لایه تیره مشترک برای پاپ‌آپ‌ها */
+        .overlay {
             display: none;
             position: fixed;
             inset: 0;
             z-index: 10001;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.55);
             backdrop-filter: blur(2px);
         }
 
-        /* پنجره پاپ‌آپ فرم پیشنهاد */
-        #suggestModal {
+        /* ساختار کلی پنجره‌های پاپ‌آپ */
+        .custom-modal {
             display: none;
             position: fixed;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
             z-index: 10002;
-            width: min(90vw, 440px);
+            width: min(92vw, 500px);
+            max-height: 85vh;
             background: #fff;
             border-radius: 14px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             text-align: right;
-            padding: 18px;
+            padding: 16px;
             box-sizing: border-box;
+            overflow-y: auto;
         }
+
         .modal-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
         .modal-header h3 {
             margin: 0;
@@ -143,11 +167,13 @@
         .close-btn {
             border: none;
             background: transparent;
-            font-size: 24px;
+            font-size: 26px;
             line-height: 1;
             color: #888;
             cursor: pointer;
         }
+
+        /* فرم پیشنهاد واژه */
         .form-group {
             margin-bottom: 12px;
             text-align: right;
@@ -169,9 +195,7 @@
             font-size: 14px;
             outline: none;
         }
-        .form-group input:focus, .form-group textarea:focus {
-            border-color: #3498db;
-        }
+        .form-group input:focus, .form-group textarea:focus { border-color: #3498db; }
         .modal-actions {
             display: flex;
             gap: 10px;
@@ -205,6 +229,78 @@
             margin-bottom: 8px;
             min-height: 18px;
         }
+
+        /* تب‌ها در بخش موارد دیگر */
+        .tab-buttons {
+            display: flex;
+            gap: 6px;
+            border-bottom: 2px solid #eef2f5;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            overflow-x: auto;
+        }
+        .tab-btn {
+            background: #f1f4f7;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: bold;
+            color: #555;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .tab-btn.active {
+            background: #2980b9;
+            color: #fff;
+        }
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+        .tab-pane.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* کارت‌های داخلی تب‌ها */
+        .info-card {
+            background: #fdfdfd;
+            border: 1px solid #e3e8ee;
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 10px;
+            text-align: right;
+        }
+        .info-card h4 {
+            margin: 0 0 6px 0;
+            color: #2c3e50;
+            font-size: 15px;
+        }
+        .info-card p {
+            margin: 0;
+            font-size: 13px;
+            color: #555;
+            line-height: 1.6;
+        }
+        .info-card img {
+            width: 100%;
+            max-height: 180px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-top: 8px;
+        }
+        .badge {
+            display: inline-block;
+            background: #e8f4fd;
+            color: #2980b9;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 6px;
+        }
     </style>
 </head>
 <body>
@@ -229,14 +325,20 @@
         <tbody id="table-body"></tbody>
     </table>
 
-    <!-- دکمه شناور پیشنهاد واژه -->
+    <!-- دکمه‌های شناور پایین صفحه -->
     <button id="suggestBtn">
-        <span>➕</span> پیشنهاد واژه جدید
+        <span>➕</span> پیشنهاد واژه
     </button>
 
-    <!-- پنجره پاپ‌آپ -->
-    <div id="suggestOverlay"></div>
-    <div id="suggestModal">
+    <button id="moreBtn">
+        <span>📚</span> موارد دیگر
+    </button>
+
+    <!-- لایه تیره پس‌زمینه برای پاپ‌آپ‌ها -->
+    <div id="overlay" class="overlay"></div>
+
+    <!-- پاپ‌آپ پیشنهاد واژه جدید -->
+    <div id="suggestModal" class="custom-modal">
         <div class="modal-header">
             <h3>پیشنهاد واژه جدید</h3>
             <button class="close-btn" id="suggestClose">&times;</button>
@@ -265,8 +367,91 @@
         </div>
 
         <div class="modal-actions">
-            <button class="btn-submit" id="sugSubmit">ثبت</button>
+            <button class="btn-submit" id="sugSubmit">ثبت و ارسال</button>
             <button class="btn-cancel" id="sugCancel">انصراف</button>
+        </div>
+    </div>
+
+    <!-- پاپ‌آپ موارد دیگر (الموت‌شناسی، روستاها و تصاویر) -->
+    <div id="moreModal" class="custom-modal">
+        <div class="modal-header">
+            <h3>الموت‌شناسی و دانستنی‌ها</h3>
+            <button class="close-btn" id="moreClose">&times;</button>
+        </div>
+
+        <!-- دکمه‌های تب -->
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="showTab('tab-villages', this)">🏞️ روستاها</button>
+            <button class="tab-btn" onclick="showTab('tab-attractions', this)">🏰 جاذبه‌ها و تصاویر</button>
+            <button class="tab-btn" onclick="showTab('tab-proverbs', this)">💬 ضرب‌المثل‌ها</button>
+            <button class="tab-btn" onclick="showTab('tab-about', this)">ℹ️ درباره اثر</button>
+        </div>
+
+        <!-- تب ۱: اسامی روستاها -->
+        <div id="tab-villages" class="tab-pane active">
+            <div class="info-card">
+                <h4>گازُرخان <span class="badge">الموت شرقی</span></h4>
+                <p>روستای تاریخی در پای دژ الموت، با باغات کهن آلبالو و گردو.</p>
+            </div>
+            <div class="info-card">
+                <h4>معلم‌کلایه <span class="badge">مرکز بخش</span></h4>
+                <p>مرکز بخش رودبار الموت شرقی با دسترسی به مناطق مختلف منطقه.</p>
+            </div>
+            <div class="info-card">
+                <h4>گرمارود <span class="badge">الموت شرقی</span></h4>
+                <p>از شرقی‌ترین و مرتفع‌ترین روستاهای دره شاهرود الموت با آبشارها و صخره‌های چشم‌نواز.</p>
+            </div>
+            <div class="info-card">
+                <h4>رازمیان <span class="badge">الموت غربی</span></h4>
+                <p>مرکز بخش رودبار الموت غربی، دارای رودخانه نینه‌رود و شالیزارهای زیبا.</p>
+            </div>
+            <div class="info-card">
+                <h4>اندج <span class="badge">طبیعت صخره‌ای</span></h4>
+                <p>معروف به دره شگفت‌انگیز اندج و صخره‌های عظیم تراش‌خورده توسط طبیعت.</p>
+            </div>
+            <div class="info-card">
+                <h4>آتان <span class="badge">روستای پلکانی</span></h4>
+                <p>ماسوله‌ای در دل کوهستان الموت با معماری پلکانی سنتی و اصیل.</p>
+            </div>
+        </div>
+
+        <!-- تب ۲: جاذبه‌ها و تصاویر -->
+        <div id="tab-attractions" class="tab-pane">
+            <div class="info-card">
+                <h4>قلعه الموت (حسن صباح)</h4>
+                <p>دژ غیرقابل نفوذ تاریخ ایران واقع در شمال روستای گازرخان بر فراز صخره‌ای سرخ‌رنگ.</p>
+                <!-- برای نمایش عکس، می‌توانید آدرس تصویر خود را در src قرار دهید -->
+                <img src="https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?w=600&auto=format&fit=crop&q=80" alt="قلعه الموت" loading="lazy">
+            </div>
+            <div class="info-card">
+                <h4>دریاچه اُوان</h4>
+                <p>دریاچه‌ای کوهستانی و نگین فیروزه‌ای قزوین میان روستاهای اوان، وربن، زواردشت و زرآباد.</p>
+            </div>
+            <div class="info-card">
+                <h4>قلعه لمبسر</h4>
+                <p>بزرگ‌ترین و مستحکم‌ترین قلعه در بخش الموت غربی، شمال شرقی رازمیان.</p>
+            </div>
+        </div>
+
+        <!-- تب ۳: ضرب‌المثل‌ها و کنایه‌ها -->
+        <div id="tab-proverbs" class="tab-pane">
+            <div class="info-card">
+                <h4>آب از سر بُگذَرست</h4>
+                <p><strong>معنی:</strong> کار از کار گذشته است.</p>
+            </div>
+            <div class="info-card">
+                <h4>هر کِه بامِش بیش، برفِش بیشتر</h4>
+                <p><strong>معنی:</strong> هر کس مقام، موقعیت یا ثروت بیشتری دارد، گرفتاری‌هایش بیشتر است.</p>
+            </div>
+        </div>
+
+        <!-- تب ۴: درباره اثر -->
+        <div id="tab-about" class="tab-pane">
+            <div class="info-card">
+                <h4>لغت‌نامه تاتی الموتی</h4>
+                <p>گردآورنده و مؤلف: <strong>مرتضی برخورداری</strong></p>
+                <p style="margin-top:6px;">هدف از ساخت این مجموعه، ثبت، پاسداشت و ماندگاری گویش کهن تاتی الموت برای آیندگان است.</p>
+            </div>
         </div>
     </div>
 
@@ -299,7 +484,7 @@
             })[c]);
         }
 
-        /* ۲) فیلتر تکراری‌ها و مرتب‌سازی */
+        /* ۲) فیلتر تکراری‌ها و مرتب‌سازی واژگان */
         const tableBody   = document.getElementById('table-body');
         const searchInput = document.getElementById('search-input');
         const countBox    = document.getElementById('result-count');
@@ -366,38 +551,42 @@
             render(dictionary, '');
         }
 
-        /* ۴) اتصال مستقیم فرم به پیام‌رسان بله (@MortezaBarkhordari) */
-        const btn = document.getElementById('suggestBtn');
-        const overlay = document.getElementById('suggestOverlay');
-        const modal = document.getElementById('suggestModal');
-        const closeBtn = document.getElementById('suggestClose');
-        const cancelBtn = document.getElementById('sugCancel');
-        const submitBtn = document.getElementById('sugSubmit');
-        const msg = document.getElementById('sugMsg');
+        /* ۴) مدیریت پاپ‌آپ‌ها */
+        const overlay      = document.getElementById('overlay');
+        const suggestModal = document.getElementById('suggestModal');
+        const moreModal    = document.getElementById('moreModal');
 
-        const tatiInput = document.getElementById('sugTati');
-        const farsiInput = document.getElementById('sugFarsi');
+        function closeAllModals() {
+            overlay.style.display = 'none';
+            suggestModal.style.display = 'none';
+            moreModal.style.display = 'none';
+        }
+
+        overlay.addEventListener('click', closeAllModals);
+
+        // ۵) پنجره پیشنهاد واژه (اتصال به پیام‌رسان بله)
+        const btnSuggest   = document.getElementById('suggestBtn');
+        const closeSuggest = document.getElementById('suggestClose');
+        const cancelSuggest= document.getElementById('sugCancel');
+        const submitSuggest= document.getElementById('sugSubmit');
+        const msg          = document.getElementById('sugMsg');
+
+        const tatiInput    = document.getElementById('sugTati');
+        const farsiInput   = document.getElementById('sugFarsi');
         const exampleInput = document.getElementById('sugExample');
-        const senderInput = document.getElementById('sugSender');
+        const senderInput  = document.getElementById('sugSender');
 
-        function openModal() {
+        btnSuggest.addEventListener('click', function() {
             msg.textContent = '';
             overlay.style.display = 'block';
-            modal.style.display = 'block';
+            suggestModal.style.display = 'block';
             setTimeout(() => tatiInput.focus(), 80);
-        }
+        });
 
-        function closeModal() {
-            overlay.style.display = 'none';
-            modal.style.display = 'none';
-        }
+        closeSuggest.addEventListener('click', closeAllModals);
+        cancelSuggest.addEventListener('click', closeAllModals);
 
-        btn.addEventListener('click', openModal);
-        overlay.addEventListener('click', closeModal);
-        closeBtn.addEventListener('click', closeModal);
-        cancelBtn.addEventListener('click', closeModal);
-
-        submitBtn.addEventListener('click', function () {
+        submitSuggest.addEventListener('click', function () {
             const tatiVal = tatiInput.value.trim();
             const farsiVal = farsiInput.value.trim();
             const exampleVal = exampleInput.value.trim();
@@ -408,30 +597,45 @@
                 return;
             }
 
-            // آماده‌سازی متن ارسالی برای بله
             let message = `سلام، پیشنهاد واژه برای لغت‌نامه تاتی الموتی:\n\n`;
             message += `🔹 واژه تاتی: ${tatiVal}\n`;
             message += `🔹 معنی فارسی: ${farsiVal}\n`;
             if (exampleVal) message += `🔹 توضیحات/مثال: ${exampleVal}\n`;
             if (senderVal) message += `🔹 فرستنده: ${senderVal}\n`;
 
-            // کپی متن در کلیپ‌بورد برای اطمینان بیشتر در گوشی
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(message).catch(() => {});
             }
 
-            // لینک باز شدن مستقیم در پیام‌رسان بله
             const baleUrl = `https://ble.ir/MortezaBarkhordari?text=${encodeURIComponent(message)}`;
-
             window.open(baleUrl, '_blank');
-            closeModal();
+            closeAllModals();
 
-            // ریست کردن ورودی‌ها
             tatiInput.value = '';
             farsiInput.value = '';
             exampleInput.value = '';
             senderInput.value = '';
         });
+
+        // ۶) پنجره موارد دیگر
+        const btnMore   = document.getElementById('moreBtn');
+        const closeMore = document.getElementById('moreClose');
+
+        btnMore.addEventListener('click', function() {
+            overlay.style.display = 'block';
+            moreModal.style.display = 'block';
+        });
+
+        closeMore.addEventListener('click', closeAllModals);
+
+        // تابع تعویض تب‌ها
+        function showTab(tabId, el) {
+            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            el.classList.add('active');
+        }
     </script>
 </body>
 </html>
