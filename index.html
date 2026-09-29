@@ -5,54 +5,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لغت‌نامه تاتی الموتی</title>
     <style>
-        body { user-select: none; font-family: Tahoma, Arial, sans-serif; background-color: #f9f9f9; color: #333; margin: 0; padding: 15px; padding-bottom: 85px; text-align: center; }
+        body { 
+            user-select: none; 
+            font-family: Tahoma, Arial, sans-serif; 
+            background-color: #f9f9f9; 
+            color: #333; 
+            margin: 0; 
+            padding: 15px; 
+            padding-bottom: 85px; 
+            text-align: center; 
+        }
         h1 { color: #2c3e50; margin-bottom: 5px; }
         #author { font-size: 16px; font-weight: bold; color: #555; margin-bottom: 12px; }
         
-        .sticky-header { position: sticky; top: 0; background-color: #f9f9f9; padding-top: 8px; padding-bottom: 6px; z-index: 1000; }
-        #search-input { width: 90%; max-width: 400px; padding: 10px 12px; margin-bottom: 8px; border: 2px solid #3498db; border-radius: 8px; font-size: 16px; outline: none; background: #fff; box-sizing: border-box; }
-        
-        /* استایل نوار حروف الفبا */
-        .alphabet-bar {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 4px;
-            max-width: 500px;
-            margin: 0 auto 8px auto;
-            direction: rtl;
+        .sticky-header { 
+            position: sticky; 
+            top: 0; 
+            background-color: #f9f9f9; 
+            padding-top: 8px; 
+            padding-bottom: 8px; 
+            z-index: 1000; 
         }
-        .alpha-btn {
-            background-color: #fff;
-            color: #2c3e50;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            padding: 4px 7px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-        .alpha-btn:hover, .alpha-btn.active {
-            background-color: #3498db;
-            color: #ffffff;
-            border-color: #3498db;
+        #search-input { 
+            width: 90%; 
+            max-width: 420px; 
+            padding: 12px 14px; 
+            margin-bottom: 8px; 
+            border: 2px solid #3498db; 
+            border-radius: 10px; 
+            font-size: 16px; 
+            outline: none; 
+            background: #fff; 
+            box-sizing: border-box; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        #result-count { font-size: 13px; color: #666; margin-bottom: 4px; }
+        #result-count { font-size: 14px; color: #555; margin-bottom: 6px; font-weight: bold; }
         
-        table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 8px; margin-top: 5px; }
-        th, td { border: 1px solid #e0e0e0; padding: 12px; text-align: right; font-size: 18px; }
-        thead th { position: sticky; top: 120px; background-color: #3498db; color: white; z-index: 999; }
-        tr:nth-child(even) { background-color: #f2f6f8; }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: #fff; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08); 
+            border-radius: 8px; 
+            margin-top: 5px; 
+            overflow: hidden;
+        }
+        th, td { 
+            border: 1px solid #e0e0e0; 
+            padding: 12px; 
+            text-align: right; 
+            font-size: 18px; 
+        }
+        thead th { 
+            position: sticky; 
+            top: 85px; 
+            background-color: #3498db; 
+            color: white; 
+            z-index: 999; 
+        }
+        tr:nth-child(even) { background-color: #f4f8fb; }
         
-        .btn-float { position: fixed; bottom: 16px; z-index: 1000; padding: 11px 16px; border: none; border-radius: 25px; cursor: pointer; color: #fff; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.25); display: flex; align-items: center; gap: 6px; }
+        /* دکمه‌های شناور پایین */
+        .btn-float { 
+            position: fixed; 
+            bottom: 16px; 
+            z-index: 1000; 
+            padding: 11px 18px; 
+            border: none; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            color: #fff; 
+            font-weight: bold; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25); 
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
+            font-size: 14px;
+        }
         #suggestBtn { left: 16px; background: #27ae60; }
         #moreBtn { right: 16px; background: #2980b9; }
         
+        /* مودال‌ها */
         .overlay { display: none; position: fixed; inset: 0; z-index: 10001; background: rgba(0,0,0,0.55); backdrop-filter: blur(2px); }
-        .custom-modal { display: none; position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 10002; width: min(94vw, 540px); max-height: 85vh; background: #fff; border-radius: 14px; padding: 16px; overflow-y: auto; text-align: right; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 8px; margin-bottom: 10px; }
+        .custom-modal { display: none; position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 10002; width: min(94vw, 540px); max-height: 85vh; background: #fff; border-radius: 14px; padding: 16px; overflow-y: auto; text-align: right; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 8px; margin-bottom: 12px; }
         .close-btn { border: none; background: transparent; font-size: 26px; cursor: pointer; color: #888; }
         #village-search { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 10px; box-sizing: border-box; }
         .filter-tabs { display: flex; gap: 6px; margin-bottom: 10px; }
@@ -69,13 +106,16 @@
 
     <div class="sticky-header">
         <input type="text" id="search-input" placeholder="جستجو در تاتی یا فارسی...">
-        <!-- نوار الفبا -->
-        <div id="alphabet-container" class="alphabet-bar"></div>
         <div id="result-count"></div>
     </div>
 
     <table id="dictionary-table">
-        <thead><tr><th>تاتی</th><th>فارسی</th></tr></thead>
+        <thead>
+            <tr>
+                <th>تاتی</th>
+                <th>فارسی</th>
+            </tr>
+        </thead>
         <tbody id="table-body"></tbody>
     </table>
 
@@ -84,7 +124,7 @@
 
     <div id="overlay" class="overlay"></div>
 
-    <!-- Modal Suggest -->
+    <!-- مودال پیشنهاد واژه -->
     <div id="suggestModal" class="custom-modal">
         <div class="modal-header"><h3>پیشنهاد واژه جدید</h3><button class="close-btn" onclick="closeAllModals()">&times;</button></div>
         
@@ -96,7 +136,7 @@
         <button id="sugSubmit" onclick="sendToBale()" style="width:100%; padding:12px; background:#27ae60; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">ارسال در بله</button>
     </div>
 
-    <!-- Modal Villages -->
+    <!-- مودال الموت شناسی -->
     <div id="moreModal" class="custom-modal">
         <div class="modal-header"><h3 id="modal-title">روستاهای الموت</h3><button class="close-btn" onclick="closeAllModals()">&times;</button></div>
         
@@ -111,7 +151,7 @@
         </div>
         
         <div id="detail-view" style="display:none;">
-            <button onclick="backToList()" style="margin-bottom:10px;">🔙 بازگشت</button>
+            <button onclick="backToList()" style="margin-bottom:10px; padding:6px 12px; cursor:pointer;">🔙 بازگشت</button>
             <div id="village-detail-content"></div>
         </div>
     </div>
@@ -122,81 +162,44 @@
     <script>
         const tableBody = document.getElementById('table-body');
         const searchInput = document.getElementById('search-input');
-        const alphabetContainer = document.getElementById('alphabet-container');
         const resultCount = document.getElementById('result-count');
-        
-        let selectedLetter = 'همه';
 
-        const letters = [
-            'همه', 'آ', 'ا', 'ب', 'پ', 'ت', 'ث', 'ج', 'چ', 'ح', 'خ', 
-            'د', 'ذ', 'ر', 'ز', 'ژ', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 
-            'ع', 'غ', 'ف', 'ق', 'ک', 'گ', 'ل', 'م', 'ن', 'و', 'ه', 'ی'
-        ];
-
-        // تابع حذف اعراب و حرکت‌ها برای مقایسه دقیق
+        // تابع حذف اعراب برای جستجو و مرتب‌سازی دقیق
         function cleanDiacritics(str) {
             return (str || '').replace(/[\u064B-\u065F\u0670]/g, '').trim();
-        }
-
-        // ساخت دکمه‌های حروف الفبا
-        function buildAlphabetBar() {
-            alphabetContainer.innerHTML = '';
-            letters.forEach(letter => {
-                const btn = document.createElement('button');
-                btn.className = 'alpha-btn' + (letter === selectedLetter ? ' active' : '');
-                btn.textContent = letter;
-                btn.onclick = () => {
-                    selectedLetter = letter;
-                    document.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    renderDict();
-                };
-                alphabetContainer.appendChild(btn);
-            });
         }
 
         function renderDict() {
             const val = searchInput.value.trim().toLowerCase();
             const list = (typeof words !== 'undefined') ? words : [];
 
+            // ۱. فیلتر کردن طبق کادر جستجو
             const filtered = list.filter(w => {
-                const tatiClean = cleanDiacritics(w.tati);
-                const farsiClean = cleanDiacritics(w.farsi);
-
-                // فیلتر بر اساس جستجوی متنی
-                const matchSearch = !val || 
-                    w.tati.toLowerCase().includes(val) || 
-                    w.farsi.toLowerCase().includes(val) ||
-                    tatiClean.toLowerCase().includes(val) ||
-                    farsiClean.toLowerCase().includes(val);
-
-                // فیلتر بر اساس حرف الفبای انتخاب‌شده
-                let matchLetter = true;
-                if (selectedLetter !== 'همه') {
-                    if (selectedLetter === 'ا') {
-                        // در زبان فارسی معمولا الف شامل 'ا' و 'آ' می‌شود مگر اینکه جداگانه انتخاب شود
-                        matchLetter = tatiClean.startsWith('ا') && !tatiClean.startsWith('آ');
-                    } else {
-                        matchLetter = tatiClean.startsWith(selectedLetter);
-                    }
-                }
-
-                return matchSearch && matchLetter;
+                if (!val) return true;
+                const tatiClean = cleanDiacritics(w.tati).toLowerCase();
+                const farsiClean = cleanDiacritics(w.farsi).toLowerCase();
+                return w.tati.toLowerCase().includes(val) || 
+                       w.farsi.toLowerCase().includes(val) ||
+                       tatiClean.includes(val) ||
+                       farsiClean.includes(val);
             });
 
+            // ۲. مرتب‌سازی دقیق بر اساس الفبای فارسی (آ تا ی) بر پایه ستون تاتی
+            filtered.sort((a, b) => {
+                const aClean = cleanDiacritics(a.tati);
+                const bClean = cleanDiacritics(b.tati);
+                return aClean.localeCompare(bClean, 'fa');
+            });
+
+            // ۳. نمایش در جدول
             tableBody.innerHTML = filtered.map(w => `<tr><td>${w.tati}</td><td>${w.farsi}</td></tr>`).join('');
             resultCount.textContent = `تعداد واژه‌ها: ${filtered.length}`;
         }
 
-        searchInput.addEventListener('input', () => {
-            renderDict();
-        });
+        searchInput.addEventListener('input', renderDict);
+        renderDict(); // اجرای اولیه هنگام باز شدن صفحه
 
-        // شروع اولیه
-        buildAlphabetBar();
-        renderDict();
-
-        // Modal Logic
+        // مدیریت مودال‌ها
         const overlay = document.getElementById('overlay');
         function openModal(id) { overlay.style.display = 'block'; document.getElementById(id).style.display = 'block'; }
         
@@ -211,7 +214,6 @@
         document.getElementById('moreBtn').onclick = () => { openModal('moreModal'); renderVillages('همه'); };
         overlay.onclick = closeAllModals;
 
-        // Bale Logic
         function sendToBale() {
             const tati = document.getElementById('sugTati').value;
             const farsi = document.getElementById('sugFarsi').value;
@@ -231,7 +233,6 @@
             closeAllModals();
         }
 
-        // Villages Logic
         function renderVillages(filter, search = '') {
             const container = document.getElementById('villages-container');
             const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
