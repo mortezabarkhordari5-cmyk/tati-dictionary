@@ -52,9 +52,13 @@
     <!-- Modal Suggest -->
     <div id="suggestModal" class="custom-modal">
         <div class="modal-header"><h3>پیشنهاد واژه جدید</h3><button class="close-btn" onclick="closeAllModals()">&times;</button></div>
-        <input type="text" id="sugTati" placeholder="واژه تاتی" style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box;">
-        <input type="text" id="sugFarsi" placeholder="معنی فارسی" style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box;">
-        <button id="sugSubmit" style="width:100%; padding:10px; background:#27ae60; color:white; border:none; border-radius:8px;">ارسال در بله</button>
+        
+        <input type="text" id="sugTati" placeholder="واژه تاتی (الزامی)" style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box;">
+        <input type="text" id="sugFarsi" placeholder="معنی فارسی (الزامی)" style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box;">
+        <textarea id="sugDesc" placeholder="مثال، تلفظ یا توضیحات (اختیاری)..." style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box; height:80px; font-family:inherit;"></textarea>
+        <input type="text" id="sugVillage" placeholder="نام شما یا روستای مربوطه (اختیاری)" style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box;">
+        
+        <button id="sugSubmit" onclick="sendToBale()" style="width:100%; padding:12px; background:#27ae60; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">ارسال در بله</button>
     </div>
 
     <!-- Modal Villages -->
@@ -108,7 +112,25 @@
         document.getElementById('moreBtn').onclick = () => { openModal('moreModal'); renderVillages('همه'); };
         overlay.onclick = closeAllModals;
 
-        // Villages Logic (Fixed)
+        // Bale Logic
+        function sendToBale() {
+            const tati = document.getElementById('sugTati').value;
+            const farsi = document.getElementById('sugFarsi').value;
+            const desc = document.getElementById('sugDesc').value;
+            const village = document.getElementById('sugVillage').value;
+
+            if (!tati || !farsi) {
+                alert("لطفاً واژه تاتی و معنی فارسی را وارد کنید.");
+                return;
+            }
+
+            const text = `واژه جدید: ${tati}\nمعنی: ${farsi}\nتوضیح: ${desc}\nنام/روستا: ${village}`;
+            // حتماً YOUR_ID_HERE را با آیدی بله خودتان عوض کنید
+            const url = `https://ble.ir/YOUR_ID_HERE?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+        }
+
+        // Villages Logic
         function renderVillages(filter, search = '') {
             const container = document.getElementById('villages-container');
             const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
