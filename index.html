@@ -81,6 +81,7 @@
     <script src="places.js?v=4"></script>
 
     <script>
+        // Dictionary Logic
         const tableBody = document.getElementById('table-body');
         const searchInput = document.getElementById('search-input');
         
@@ -92,26 +93,29 @@
         searchInput.addEventListener('input', renderDict);
         renderDict();
 
+        // Modal Logic
         const overlay = document.getElementById('overlay');
         function openModal(id) { overlay.style.display = 'block'; document.getElementById(id).style.display = 'block'; }
+        
         function closeAllModals() {
             overlay.style.display = 'none';
             document.querySelectorAll('.custom-modal').forEach(m => m.style.display = 'none');
             document.getElementById('detail-view').style.display = 'none';
             document.getElementById('list-view').style.display = 'block';
         }
+        
         document.getElementById('suggestBtn').onclick = () => openModal('suggestModal');
         document.getElementById('moreBtn').onclick = () => { openModal('moreModal'); renderVillages('همه'); };
         overlay.onclick = closeAllModals;
 
-        // اصلاح اصلی اینجا انجام شد: استفاده از نام روستا به جای ایندکس
+        // Villages Logic (Fixed)
         function renderVillages(filter, search = '') {
             const container = document.getElementById('villages-container');
             const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
             
             const filtered = list.filter(v => {
-                const matchFilter = (filter === 'همه') || (v.section.includes(filter));
-                const matchSearch = v.name.includes(search);
+                const matchFilter = (filter === 'همه') || (v.section && v.section.includes(filter));
+                const matchSearch = v.name && v.name.includes(search);
                 return matchFilter && matchSearch;
             });
 
@@ -134,20 +138,6 @@
         });
 
         function showDetail(vName) {
-            // پیدا کردن دقیق روستا در لیست اصلی بر اساس نام
-            const v = alamutVillages.find(item => item.name === vName);
-            if (!v) return;
-
-            document.getElementById('list-view').style.display = 'none';
-            document.getElementById('
-
-        document.getElementById('village-search').addEventListener('input', (e) => {
-            const activeTab = document.querySelector('.tab-btn.active').innerText;
-            renderVillages(activeTab, e.target.value);
-        });
-
-        function showDetail(vName) {
-            // پیدا کردن دقیق روستا در لیست اصلی بر اساس نام
             const v = alamutVillages.find(item => item.name === vName);
             if (!v) return;
 
@@ -157,4 +147,14 @@
                 <h3>${v.name}</h3>
                 <p><strong>بخش:</strong> ${v.section}</p>
                 <p>${v.desc || 'توضیحاتی موجود نیست.'}</p>
-                <img src
+                <img src="${(v.photos && v.photos.length > 0) ? v.photos[0] : 'placeholder.jpg'}" style="width:100%; border-radius:8px;">
+            `;
+        }
+        
+        function backToList() {
+            document.getElementById('detail-view').style.display = 'none';
+            document.getElementById('list-view').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
