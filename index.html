@@ -12,13 +12,13 @@
             color: #333;
             margin: 0;
             padding: 15px;
-            padding-bottom: 80px; /* فاصله از پایین برای دکمه‌های شناور */
+            padding-bottom: 85px;
             text-align: center;
         }
         h1 { color: #2c3e50; margin-bottom: 5px; }
         #author { font-size: 16px; font-weight: bold; color: #555; margin-bottom: 15px; }
 
-        /* بخش ثابت بالای صفحه (کادر جستجو و شمارنده) */
+        /* بخش جستجو و شمارنده */
         .sticky-header {
             position: -webkit-sticky;
             position: sticky;
@@ -65,7 +65,6 @@
             font-size: 18px;
         }
         
-        /* ثابت ماندن سرستون جدول */
         thead th {
             position: -webkit-sticky;
             position: sticky;
@@ -78,7 +77,7 @@
         tr:nth-child(even) { background-color: #f2f6f8; }
         .not-found { text-align: center; color: #c0392b; }
 
-        /* دکمه شناور پیشنهاد واژه (سمت چپ) */
+        /* دکمه‌های شناور پایین */
         #suggestBtn {
             position: fixed;
             left: 16px;
@@ -100,7 +99,6 @@
         }
         #suggestBtn:hover { background: #219150; }
 
-        /* دکمه شناور موارد دیگر (سمت راست) */
         #moreBtn {
             position: fixed;
             right: 16px;
@@ -122,7 +120,7 @@
         }
         #moreBtn:hover { background: #1c638e; }
 
-        /* لایه تیره مشترک برای پاپ‌آپ‌ها */
+        /* پاپ‌آپ‌ها */
         .overlay {
             display: none;
             position: fixed;
@@ -132,7 +130,6 @@
             backdrop-filter: blur(2px);
         }
 
-        /* ساختار کلی پنجره‌های پاپ‌آپ */
         .custom-modal {
             display: none;
             position: fixed;
@@ -140,8 +137,8 @@
             top: 50%;
             transform: translate(-50%, -50%);
             z-index: 10002;
-            width: min(92vw, 500px);
-            max-height: 85vh;
+            width: min(92vw, 520px);
+            max-height: 88vh;
             background: #fff;
             border-radius: 14px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
@@ -159,11 +156,7 @@
             border-bottom: 1px solid #eee;
             padding-bottom: 8px;
         }
-        .modal-header h3 {
-            margin: 0;
-            font-size: 17px;
-            color: #2c3e50;
-        }
+        .modal-header h3 { margin: 0; font-size: 17px; color: #2c3e50; }
         .close-btn {
             border: none;
             background: transparent;
@@ -174,132 +167,113 @@
         }
 
         /* فرم پیشنهاد واژه */
-        .form-group {
-            margin-bottom: 12px;
-            text-align: right;
-        }
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            color: #444;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
+        .form-group { margin-bottom: 12px; text-align: right; }
+        .form-group label { display: block; font-size: 13px; color: #444; margin-bottom: 5px; font-weight: bold; }
         .form-group input, .form-group textarea {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 14px;
-            outline: none;
+            width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid #ccc;
+            border-radius: 8px; font-family: inherit; font-size: 14px; outline: none;
         }
         .form-group input:focus, .form-group textarea:focus { border-color: #3498db; }
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
+        .modal-actions { display: flex; gap: 10px; margin-top: 15px; }
         .btn-submit {
-            flex: 1;
-            background: #27ae60;
-            color: #fff;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 15px;
-            cursor: pointer;
-            font-weight: bold;
+            flex: 1; background: #27ae60; color: #fff; border: none; padding: 10px;
+            border-radius: 8px; font-family: inherit; font-size: 15px; cursor: pointer; font-weight: bold;
         }
         .btn-cancel {
-            background: #e0e0e0;
-            color: #333;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 15px;
-            cursor: pointer;
+            background: #e0e0e0; color: #333; border: none; padding: 10px 16px;
+            border-radius: 8px; font-family: inherit; font-size: 15px; cursor: pointer;
         }
-        #sugMsg {
-            font-size: 13px;
-            color: #e74c3c;
-            margin-bottom: 8px;
-            min-height: 18px;
-        }
+        #sugMsg { font-size: 13px; color: #e74c3c; margin-bottom: 8px; min-height: 18px; }
 
-        /* تب‌ها در بخش موارد دیگر */
-        .tab-buttons {
-            display: flex;
-            gap: 6px;
-            border-bottom: 2px solid #eef2f5;
-            padding-bottom: 8px;
-            margin-bottom: 12px;
-            overflow-x: auto;
-        }
-        .tab-btn {
-            background: #f1f4f7;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: bold;
-            color: #555;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-        .tab-btn.active {
-            background: #2980b9;
-            color: #fff;
-        }
-        .tab-pane {
-            display: none;
-            animation: fadeIn 0.2s ease-in-out;
-        }
-        .tab-pane.active { display: block; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* کارت‌های داخلی تب‌ها */
-        .info-card {
-            background: #fdfdfd;
-            border: 1px solid #e3e8ee;
-            border-radius: 8px;
-            padding: 10px 12px;
+        /* کارت‌های روستا در لیست (قابل کلیک) */
+        .village-item {
+            background: #fff;
+            border: 1px solid #dce4ec;
+            border-radius: 10px;
+            padding: 12px 14px;
             margin-bottom: 10px;
-            text-align: right;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .info-card h4 {
-            margin: 0 0 6px 0;
-            color: #2c3e50;
-            font-size: 15px;
+        .village-item:hover, .village-item:active {
+            background: #f4f8fb;
+            border-color: #3498db;
+            transform: translateX(-3px);
         }
-        .info-card p {
-            margin: 0;
-            font-size: 13px;
-            color: #555;
-            line-height: 1.6;
-        }
-        .info-card img {
-            width: 100%;
-            max-height: 180px;
-            object-fit: cover;
-            border-radius: 6px;
-            margin-top: 8px;
-        }
+        .village-title { font-size: 16px; font-weight: bold; color: #2c3e50; }
         .badge {
-            display: inline-block;
             background: #e8f4fd;
             color: #2980b9;
-            font-size: 11px;
-            padding: 2px 6px;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: normal;
+        }
+        .arrow-icon { color: #3498db; font-size: 18px; }
+
+        /* صفحه جزئیات هر روستا */
+        #village-details-view { display: none; }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #ecf0f1;
+            color: #2c3e50;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 13px;
+            cursor: pointer;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+        .back-btn:hover { background: #dfe6e9; }
+        .detail-section-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2980b9;
+            margin: 14px 0 6px 0;
+            border-bottom: 1px dashed #cbd5e1;
+            padding-bottom: 4px;
+        }
+        .detail-text { font-size: 14px; line-height: 1.7; color: #444; margin: 0; }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .gallery-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .gallery-item img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        .gallery-caption {
+            padding: 6px 10px;
+            font-size: 12px;
+            color: #555;
+            background: #fff;
+        }
+        .proverb-item {
+            background: #fef9e7;
+            border-right: 4px solid #f39c12;
+            padding: 8px 12px;
             border-radius: 4px;
-            margin-right: 6px;
+            margin-bottom: 6px;
+            font-size: 13px;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -308,7 +282,7 @@
     <h1>لغت‌نامه تاتی الموتی</h1>
     <div id="author">اثر: مرتضی برخورداری</div>
 
-    <!-- کادر جستجو و شمارنده -->
+    <!-- کادر جستجو -->
     <div class="sticky-header">
         <input type="text" id="search-input" placeholder="جستجو در تاتی یا فارسی..." autocomplete="off">
         <div id="result-count"></div>
@@ -325,140 +299,137 @@
         <tbody id="table-body"></tbody>
     </table>
 
-    <!-- دکمه‌های شناور پایین صفحه -->
+    <!-- دکمه‌های شناور -->
     <button id="suggestBtn">
         <span>➕</span> پیشنهاد واژه
     </button>
 
     <button id="moreBtn">
-        <span>📚</span> موارد دیگر
+        <span>📚</span> الموت‌شناسی
     </button>
 
-    <!-- لایه تیره پس‌زمینه برای پاپ‌آپ‌ها -->
+    <!-- لایه تیره پس‌زمینه -->
     <div id="overlay" class="overlay"></div>
 
-    <!-- پاپ‌آپ پیشنهاد واژه جدید -->
+    <!-- پاپ‌آپ پیشنهاد واژه -->
     <div id="suggestModal" class="custom-modal">
         <div class="modal-header">
             <h3>پیشنهاد واژه جدید</h3>
             <button class="close-btn" id="suggestClose">&times;</button>
         </div>
-
         <div id="sugMsg"></div>
-
         <div class="form-group">
             <label for="sugTati">واژه تاتی (الزامی):</label>
             <input type="text" id="sugTati" placeholder="مثال: کیجیک">
         </div>
-
         <div class="form-group">
             <label for="sugFarsi">معنی فارسی (الزامی):</label>
             <input type="text" id="sugFarsi" placeholder="مثال: دختر">
         </div>
-
         <div class="form-group">
             <label for="sugExample">مثال، تلفظ یا توضیحات (اختیاری):</label>
             <textarea id="sugExample" rows="2" placeholder="توضیح یا مثال در جمله..."></textarea>
         </div>
-
         <div class="form-group">
-            <label for="sugSender">نام شما یا روستای مربوطه (اختیاری):</label>
-            <input type="text" id="sugSender" placeholder="مثال: علی از آتان">
+            <label for="sugSender">نام شما یا روستا (اختیاری):</label>
+            <input type="text" id="sugSender" placeholder="مثال: علی از گازرخان">
         </div>
-
         <div class="modal-actions">
             <button class="btn-submit" id="sugSubmit">ثبت و ارسال</button>
             <button class="btn-cancel" id="sugCancel">انصراف</button>
         </div>
     </div>
 
-    <!-- پاپ‌آپ موارد دیگر (الموت‌شناسی، روستاها و تصاویر) -->
+    <!-- پاپ‌آپ الموت‌شناسی (روستاها و جزئیات اختصاصی) -->
     <div id="moreModal" class="custom-modal">
         <div class="modal-header">
-            <h3>الموت‌شناسی و دانستنی‌ها</h3>
+            <h3 id="modal-main-title">روستاهای الموت</h3>
             <button class="close-btn" id="moreClose">&times;</button>
         </div>
 
-        <!-- دکمه‌های تب -->
-        <div class="tab-buttons">
-            <button class="tab-btn active" onclick="showTab('tab-villages', this)">🏞️ روستاها</button>
-            <button class="tab-btn" onclick="showTab('tab-attractions', this)">🏰 جاذبه‌ها و تصاویر</button>
-            <button class="tab-btn" onclick="showTab('tab-proverbs', this)">💬 ضرب‌المثل‌ها</button>
-            <button class="tab-btn" onclick="showTab('tab-about', this)">ℹ️ درباره اثر</button>
+        <!-- نمای ۱: لیست روستاها -->
+        <div id="villages-list-view">
+            <p style="font-size:13px; color:#666; margin-top:0;">برای مشاهده تصاویر، تاریخچه و ضرب‌المثل‌ها، روی روستای مورد نظر بزنید:</p>
+            <div id="villages-container"></div>
         </div>
 
-        <!-- تب ۱: اسامی روستاها -->
-        <div id="tab-villages" class="tab-pane active">
-            <div class="info-card">
-                <h4>گازُرخان <span class="badge">الموت شرقی</span></h4>
-                <p>روستای تاریخی در پای دژ الموت، با باغات کهن آلبالو و گردو.</p>
-            </div>
-            <div class="info-card">
-                <h4>معلم‌کلایه <span class="badge">مرکز بخش</span></h4>
-                <p>مرکز بخش رودبار الموت شرقی با دسترسی به مناطق مختلف منطقه.</p>
-            </div>
-            <div class="info-card">
-                <h4>گرمارود <span class="badge">الموت شرقی</span></h4>
-                <p>از شرقی‌ترین و مرتفع‌ترین روستاهای دره شاهرود الموت با آبشارها و صخره‌های چشم‌نواز.</p>
-            </div>
-            <div class="info-card">
-                <h4>رازمیان <span class="badge">الموت غربی</span></h4>
-                <p>مرکز بخش رودبار الموت غربی، دارای رودخانه نینه‌رود و شالیزارهای زیبا.</p>
-            </div>
-            <div class="info-card">
-                <h4>اندج <span class="badge">طبیعت صخره‌ای</span></h4>
-                <p>معروف به دره شگفت‌انگیز اندج و صخره‌های عظیم تراش‌خورده توسط طبیعت.</p>
-            </div>
-            <div class="info-card">
-                <h4>آتان <span class="badge">روستای پلکانی</span></h4>
-                <p>ماسوله‌ای در دل کوهستان الموت با معماری پلکانی سنتی و اصیل.</p>
-            </div>
-        </div>
-
-        <!-- تب ۲: جاذبه‌ها و تصاویر -->
-        <div id="tab-attractions" class="tab-pane">
-            <div class="info-card">
-                <h4>قلعه الموت (حسن صباح)</h4>
-                <p>دژ غیرقابل نفوذ تاریخ ایران واقع در شمال روستای گازرخان بر فراز صخره‌ای سرخ‌رنگ.</p>
-                <!-- برای نمایش عکس، می‌توانید آدرس تصویر خود را در src قرار دهید -->
-                <img src="https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?w=600&auto=format&fit=crop&q=80" alt="قلعه الموت" loading="lazy">
-            </div>
-            <div class="info-card">
-                <h4>دریاچه اُوان</h4>
-                <p>دریاچه‌ای کوهستانی و نگین فیروزه‌ای قزوین میان روستاهای اوان، وربن، زواردشت و زرآباد.</p>
-            </div>
-            <div class="info-card">
-                <h4>قلعه لمبسر</h4>
-                <p>بزرگ‌ترین و مستحکم‌ترین قلعه در بخش الموت غربی، شمال شرقی رازمیان.</p>
-            </div>
-        </div>
-
-        <!-- تب ۳: ضرب‌المثل‌ها و کنایه‌ها -->
-        <div id="tab-proverbs" class="tab-pane">
-            <div class="info-card">
-                <h4>آب از سر بُگذَرست</h4>
-                <p><strong>معنی:</strong> کار از کار گذشته است.</p>
-            </div>
-            <div class="info-card">
-                <h4>هر کِه بامِش بیش، برفِش بیشتر</h4>
-                <p><strong>معنی:</strong> هر کس مقام، موقعیت یا ثروت بیشتری دارد، گرفتاری‌هایش بیشتر است.</p>
-            </div>
-        </div>
-
-        <!-- تب ۴: درباره اثر -->
-        <div id="tab-about" class="tab-pane">
-            <div class="info-card">
-                <h4>لغت‌نامه تاتی الموتی</h4>
-                <p>گردآورنده و مؤلف: <strong>مرتضی برخورداری</strong></p>
-                <p style="margin-top:6px;">هدف از ساخت این مجموعه، ثبت، پاسداشت و ماندگاری گویش کهن تاتی الموت برای آیندگان است.</p>
-            </div>
+        <!-- نمای ۲: صفحه جزئیات روستای انتخاب شده -->
+        <div id="village-details-view">
+            <button class="back-btn" onclick="backToVillagesList()">🔙 بازگشت به لیست روستاها</button>
+            <div id="village-content"></div>
         </div>
     </div>
 
-    <!-- فایل داده‌ها -->
     <script src="data.js"></script>
     <script>
-        /* ۱) یکسان‌سازی متن */
+        /* ==========================================================
+           داده‌های روستاها، تصاویر و ضرب‌المثل‌های هر روستا
+           (به راحتی می‌توانید هر روستا را در اینجا کم، زیاد یا ویرایش کنید)
+           ========================================================== */
+        const villagesData = [
+            {
+                id: "gazer-khan",
+                name: "گازُرخان",
+                tag: "الموت شرقی",
+                desc: "روستای تاریخی گازرخان در پای دژ مشهور الموت (حسن صباح) قرار دارد. این روستا دارای باغات گیلاس، آلبالو و گردو است و از مهم‌ترین قطب‌های گردشگری منطقه الموت به شمار می‌رود.",
+                images: [
+                    {
+                        url: "https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?w=600&auto=format&fit=crop&q=80",
+                        title: "نمای دژ حسن صباح در بالای گازرخان"
+                    }
+                ],
+                proverbs: [
+                    { text: "آب از سر بُگذَرست", meaning: "کار از کار گذشته است." },
+                    { text: "هر کِه بامِش بیش، برفِش بیشتر", meaning: "هر کس مقام یا امکانات بیشتری دارد، سختی‌هایش بیشتر است." }
+                ]
+            },
+            {
+                id: "moallem-kalayeh",
+                name: "معلم‌کلایه",
+                tag: "مرکز بخش الموت شرقی",
+                desc: "معلم‌کلایه مرکز بخش رودبار الموت شرقی است و به عنوان قطب اداری و خدماتی منطقه شناخته می‌شود و دسترسی به تمام روستاهای الموت شرقی از این نقطه صورت می‌گیرد.",
+                images: [],
+                proverbs: [
+                    { text: "دست دستِه می‌شوره، دست ورگردِه رویَه می‌شوره", meaning: "همکاری و کمک متقابل بین مردم." }
+                ]
+            },
+            {
+                id: "garmarud",
+                name: "گرمارود",
+                tag: "الموت شرقی",
+                desc: "گرمارود از شرقی‌ترین و کهن‌ترین روستاهای الموت است که در انتهای دره شاهرود و مسیر کاروان‌روی قدیمی قزوین به مازندران (سه هزار) قرار دارد و دارای آبشارهای دیدنی است.",
+                images: [],
+                proverbs: []
+            },
+            {
+                id: "razmian",
+                name: "رازمیان",
+                tag: "الموت غربی",
+                desc: "مرکز بخش رودبار الموت غربی، دارای اقلیمی مناسب، شالیزارهای برنج و رودخانه خروشان نینه‌رود است. قلعه باستانی لمبسر در نزدیکی این شهر قرار دارد.",
+                images: [],
+                proverbs: []
+            },
+            {
+                id: "andej",
+                name: "اندج",
+                tag: "طبیعت صخره‌ای",
+                desc: "روستای اندج به خاطر دره‌های شگفت‌انگیز و صخره‌های تندیس‌مانند طبیعی در تمام ایران شهرت دارد. رودخانه اندج‌رود از میان باغات این دره می‌گذرد.",
+                images: [],
+                proverbs: []
+            },
+            {
+                id: "atan",
+                name: "آتان",
+                tag: "روستای پلکانی",
+                desc: "روستای کهن آتان به خاطر معماری ویژه پلکانی و سنتی‌اش شناخته می‌شود به گونه‌ای که حیاط هر خانه، پشت‌بام خانه پایینی است.",
+                images: [],
+                proverbs: []
+            }
+        ];
+
+        /* ==========================================================
+           ۱) یکسان‌سازی متن و جدول لغت‌نامه
+           ========================================================== */
         const DIACRITICS = /[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g;
         const INVISIBLE  = /[\u200B-\u200F\u202A-\u202E\u2060\uFEFF]/g;
         const LETTER_MAP = {
@@ -484,13 +455,11 @@
             })[c]);
         }
 
-        /* ۲) فیلتر تکراری‌ها و مرتب‌سازی واژگان */
         const tableBody   = document.getElementById('table-body');
         const searchInput = document.getElementById('search-input');
         const countBox    = document.getElementById('result-count');
 
         const rawData = (typeof words !== 'undefined' && Array.isArray(words)) ? words : [];
-
         const uniqueSet = new Set();
         const cleanData = [];
 
@@ -512,7 +481,6 @@
 
         dictionary.sort((a, b) => a.tatiKey.localeCompare(b.tatiKey, 'fa'));
 
-        /* ۳) نمایش و جستجو */
         function render(list, query) {
             if (list.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="2" class="not-found">کلمه‌ای یافت نشد.</td></tr>';
@@ -551,7 +519,9 @@
             render(dictionary, '');
         }
 
-        /* ۴) مدیریت پاپ‌آپ‌ها */
+        /* ==========================================================
+           ۲) مدیریت پاپ‌آپ‌ها
+           ========================================================== */
         const overlay      = document.getElementById('overlay');
         const suggestModal = document.getElementById('suggestModal');
         const moreModal    = document.getElementById('moreModal');
@@ -564,7 +534,7 @@
 
         overlay.addEventListener('click', closeAllModals);
 
-        // ۵) پنجره پیشنهاد واژه (اتصال به پیام‌رسان بله)
+        // پنجره پیشنهاد واژه
         const btnSuggest   = document.getElementById('suggestBtn');
         const closeSuggest = document.getElementById('suggestClose');
         const cancelSuggest= document.getElementById('sugCancel');
@@ -617,25 +587,93 @@
             senderInput.value = '';
         });
 
-        // ۶) پنجره موارد دیگر
+        /* ==========================================================
+           ۳) سیستم لیست و جزئیات روستاها (الموت‌شناسی)
+           ========================================================== */
         const btnMore   = document.getElementById('moreBtn');
         const closeMore = document.getElementById('moreClose');
+        const villagesContainer = document.getElementById('villages-container');
+        const listView = document.getElementById('villages-list-view');
+        const detailsView = document.getElementById('village-details-view');
+        const villageContent = document.getElementById('village-content');
+        const modalTitle = document.getElementById('modal-main-title');
 
         btnMore.addEventListener('click', function() {
+            backToVillagesList();
             overlay.style.display = 'block';
             moreModal.style.display = 'block';
         });
 
         closeMore.addEventListener('click', closeAllModals);
 
-        // تابع تعویض تب‌ها
-        function showTab(tabId, el) {
-            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active');
-            el.classList.add('active');
+        // ساخت لیست روستاها
+        function renderVillagesList() {
+            let html = '';
+            villagesData.forEach((v, index) => {
+                html += `
+                    <div class="village-item" onclick="openVillageDetails(${index})">
+                        <div>
+                            <span class="village-title">${escapeHtml(v.name)}</span>
+                            ${v.tag ? `<span class="badge">${escapeHtml(v.tag)}</span>` : ''}
+                        </div>
+                        <span class="arrow-icon">‹</span>
+                    </div>
+                `;
+            });
+            villagesContainer.innerHTML = html;
         }
+
+        // باز کردن صفحه جزئیات هر روستا
+        function openVillageDetails(index) {
+            const v = villagesData[index];
+            modalTitle.textContent = `روستای ${v.name}`;
+            
+            let html = `
+                <div class="detail-section-title">📖 درباره روستا</div>
+                <p class="detail-text">${escapeHtml(v.desc || 'توضیحاتی ثبت نشده است.')}</p>
+            `;
+
+            // تصاویر
+            if (v.images && v.images.length > 0) {
+                html += `<div class="detail-section-title">📷 تصاویر</div><div class="gallery-grid">`;
+                v.images.forEach(img => {
+                    html += `
+                        <div class="gallery-item">
+                            <img src="${img.url}" alt="${escapeHtml(img.title || v.name)}" loading="lazy">
+                            ${img.title ? `<div class="gallery-caption">${escapeHtml(img.title)}</div>` : ''}
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            // ضرب‌المثل‌ها
+            if (v.proverbs && v.proverbs.length > 0) {
+                html += `<div class="detail-section-title">💬 ضرب‌المثل‌ها و کنایه‌ها</div>`;
+                v.proverbs.forEach(p => {
+                    html += `
+                        <div class="proverb-item">
+                            <strong>«${escapeHtml(p.text)}»</strong><br>
+                            <span>معنی: ${escapeHtml(p.meaning)}</span>
+                        </div>
+                    `;
+                });
+            }
+
+            villageContent.innerHTML = html;
+            listView.style.display = 'none';
+            detailsView.style.display = 'block';
+        }
+
+        // بازگشت به لیست کلی روستاها
+        function backToVillagesList() {
+            modalTitle.textContent = 'روستاهای الموت';
+            detailsView.style.display = 'none';
+            listView.style.display = 'block';
+        }
+
+        // مقداردهی اولیه لیست روستاها
+        renderVillagesList();
     </script>
 </body>
 </html>
