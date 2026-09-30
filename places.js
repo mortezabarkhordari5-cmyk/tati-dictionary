@@ -115,7 +115,6 @@ const alamutVillages = [
   {"name": "شترک", "region": "رودبار الموت غربی", "description": "قدیمی"},
   {"name": "دیکین", "region": "رودبار الموت شرقی", "description": "گردو"},
   {"name": "کوهین", "region": "رودبار الموت غربی", "description": "کوها"},
-  {"name": "پر
   {"name": "جوهرین", "region": "رودبار الموت غربی", "description": "کشاورز"},
   {"name": "بک‌کندی", "region": "رودبار الموت غربی", "description": "پایه‌ای"},
   {"name": "شلویری", "region": "رودبار الموت غربی", "description": "آروم"},
