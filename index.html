@@ -94,6 +94,14 @@
         .tab-btn.active { background: #3498db; color: #fff; }
         .village-item { padding: 12px; border: 1px solid #eee; border-radius: 8px; margin-bottom: 6px; cursor: pointer; display: flex; justify-content: space-between; }
         .village-item:hover { background: #f4f8fb; }
+
+        /* استایل اختصاصی کارت جزئیات روستا */
+        .village-detail-card { line-height: 1.8; text-align: right; }
+        .village-title { margin-top: 0; color: #2c3e50; font-size: 22px; border-bottom: 2px solid #3498db; padding-bottom: 8px; }
+        .badge-section { display: inline-block; background: #e1f0fa; color: #2980b9; padding: 3px 10px; border-radius: 12px; font-size: 13px; margin-bottom: 10px; font-weight: bold; }
+        .detail-row { margin-bottom: 10px; background: #fcfcfc; border: 1px solid #f0f0f0; border-radius: 8px; padding: 9px 12px; font-size: 14px; }
+        .detail-row strong { color: #2c3e50; }
+        .back-btn { background: #ecf0f1; border: 1px solid #bdc3c7; border-radius: 6px; padding: 6px 14px; font-size: 14px; cursor: pointer; font-weight: bold; margin-bottom: 12px; }
     </style>
 </head>
 <body>
@@ -148,7 +156,7 @@
         </div>
         
         <div id="detail-view" style="display:none;">
-            <button onclick="backToList()" style="margin-bottom:10px; padding:6px 12px; cursor:pointer;">🔙 بازگشت</button>
+            <button class="back-btn" onclick="backToList()">🔙 بازگشت به لیست</button>
             <div id="village-detail-content"></div>
         </div>
     </div>
@@ -211,7 +219,7 @@
         document.getElementById('moreBtn').onclick = () => { openModal('moreModal'); renderVillages('همه'); };
         overlay.onclick = closeAllModals;
 
-        // باز کردن مستقیم پیام‌رسان بله مثل قبل
+        // باز کردن مستقیم پیام‌رسان بله
         function sendToBale() {
             const tati = document.getElementById('sugTati').value.trim();
             const farsi = document.getElementById('sugFarsi').value.trim();
@@ -244,7 +252,7 @@
             container.innerHTML = filtered.map((v) => `
                 <div class="village-item" onclick="showDetail('${v.name}')">
                     <span>${v.name}</span>
-                    <span>${v.section}</span>
+                    <span style="color:#777; font-size:13px;">${v.section || ''}</span>
                 </div>
             `).join('');
         }
@@ -259,17 +267,35 @@
             renderVillages(activeTab, e.target.value);
         });
 
+        // نمایش پاپ‌آپ کامل اطلاعات روستا
         function showDetail(vName) {
-            const v = alamutVillages.find(item => item.name === vName);
+            const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
+            const v = list.find(item => item.name === vName);
             if (!v) return;
 
             document.getElementById('list-view').style.display = 'none';
             document.getElementById('detail-view').style.display = 'block';
+
+            const descriptionText = v.description || v.desc || 'توضیحاتی برای این روستا درج نشده است.';
+            const popText = v.population ? `<div class="detail-row">👥 <strong>جمعیت:</strong> ${v.population}</div>` : '';
+            const dehestanText = v.dehestan ? `<div class="detail-row">📍 <strong>دهستان:</strong> ${v.dehestan}</div>` : '';
+            const souvText = v.souvenirs ? `<div class="detail-row">🌰 <strong>سوغات و محصولات:</strong> ${v.souvenirs}</div>` : '';
+            const customsText = v.customs ? `<div class="detail-row">🎭 <strong>آداب و رسوم:</strong> ${v.customs}</div>` : '';
+            const attractText = v.attractions ? `<div class="detail-row">🏞 <strong>جاذبه‌ها و دیدنی‌ها:</strong> ${v.attractions}</div>` : '';
+
             document.getElementById('village-detail-content').innerHTML = `
-                <h3>${v.name}</h3>
-                <p><strong>بخش:</strong> ${v.section}</p>
-                <p>${v.desc || 'توضیحاتی موجود نیست.'}</p>
-                <img src="${(v.photos && v.photos.length > 0) ? v.photos[0] : 'placeholder.jpg'}" style="width:100%; border-radius:8px;">
+                <div class="village-detail-card">
+                    <h3 class="village-title">${v.name}</h3>
+                    <div class="badge-section">بخش ${v.section || 'الموت'}</div>
+                    ${popText}
+                    ${dehestanText}
+                    ${souvText}
+                    ${customsText}
+                    ${attractText}
+                    <div class="detail-row" style="background:#f4f8fb; border-color:#d4e6f1;">
+                        📝 <strong>معرفی و پیشینه:</strong><br>${descriptionText}
+                    </div>
+                </div>
             `;
         }
         
