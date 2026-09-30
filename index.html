@@ -58,11 +58,8 @@
             font-size: 18px; 
         }
         thead th { 
-            position: sticky; 
-            top: 85px; 
             background-color: #3498db; 
             color: white; 
-            z-index: 999; 
         }
         tr:nth-child(even) { background-color: #f4f8fb; }
         
@@ -133,7 +130,7 @@
         <textarea id="sugDesc" placeholder="مثال، تلفظ یا توضیحات (اختیاری)..." style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box; height:80px; font-family:inherit;"></textarea>
         <input type="text" id="sugVillage" placeholder="نام شما یا روستای مربوطه (اختیاری)" style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box;">
         
-        <button id="sugSubmit" onclick="sendSuggestion()" style="width:100%; padding:12px; background:#27ae60; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size:15px;">ارسال پیشنهاد</button>
+        <button id="sugSubmit" onclick="sendToBale()" style="width:100%; padding:12px; background:#27ae60; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size:15px;">ارسال در بله</button>
     </div>
 
     <!-- مودال الموت شناسی -->
@@ -214,8 +211,8 @@
         document.getElementById('moreBtn').onclick = () => { openModal('moreModal'); renderVillages('همه'); };
         overlay.onclick = closeAllModals;
 
-        // تابع ارسال پیشنهاد هوشمند و بدون گیر کردن در صفحه سفید بله
-        async function sendSuggestion() {
+        // باز کردن مستقیم پیام‌رسان بله مثل قبل
+        function sendToBale() {
             const tati = document.getElementById('sugTati').value.trim();
             const farsi = document.getElementById('sugFarsi').value.trim();
             const desc = document.getElementById('sugDesc').value.trim();
@@ -228,30 +225,9 @@
 
             const text = `سلام، پیشنهاد واژه برای لغت‌نامه تاتی الموتی:\n\n🔹 واژه تاتی: ${tati}\n🔹 معنی فارسی: ${farsi}\n🔹 توضیح: ${desc}\n🔹 نام/روستا: ${village}`;
             const myId = "MortezaBarkhordari";
+            const url = `https://ble.ir/${myId}?text=${encodeURIComponent(text)}`;
 
-            // ۱. اگر اشتراک‌گذاری گوشی فعال باشد، لیست پیام‌رسان‌ها را برای کاربر باز می‌کند
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: 'پیشنهاد واژه تاتی',
-                        text: text
-                    });
-                    closeAllModals();
-                    return;
-                } catch (err) {
-                    // در صورت انصراف کاربر کاری انجام نمی‌شود
-                }
-            }
-
-            // ۲. روش جایگزین: باز کردن مستقیم بله
-            const appUrl = `ble://chat?username=${myId}&text=${encodeURIComponent(text)}`;
-            const webUrl = `https://ble.ir/${myId}?text=${encodeURIComponent(text)}`;
-            
-            window.location.href = appUrl;
-            setTimeout(() => {
-                window.location.href = webUrl;
-            }, 800);
-
+            window.location.href = url;
             closeAllModals();
         }
 
