@@ -92,7 +92,7 @@
         .filter-tabs { display: flex; gap: 6px; margin-bottom: 10px; }
         .tab-btn { flex: 1; padding: 8px; border: 1px solid #dce4ec; background: #f8fafc; border-radius: 6px; cursor: pointer; }
         .tab-btn.active { background: #3498db; color: #fff; }
-        .village-item { padding: 12px; border: 1px solid #eee; border-radius: 8px; margin-bottom: 6px; cursor: pointer; display: flex; justify-content: space-between; }
+        .village-item { padding: 12px; border: 1px solid #eee; border-radius: 8px; margin-bottom: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
         .village-item:hover { background: #f4f8fb; }
 
         /* استایل اختصاصی کارت جزئیات روستا */
@@ -161,8 +161,8 @@
         </div>
     </div>
 
-    <script src="data.js?v=4"></script>
-    <script src="places.js?v=4"></script>
+    <script src="data.js?v=5"></script>
+    <script src="places.js?v=5"></script>
 
     <script>
         const tableBody = document.getElementById('table-body');
@@ -239,32 +239,47 @@
             closeAllModals();
         }
 
+        // نمایش و فیلتر روستاها
+        let currentVillageFilter = 'همه';
+
         function renderVillages(filter, search = '') {
+            currentVillageFilter = filter;
             const container = document.getElementById('villages-container');
             const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
+            const searchVal = (search || '').trim().toLowerCase();
             
             const filtered = list.filter(v => {
-                const matchFilter = (filter === 'همه') || (v.section && v.section.includes(filter));
-                const matchSearch = v.name && v.name.includes(search);
+                const regionName = (v.region || v.section || '');
+                const matchFilter = (filter === 'همه') || regionName.includes(filter);
+                const matchSearch = !searchVal || (v.name && v.name.toLowerCase().includes(searchVal));
                 return matchFilter && matchSearch;
             });
 
-            container.innerHTML = filtered.map((v) => `
-                <div class="village-item" onclick="showDetail('${v.name}')">
-                    <span>${v.name}</span>
-                    <span style="color:#777; font-size:13px;">${v.section || ''}</span>
-                </div>
-            `).join('');
+            if (filtered.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding:15px; color:#888;">روستایی یافت نشد!</div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map((v) => {
+                const regionName = v.region || v.section || '';
+                return `
+                    <div class="village-item" onclick="showDetail('${v.name}')">
+                        <span style="font-weight:bold;">${v.name}</span>
+                        <span style="color:#2980b9; font-size:12px; background:#e1f0fa; padding:2px 8px; border-radius:10px;">${regionName}</span>
+                    </div>
+                `;
+            }).join('');
         }
 
         function filterVillages(f) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.innerText.includes(f)));
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.toggle('active', b.innerText.trim() === f);
+            });
             renderVillages(f, document.getElementById('village-search').value);
         }
 
         document.getElementById('village-search').addEventListener('input', (e) => {
-            const activeTab = document.querySelector('.tab-btn.active').innerText;
-            renderVillages(activeTab, e.target.value);
+            renderVillages(currentVillageFilter, e.target.value);
         });
 
         // نمایش پاپ‌آپ کامل اطلاعات روستا
@@ -276,6 +291,7 @@
             document.getElementById('list-view').style.display = 'none';
             document.getElementById('detail-view').style.display = 'block';
 
+            const regionName = v.region || v.section || 'الموت';
             const descriptionText = v.description || v.desc || 'توضیحاتی برای این روستا درج نشده است.';
             const popText = v.population ? `<div class="detail-row">👥 <strong>جمعیت:</strong> ${v.population}</div>` : '';
             const dehestanText = v.dehestan ? `<div class="detail-row">📍 <strong>دهستان:</strong> ${v.dehestan}</div>` : '';
@@ -286,7 +302,7 @@
             document.getElementById('village-detail-content').innerHTML = `
                 <div class="village-detail-card">
                     <h3 class="village-title">${v.name}</h3>
-                    <div class="badge-section">بخش ${v.section || 'الموت'}</div>
+                    <div class="badge-section">${regionName}</div>
                     ${popText}
                     ${dehestanText}
                     ${souvText}
