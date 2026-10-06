@@ -174,11 +174,49 @@
             return (str || '').replace(/[\u064B-\u065F\u0670]/g, '').trim();
         }
 
+        // تابع حذف لغات تکراری دقیق با حفظ اعراب متفاوت
+        function getUniqueWords(list) {
+            const uniqueMap = new Map();
+
+            list.forEach(word => {
+                if (!word || typeof word.tati !== 'string') return;
+
+                const tatiText = word.tati.trim();
+                const key = tatiText.normalize('NFC');
+                const farsiText = String(word.farsi || '').trim().replace(/\.$/, '');
+
+                if (!uniqueMap.has(key)) {
+                    uniqueMap.set(key, {
+                        ...word,
+                        tati: tatiText,
+                        farsi: farsiText
+                    });
+                } else {
+                    // اگر دقیقاً با همین اعراب تکرار شده بود، معنی‌ها را ادغام کن
+                    const existingWord = uniqueMap.get(key);
+                    const oldMeanings = existingWord.farsi
+                        .split('،')
+                        .map(item => item.trim())
+                        .filter(Boolean);
+
+                    if (farsiText && !oldMeanings.includes(farsiText)) {
+                        oldMeanings.push(farsiText);
+                        existingWord.farsi = oldMeanings.join('، ');
+                    }
+                }
+            });
+
+            return Array.from(uniqueMap.values());
+        }
+
         function renderDict() {
             const val = searchInput.value.trim().toLowerCase();
-            const list = (typeof words !== 'undefined') ? words : [];
+            const rawList = (typeof words !== 'undefined') ? words : [];
 
-            // ۱. فیلتر کردن طبق کادر جستجو
+            // ۱. ابتدا تکراری‌های هم‌شکل حذف/ادغام می‌شوند
+            const list = getUniqueWords(rawList);
+
+            // ۲. فیلتر کردن طبق کادر جستجو
             const filtered = list.filter(w => {
                 if (!val) return true;
                 const tatiClean = cleanDiacritics(w.tati).toLowerCase();
@@ -189,14 +227,14 @@
                        farsiClean.includes(val);
             });
 
-            // ۲. مرتب‌سازی الفبایی دقیق (آ تا ی) بر اساس ستون تاتی
+            // ۳. مرتب‌سازی الفبایی دقیق (آ تا ی) بر اساس ستون تاتی
             filtered.sort((a, b) => {
                 const aClean = cleanDiacritics(a.tati);
                 const bClean = cleanDiacritics(b.tati);
                 return aClean.localeCompare(bClean, 'fa');
             });
 
-            // ۳. نمایش در جدول
+            // ۴. نمایش در جدول
             tableBody.innerHTML = filtered.map(w => `<tr><td>${w.tati}</td><td>${w.farsi}</td></tr>`).join('');
             resultCount.textContent = `تعداد واژه‌ها: ${filtered.length}`;
         }
