@@ -6,7 +6,7 @@ const alamutVillages = [
   { name: "آفتابدر", region: "رودبار الموت شرقی", description: "روستایی آفتاب‌گیر با طبیعت کوهپایه‌ای" },
   { name: "آکوجان", region: "رودبار الموت شرقی", description: "روستایی باستانی با چشمه‌سارها و باغات فندق" },
   { name: "آزاد رود", region: "رودبار الموت شرقی", description: "روستایی خوش آب‌وهوا در حاشیه رودخانه" },
-  { name: "آمشک", region: "رودبار الموت شرقی", description: "روستایی دنج و کوهستانی با طبیعت بکر" },
+  { name: "آمشک", region: "رودبار الموت شرقی", description: "روستایی dنج و کوهستانی با طبیعت بکر" },
   { name: "ازرت", region: "رودبار الموت شرقی", description: "روستایی ییلاقی در دره‌های الموت شرقی" },
   { name: "امین‌آباد", region: "رودبار الموت شرقی", description: "روستایی با مزارع و مراتع سرسبز" },
   { name: "اندج", region: "رودبار الموت شرقی", description: "دارای صخره‌های مرتفع طبیعی و تاریخی" },
@@ -93,7 +93,7 @@ const alamutVillages = [
   { name: "کوچنان", region: "رودبار الموت شرقی", description: "روستایی تاریخی با معماری پلکانی و باغات زیبا" },
   { name: "کله‌کوب", region: "رودبار الموت شرقی", description: "روستایی صخره‌ای و باصلابت در دل کوهستان" },
   { name: "کشکدشت", region: "رودبار الموت شرقی", description: "روستایی با اراضی هموار و آب فراوان" },
-  { name: "گازرخان", region: "رودبار الموت شرقی", description: "  ۹۰  " },
+  { name: "گازرخان", region: "رودبار الموت شرقی", description: "روستایی تاریخی، پایگاه دژ حسن صباح و مرکز تولید گیلاس الموت", wiki: "https://fa.wikipedia.org/wiki/%DA%AF%D8%A7%D8%B2%D8%B1%D8%AE%D8%A7%D9%86_(%D9%85%D8%B3%D8%B9%D9%88%D8%AF_%D8%A2%D8%A8%D8%A7%D8%AF)" },
   { name: "گرمارود سفلی", region: "رودبار الموت شرقی", description: "روستایی در کنار آبشارهای خروشان رود الموت" },
   { name: "گرمارود علیا", region: "رودبار الموت شرقی", description: "روستایی در انتهای دره الموت با طبیعتی شگفت‌انگیز و ییلاقی" },
   { name: "گرمارود سینا", region: "رودبار الموت شرقی", description: "بخش بالادست دره گرمارود با صخره‌های باشکوه" },
@@ -237,3 +237,93 @@ const alamutVillages = [
   { name: "یارود", region: "رودبار الموت غربی", description: "روستایی بزرگ و پرآب با باغ‌های میوه و طبیعت دل‌انگیز" },
   { name: "یوج", region: "رودبار الموت غربی", description: "روستایی ییلاقی و بکر در آخرین سرحدات کوهستانی غرب الموت" }
 ];
+
+// تابع نمایش جزئیات روستا با دکمه ویکی‌پدیا
+function showVillageDetail(index) {
+  const village = filteredVillages[index];
+  const modal = document.getElementById('villageModal');
+  
+  // ساخت لینک ویکی‌پدیا: اگر در لیست بالا (مثل گازرخان) تعریف شده باشد استفاده می‌کند، 
+  // در غیر این صورت به صورت خودکار از نام روستا لینک می‌سازد.
+  const wikiLink = village.wiki || `https://fa.wikipedia.org/wiki/${encodeURIComponent(village.name)}`;
+
+  modal.innerHTML = `
+    <div class="village-detail-card">
+      <button class="back-btn" onclick="backToList()">🔙 بازگشت به لیست</button>
+      <h2 class="village-title">${village.name}</h2>
+      <div class="badge-section">📍 ${village.region}</div>
+      <div class="detail-row">
+        <strong>معرفی و پیشینه:</strong><br>
+        ${village.description}
+      </div>
+      
+      <!-- دکمه جدید ویکی‌پدیا -->
+      <button onclick="window.open('${wikiLink}', '_blank')" 
+              style="width:100%; padding:12px; background:#f6f6f6; color:#333; border:1px solid #ccc; border-radius:8px; cursor:pointer; font-weight:bold; font-size:15px; display:flex; align-items:center; justify-content:center; gap:8px; margin-top:15px;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png" width="20" alt="Wiki">
+        مشاهده در ویکی‌پدیا 🌐
+      </button>
+
+      <p style="font-size:11px; color:#888; text-align:center; margin-top:10px;">
+        اطلاعات تکمیلی شامل جمعیت و نقشه را در ویکی‌پدیا ببینید.
+      </p>
+    </div>
+  `;
+}
+
+// بقیه توابع مدیریتی (فیلتر و جستجو) بدون تغییر باقی می‌مانند
+let currentFilter = 'همه';
+let filteredVillages = [...alamutVillages];
+
+function filterVillages(type) {
+  currentFilter = type;
+  const searchVal = document.getElementById('village-search').value.toLowerCase();
+  
+  filteredVillages = alamutVillages.filter(v => {
+    const matchesSearch = v.name.toLowerCase().includes(searchVal);
+    if (type === 'همه') return matchesSearch;
+    return matchesSearch && v.region.includes(type);
+  });
+  
+  // آپدیت وضعیت دکمه‌های تب
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if(btn.innerText.includes(type)) btn.classList.add('active');
+  });
+  
+  renderVillageList();
+}
+
+function renderVillageList() {
+  const container = document.getElementById('villages-container');
+  container.innerHTML = filteredVillages.map((v, index) => `
+    <div class="village-item" onclick="showVillageDetail(${index})">
+      <span>${v.name}</span>
+      <span style="font-size:12px; color:#7f8c8d;">${v.region} ⬅️</span>
+    </div>
+  `).join('');
+}
+
+function backToList() {
+  const modal = document.getElementById('villageModal');
+  // بازسازی ساختار اصلی مودال برای نمایش لیست
+  modal.innerHTML = `
+    <div class="modal-header">
+      <h3>روستاهای الموت</h3>
+      <button class="close-btn" onclick="closeModal('villageModal')">&times;</button>
+    </div>
+    <input type="text" id="village-search" placeholder="جستجوی نام روستا..." oninput="filterVillages(currentFilter)">
+    <div class="filter-tabs">
+      <button class="tab-btn ${currentFilter==='همه'?'active':''}" onclick="filterVillages('همه')">همه</button>
+      <button class="tab-btn ${currentFilter==='شرقی'?'active':''}" onclick="filterVillages('شرقی')">شرقی</button>
+      <button class="tab-btn ${currentFilter==='غربی'?'active':''}" onclick="filterVillages('غربی')">غربی</button>
+    </div>
+    <div id="villages-container"></div>
+  `;
+  renderVillageList();
+}
+
+// مقداردهی اولیه لیست هنگام باز شدن
+document.addEventListener('DOMContentLoaded', () => {
+  // این بخش معمولاً توسط دکمه "الموت شناسی" در index.html فراخوانی می‌شود
+});
