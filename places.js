@@ -245,7 +245,7 @@ function showVillageDetail(index) {
   
   // ساخت لینک ویکی‌پدیا: اگر در لیست بالا (مثل گازرخان) تعریف شده باشد استفاده می‌کند، 
   // در غیر این صورت به صورت خودکار از نام روستا لینک می‌سازد.
-    const wikiLink = village.wiki || `https://fa.wikipedia.org/wiki/${encodeURIComponent(village.name)}`;
+  const wikiLink = village.wiki || `https://fa.wikipedia.org/wiki/${encodeURIComponent(village.name)}`;
 
   modal.innerHTML = `
     <div class="village-detail-card">
@@ -256,12 +256,74 @@ function showVillageDetail(index) {
         <strong>معرفی و پیشینه:</strong><br>
         ${village.description}
       </div>
+      
+      <!-- دکمه جدید ویکی‌پدیا -->
       <button onclick="window.open('${wikiLink}', '_blank')" 
-              style="width:100%; padding:12px; background:#007bff; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold; margin-top:15px;">
-        📖 مشاهده در ویکی‌پدیا
+              style="width:100%; padding:12px; background:#f6f6f6; color:#333; border:1px solid #ccc; border-radius:8px; cursor:pointer; font-weight:bold; font-size:15px; display:flex; align-items:center; justify-content:center; gap:8px; margin-top:15px;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png" width="20" alt="Wiki">
+        مشاهده در ویکی‌پدیا 🌐
       </button>
+
+      <p style="font-size:11px; color:#888; text-align:center; margin-top:10px;">
+        اطلاعات تکمیلی شامل جمعیت و نقشه را در ویکی‌پدیا ببینید.
+      </p>
     </div>
   `;
+}
 
- 
+// بقیه توابع مدیریتی (فیلتر و جستجو) بدون تغییر باقی می‌مانند
+let currentFilter = 'همه';
+let filteredVillages = [...alamutVillages];
 
+function filterVillages(type) {
+  currentFilter = type;
+  const searchVal = document.getElementById('village-search').value.toLowerCase();
+  
+  filteredVillages = alamutVillages.filter(v => {
+    const matchesSearch = v.name.toLowerCase().includes(searchVal);
+    if (type === 'همه') return matchesSearch;
+    return matchesSearch && v.region.includes(type);
+  });
+  
+  // آپدیت وضعیت دکمه‌های تب
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if(btn.innerText.includes(type)) btn.classList.add('active');
+  });
+  
+  renderVillageList();
+}
+
+function renderVillageList() {
+  const container = document.getElementById('villages-container');
+  container.innerHTML = filteredVillages.map((v, index) => `
+    <div class="village-item" onclick="showVillageDetail(${index})">
+      <span>${v.name}</span>
+      <span style="font-size:12px; color:#7f8c8d;">${v.region} ⬅️</span>
+    </div>
+  `).join('');
+}
+
+function backToList() {
+  const modal = document.getElementById('villageModal');
+  // بازسازی ساختار اصلی مودال برای نمایش لیست
+  modal.innerHTML = `
+    <div class="modal-header">
+      <h3>روستاهای الموت</h3>
+      <button class="close-btn" onclick="closeModal('villageModal')">&times;</button>
+    </div>
+    <input type="text" id="village-search" placeholder="جستجوی نام روستا..." oninput="filterVillages(currentFilter)">
+    <div class="filter-tabs">
+      <button class="tab-btn ${currentFilter==='همه'?'active':''}" onclick="filterVillages('همه')">همه</button>
+      <button class="tab-btn ${currentFilter==='شرقی'?'active':''}" onclick="filterVillages('شرقی')">شرقی</button>
+      <button class="tab-btn ${currentFilter==='غربی'?'active':''}" onclick="filterVillages('غربی')">غربی</button>
+    </div>
+    <div id="villages-container"></div>
+  `;
+  renderVillageList();
+}
+
+// مقداردهی اولیه لیست هنگام باز شدن
+document.addEventListener('DOMContentLoaded', () => {
+  // این بخش معمولاً توسط دکمه "الموت شناسی" در index.html فراخوانی می‌شود
+});
