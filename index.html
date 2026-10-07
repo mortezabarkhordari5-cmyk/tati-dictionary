@@ -322,41 +322,41 @@
 
         // نمایش پاپ‌آپ کامل اطلاعات روستا
         function showDetail(vName) {
-    const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
-    const v = list.find(item => item.name === vName);
-    if (!v) return;
+            const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
+            const v = list.find(item => item.name === vName);
+            if (!v) return;
 
-    document.getElementById('list-view').style.display = 'none';
-    document.getElementById('detail-view').style.display = 'block';
+            document.getElementById('list-view').style.display = 'none';
+            document.getElementById('detail-view').style.display = 'block';
 
-    const regionName = v.region || v.section || 'الموت';
-    const descriptionText = v.description || v.desc || 'توضیحاتی برای این روستا درج نشده است.';
-    
-    // ایجاد لینک ویکی‌پدیا (اگر در places.js لینک داشته باشد از آن استفاده می‌کند، وگرنه لینک عمومی می‌سازد)
-    const wikiLink = v.wikiUrl || `https://fa.wikipedia.org/wiki/${encodeURIComponent(v.name)}`;
+            const regionName = v.region || v.section || 'الموت';
+            const descriptionText = v.description || v.desc || 'توضیحاتی برای این روستا درج نشده است.';
+            const popText = v.population ? `<div class="detail-row">👥 <strong>جمعیت:</strong> ${v.population}</div>` : '';
+            const dehestanText = v.dehestan ? `<div class="detail-row">📍 <strong>دهستان:</strong> ${v.dehestan}</div>` : '';
+            const souvText = v.souvenirs ? `<div class="detail-row">🌰 <strong>سوغات و محصولات:</strong> ${v.souvenirs}</div>` : '';
+            const customsText = v.customs ? `<div class="detail-row">🎭 <strong>آداب و رسوم:</strong> ${v.customs}</div>` : '';
+            const attractText = v.attractions ? `<div class="detail-row">🏞 <strong>جاذبه‌ها و دیدنی‌ها:</strong> ${v.attractions}</div>` : '';
 
-    const popText = v.population ? `<div class="detail-row">👥 <strong>جمعیت:</strong> ${v.population}</div>` : '';
-    const dehestanText = v.dehestan ? `<div class="detail-row">📍 <strong>دهستان:</strong> ${v.dehestan}</div>` : '';
-    const souvText = v.souvenirs ? `<div class="detail-row">🌰 <strong>سوغات و محصولات:</strong> ${v.souvenirs}</div>` : '';
-    const customsText = v.customs ? `<div class="detail-row">🎭 <strong>آداب و رسوم:</strong> ${v.customs}</div>` : '';
-    const attractText = v.attractions ? `<div class="detail-row">🏞 <strong>جاذبه‌ها و دیدنی‌ها:</strong> ${v.attractions}</div>` : '';
-
-    document.getElementById('village-detail-content').innerHTML = `
-        <div class="village-detail-card">
-            <h3 class="village-title">${v.name}</h3>
-            <div class="badge-section">${regionName}</div>
-            ${popText}
-            ${dehestanText}
-            ${souvText}
-            ${customsText}
-            ${attractText}
-            <div class="detail-row" style="background:#f4f8fb; border-color:#d4e6f1;">
-                📝 <strong>معرفی و پیشینه:</strong><br>${descriptionText}
-            </div>
-            <!-- دکمه ویکی‌پدیا -->
-            <a href="${wikiLink}" target="_blank" style="display:block; margin-top:15px; padding:12px; background:#3498db; color:white; text-align:center; border-radius:8px; text-decoration:none; font-weight:bold;">مشاهده در ویکی‌پدیا</a>
-        </div>
-    `;
-}
-
+            document.getElementById('village-detail-content').innerHTML = `
+                <div class="village-detail-card">
+                    <h3 class="village-title">${v.name}</h3>
+                    <div class="badge-section">${regionName}</div>
+                    ${popText}
+                    ${dehestanText}
+                    ${souvText}
+                    ${customsText}
+                    ${attractText}
+                    <div class="detail-row" style="background:#f4f8fb; border-color:#d4e6f1;">
+                        📝 <strong>معرفی و پیشینه:</strong><br>${descriptionText}
+                    </div>
+                </div>
+            `;
+        }
         
+        function backToList() {
+            document.getElementById('detail-view').style.display = 'none';
+            document.getElementById('list-view').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
