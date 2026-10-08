@@ -7,7 +7,7 @@
     <!-- لود فونت زیبای وزیرمتن -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
     <style>
-        /* جلوگیری از انتخاب متن و کپی در کل صفحه */
+        /* جلوگیری کامل از انتخاب متن و کپی در تمام صفحه */
         * {
             -webkit-user-select: none !important;
             -moz-user-select: none !important;
@@ -19,13 +19,12 @@
 
         body { 
             font-family: 'Vazirmatn', Tahoma, sans-serif; 
-            background: linear-gradient(180deg, #f0f4f2 0%, #e8eee9 100%); 
+            background: #f4f7f5; 
             color: #264653; 
             margin: 0; 
             padding: 15px; 
             padding-bottom: 95px; 
             text-align: center; 
-            min-height: 100vh;
         }
 
         h1 { 
@@ -43,62 +42,54 @@
             font-weight: 500;
         }
 
-        /* بخش جستجو */
         .search-box {
-            max-width: 450px;
+            max-width: 480px;
             margin: 0 auto 12px auto;
-            position: relative;
         }
 
         input[type="text"] { 
             width: 100%; 
-            padding: 14px 20px; 
+            padding: 13px 20px; 
             font-size: 15px; 
             font-family: 'Vazirmatn', Tahoma, sans-serif;
             border: 2px solid #b7e4c7; 
             border-radius: 30px; 
             outline: none; 
-            box-shadow: 0 4px 12px rgba(45, 106, 79, 0.08);
-            transition: all 0.3s ease;
             background-color: #fff;
+            -webkit-user-select: text !important;
+            user-select: text !important;
         }
 
         input[type="text"]:focus {
             border-color: #2d6a4f;
-            box-shadow: 0 6px 18px rgba(45, 106, 79, 0.18);
         }
 
         #count { 
-            font-size: 0.9rem; 
+            font-size: 0.95rem; 
             color: #40916c; 
-            margin-bottom: 16px; 
-            font-weight: 600;
+            margin-bottom: 15px; 
+            font-weight: 700;
         }
 
-        /* کارت‌های کلمات */
+        /* کارت‌های لغات */
         .cards-container {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            max-width: 520px;
+            gap: 9px;
+            max-width: 500px;
             margin: 0 auto;
         }
 
         .word-card {
             background: #ffffff;
-            border-radius: 14px;
-            padding: 14px 18px;
+            border-radius: 12px;
+            padding: 13px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.04);
-            border: 1px solid #e2ece9;
-            transition: transform 0.15s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            border: 1px solid #e0ebe6;
             text-align: right;
-        }
-
-        .word-card:active {
-            transform: scale(0.99);
         }
 
         .word-tati {
@@ -106,34 +97,31 @@
             font-weight: 700;
             font-size: 1.15rem;
             width: 45%;
-            word-wrap: break-word;
         }
 
         .word-divider {
-            color: #d8f3dc;
-            font-weight: 300;
-            padding: 0 8px;
+            color: #cce3de;
+            padding: 0 5px;
         }
 
         .word-persian {
-            color: #4a5568;
-            font-size: 0.98rem;
+            color: #495057;
+            font-size: 0.95rem;
             width: 55%;
             text-align: left;
             direction: rtl;
-            word-wrap: break-word;
         }
 
-        /* نوار پایین ثابت */
+        /* نوار ثابت پایین */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
-            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 -3px 12px rgba(0,0,0,0.07);
+            padding: 10px 15px;
             display: flex;
             justify-content: center;
             gap: 10px;
@@ -142,30 +130,26 @@
 
         .nav-btn {
             flex: 1;
-            max-width: 160px;
+            max-width: 150px;
             background: #2d6a4f;
             color: white;
             border: none;
-            padding: 10px 12px;
+            padding: 10px 8px;
             font-family: 'Vazirmatn', Tahoma, sans-serif;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            border-radius: 22px;
+            border-radius: 25px;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
 
-        .nav-btn:hover { background: #1b4332; }
         .nav-btn.secondary { background: #52796f; }
-        .nav-btn.secondary:hover { background: #354f52; }
 
-        /* مودال‌ها (پنجره‌های بازشونده) */
+        /* مودال‌ها */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -173,46 +157,37 @@
         }
 
         .modal-content {
-            background: #ffffff;
-            border-radius: 18px;
-            padding: 22px;
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
             width: 100%;
-            max-width: 420px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            max-width: 400px;
             text-align: right;
-            max-height: 85vh;
-            overflow-y: auto;
         }
 
         .modal-content h3 {
             margin-top: 0;
             color: #1b4332;
             text-align: center;
-            font-size: 1.2rem;
         }
 
         .modal-content label {
             display: block;
-            margin: 10px 0 5px 0;
-            font-size: 0.88rem;
+            margin: 10px 0 4px;
+            font-size: 0.85rem;
             color: #2d6a4f;
             font-weight: 600;
         }
 
-        .modal-content input, .modal-content select, .modal-content textarea {
+        .modal-content input, .modal-content select {
             width: 100%;
             padding: 10px;
-            border: 1.5px solid #d8f3dc;
-            border-radius: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
             font-family: 'Vazirmatn', Tahoma, sans-serif;
-            margin-bottom: 10px;
-            outline: none;
+            margin-bottom: 8px;
             -webkit-user-select: text !important;
             user-select: text !important;
-        }
-
-        .modal-content input:focus, .modal-content select:focus, .modal-content textarea:focus {
-            border-color: #2d6a4f;
         }
 
         .modal-buttons {
@@ -223,17 +198,14 @@
 
         .modal-btn {
             flex: 1;
-            padding: 11px;
+            padding: 10px;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             font-family: 'Vazirmatn', Tahoma, sans-serif;
-            font-size: 0.95rem;
-            cursor: pointer;
             font-weight: 600;
+            cursor: pointer;
         }
 
-        .btn-green { background: #2d6a4f; color: white; }
-        .btn-green:hover { background: #1b4332; }
         .btn-bale { background: #00a884; color: white; }
         .btn-close { background: #e0e0e0; color: #333; }
     </style>
@@ -249,46 +221,26 @@
 
     <div id="count">در حال بارگذاری واژگان...</div>
 
-    <!-- بخش نمایش کارت‌های کلمات -->
     <div class="cards-container" id="wordsContainer"></div>
 
-    <!-- نوار دکمه‌های پایین -->
     <div class="bottom-nav">
-        <button class="nav-btn" onclick="openSuggestModal()">پیشنهاد واژه</button>
-        <button class="nav-btn secondary" onclick="openAlamutModal()">الموت‌شناسی</button>
-        <button class="nav-btn secondary" onclick="openAboutModal()">درباره برنامه</button>
+        <button class="nav-btn" onclick="openModal('suggestModal')">پیشنهاد واژه</button>
+        <button class="nav-btn secondary" onclick="openModal('aboutModal')">درباره برنامه</button>
     </div>
 
     <!-- مودال پیشنهاد واژه -->
     <div class="modal" id="suggestModal">
         <div class="modal-content">
-            <h3>ارسال و پیشنهاد واژه جدید</h3>
+            <h3>پیشنهاد واژه جدید</h3>
             <label>واژه تاتی:</label>
             <input type="text" id="newTati" placeholder="مثال: چولیک">
             <label>معنی فارسی:</label>
             <input type="text" id="newPersian" placeholder="مثال: گنجشک">
-            <label>نام فرستنده و روستا (اختیاری):</label>
-            <input type="text" id="senderName" placeholder="مثال: علی از آتان">
-            
+            <label>نام شما / روستا:</label>
+            <input type="text" id="senderName" placeholder="اختیاری">
             <div class="modal-buttons">
-                <button class="modal-btn btn-bale" onclick="sendToBale()">ارسال با بله</button>
+                <button class="modal-btn btn-bale" onclick="sendToBale()">ارسال به بله</button>
                 <button class="modal-btn btn-close" onclick="closeModal('suggestModal')">بستن</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- مودال الموت‌شناسی -->
-    <div class="modal" id="alamutModal">
-        <div class="modal-content">
-            <h3>الموت‌شناسی و روستاها</h3>
-            <p style="font-size: 0.9rem; color: #555;">برای مشاهده واژه‌ها یا اطلاعات مربوط به هر منطقه انتخاب کنید:</p>
-            <label>انتخاب روستا / منطقه:</label>
-            <select id="villageSelect" onchange="filterByVillage()">
-                <option value="">همه واژگان (کل الموت)</option>
-            </select>
-            <div id="villageInfo" style="margin-top: 15px; font-size: 0.9rem; line-height: 1.6; color: #333;"></div>
-            <div class="modal-buttons">
-                <button class="modal-btn btn-close" onclick="closeModal('alamutModal')">بستن</button>
             </div>
         </div>
     </div>
@@ -298,11 +250,8 @@
         <div class="modal-content">
             <h3>درباره لغت‌نامه تاتی الموتی</h3>
             <p style="font-size: 0.92rem; line-height: 1.8; color: #333;">
-                این مجموعه تلاشی است در جهت گردآوری و پاسداشت گویش کهن و زیبای <b>تاتی الموتی</b>.
-                <br><br>
-                گردآورنده: <b>مرتضی برخورداری</b>
-                <br>
-                هرگونه استفاده و ثبت لغات بر اساس گویش‌های محلی الموت صورت پذیرفته است.
+                گردآورنده: <b>مرتضی برخورداری</b><br><br>
+                این اثر تلاشی است در جهت گردآوری و پاسداشت گویش کهن تاتی منطقه الموت.
             </p>
             <div class="modal-buttons">
                 <button class="modal-btn btn-close" onclick="closeModal('aboutModal')">بستن</button>
@@ -311,13 +260,12 @@
     </div>
 
     <!-- بارگذاری داده‌ها -->
-    <script src="places.js"></script>
     <script src="data.js"></script>
 
     <script>
-        // قفل ضد کپی راست کلیک و کلیدهای کپی
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        document.addEventListener('keydown', function(e) {
+        // قفل کپی کلیک راست و کلیدهای میانبر
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
             if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'u' || e.key === 'U')) {
                 e.preventDefault();
             }
@@ -326,38 +274,28 @@
         let allWords = [];
 
         window.onload = function() {
-            if (typeof wordsData !== 'undefined') {
-                // حذف موارد تکراری و مرتب‌سازی
-                const uniqueWords = [];
-                const map = new Map();
-                for (const item of wordsData) {
-                    if(!map.has(item.tati)){
-                        map.set(item.tati, true);
-                        uniqueWords.push(item);
-                    }
-                }
-                allWords = uniqueWords;
+            // شناسایی داده‌ها از data.js
+            let rawList = null;
+            if (typeof words !== 'undefined') rawList = words;
+            else if (typeof wordsData !== 'undefined') rawList = wordsData;
+            else if (typeof tatiData !== 'undefined') rawList = tatiData;
+
+            if (rawList && Array.isArray(rawList)) {
+                // تبدیل داده‌ها با در نظر گرفتن کلید farsi
+                allWords = rawList.map(item => ({
+                    tati: item.tati || '',
+                    persian: item.farsi || item.persian || item.fa || ''
+                }));
                 displayWords(allWords);
             } else {
-                document.getElementById('count').innerText = "خطا در بارگذاری فایل data.js";
-            }
-
-            // لود روستاها در صورت وجود فایل places.js
-            if (typeof placesData !== 'undefined') {
-                const select = document.getElementById('villageSelect');
-                placesData.forEach(p => {
-                    const opt = document.createElement('option');
-                    opt.value = p.name;
-                    opt.innerText = p.name;
-                    select.appendChild(opt);
-                });
+                document.getElementById('count').innerText = "خطا در خواندن داده‌ها";
             }
         };
 
         function displayWords(list) {
             const container = document.getElementById('wordsContainer');
             container.innerHTML = '';
-            document.getElementById('count').innerText = `تعداد واژگان موجود: ${list.length.toLocaleString('fa-IR')} واژه`;
+            document.getElementById('count').innerText = `تعداد واژه‌ها: ${list.length.toLocaleString('fa-IR')}`;
 
             list.forEach(w => {
                 const card = document.createElement('div');
@@ -384,33 +322,7 @@
             displayWords(filtered);
         }
 
-        function filterByVillage() {
-            const selected = document.getElementById('villageSelect').value;
-            const infoDiv = document.getElementById('villageInfo');
-            
-            if (!selected) {
-                infoDiv.innerHTML = '';
-                displayWords(allWords);
-                return;
-            }
-
-            if (typeof placesData !== 'undefined') {
-                const place = placesData.find(p => p.name === selected);
-                if (place && place.info) {
-                    infoDiv.innerHTML = `<b>توضیحات:</b> ${place.info}`;
-                } else {
-                    infoDiv.innerHTML = '';
-                }
-            }
-
-            const filtered = allWords.filter(w => w.village && w.village.includes(selected));
-            displayWords(filtered.length > 0 ? filtered : allWords);
-            closeModal('alamutModal');
-        }
-
-        function openSuggestModal() { document.getElementById('suggestModal').style.display = 'flex'; }
-        function openAlamutModal() { document.getElementById('alamutModal').style.display = 'flex'; }
-        function openAboutModal() { document.getElementById('aboutModal').style.display = 'flex'; }
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         function sendToBale() {
@@ -423,7 +335,7 @@
                 return;
             }
 
-            const text = encodeURIComponent(`پیشنهاد واژه جدید برای لغت‌نامه تاتی الموتی:\n🔹 واژه: ${tati}\n🔹 معنی: ${fa}\n👤 فرستنده: ${sender}`);
+            const text = encodeURIComponent(`پیشنهاد واژه برای لغت‌نامه تاتی الموتی:\n🔹 واژه: ${tati}\n🔹 معنی: ${fa}\n👤 فرستنده: ${sender}`);
             window.open(`https://ble.ir/share/url?url=${text}`, '_blank');
             closeModal('suggestModal');
         }
