@@ -320,7 +320,7 @@
             renderVillages(currentVillageFilter, e.target.value);
         });
 
-        // نمایش پاپ‌آپ کامل اطلاعات روستا
+                // نمایش پاپ‌آپ کامل اطلاعات روستا
         function showDetail(vName) {
             const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
             const v = list.find(item => item.name === vName);
@@ -329,13 +329,13 @@
             document.getElementById('list-view').style.display = 'none';
             document.getElementById('detail-view').style.display = 'block';
 
-            const regionName = v.region || v.section || 'الموت';
-            const descriptionText = v.description || v.desc || 'توضیحاتی برای این روستا درج نشده است.';
+            const regionName = v.region || v.section || "الموت";
+            const descriptionText = v.description || 'توضیحاتی برای این روستا ثبت نشده است.';
             const popText = v.population ? `<div class="detail-row">👥 <strong>جمعیت:</strong> ${v.population}</div>` : '';
             const dehestanText = v.dehestan ? `<div class="detail-row">📍 <strong>دهستان:</strong> ${v.dehestan}</div>` : '';
-            const souvText = v.souvenirs ? `<div class="detail-row">🌰 <strong>سوغات و محصولات:</strong> ${v.souvenirs}</div>` : '';
-            const customsText = v.customs ? `<div class="detail-row">🎭 <strong>آداب و رسوم:</strong> ${v.customs}</div>` : '';
-            const attractText = v.attractions ? `<div class="detail-row">🏞 <strong>جاذبه‌ها و دیدنی‌ها:</strong> ${v.attractions}</div>` : '';
+            const souvText = v.souvenirs ? `<div class="detail-row">🍯 <strong>محصولات و سوغات:</strong> ${v.souvenirs}</div>` : '';
+            const customText = v.customs ? `<div class="detail-row">🎉 <strong>آداب و رسوم:</strong> ${v.customs}</div>` : '';
+            const attractText = v.attractions ? `<div class="detail-row">🏞️ <strong>جاذبه‌ها و دیدنی‌ها:</strong> ${v.attractions}</div>` : '';
 
             document.getElementById('village-detail-content').innerHTML = `
                 <div class="village-detail-card">
@@ -344,15 +344,34 @@
                     ${popText}
                     ${dehestanText}
                     ${souvText}
-                    ${customsText}
+                    ${customText}
                     ${attractText}
                     <div class="detail-row" style="background:#f4f8fb; border-color:#d4e6f1;">
-                        📝 <strong>معرفی و پیشینه:</strong><br>${descriptionText}
+                        📜 <strong>معرفی و پیشینه:</strong><br>${descriptionText}
                     </div>
+                    <button onclick="openWikiFrame('${v.name}')" style="margin-top:15px; padding:10px 20px; background:#2980b9; color:white; border:none; border-radius:8px; font-family:Tahoma; font-size:14px; cursor:pointer; width:100%;">
+                        🌐 مشاهده صفحه ویکی‌پدیا
+                    </button>
                 </div>
             `;
         }
-        
+
+        // نمایش درون‌برنامه‌ای ویکی‌پدیا
+        function openWikiFrame(vName) {
+            const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
+            const v = list.find(item => item.name === vName);
+            if (!v) return;
+            const wikiName = v.wiki || v.name;
+            document.getElementById('village-detail-content').innerHTML = `
+                <div style="text-align:center; margin-bottom:10px;">
+                    <button onclick="showDetail('${v.name}')" style="padding:8px 16px; background:#e74c3c; color:white; border:none; border-radius:8px; font-family:Tahoma; font-size:13px; cursor:pointer;">
+                        ↩️ بازگشت به مشخصات روستا
+                    </button>
+                </div>
+                <iframe src="https://fa.m.wikipedia.org/wiki/${encodeURIComponent(wikiName)}" style="width:100%; height:70vh; border:1px solid #ccc; border-radius:8px;"></iframe>
+            `;
+        }
+
         function backToList() {
             document.getElementById('detail-view').style.display = 'none';
             document.getElementById('list-view').style.display = 'block';
