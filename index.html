@@ -4,104 +4,177 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لغت‌نامه تاتی الموتی</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body { 
             user-select: none; 
-            font-family: Tahoma, Arial, sans-serif; 
-            background-color: #f9f9f9; 
-            color: #333; 
+            -webkit-user-select: none;
+            font-family: 'Vazirmatn', Tahoma, Arial, sans-serif; 
+            background: linear-gradient(180deg, #f0f4f8 0%, #f7f9fb 100%);
+            min-height: 100vh;
+            color: #2c3e50; 
             margin: 0; 
-            padding: 15px; 
-            padding-bottom: 85px; 
+            padding: 16px 12px; 
+            padding-bottom: 90px; 
             text-align: center; 
         }
-        h1 { color: #2c3e50; margin-bottom: 5px; }
-        #author { font-size: 16px; font-weight: bold; color: #e74c3c; margin-bottom: 12px; }
+        h1 { 
+            color: #1a365d; 
+            margin: 10px 0 6px 0; 
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        #author { 
+            font-size: 15px; 
+            font-weight: 700; 
+            color: #c0392b; 
+            margin-bottom: 16px;
+            background: rgba(231, 76, 60, 0.08);
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+        }
         
         .sticky-header { 
             position: sticky; 
             top: 0; 
-            background-color: #f9f9f9; 
-            padding-top: 8px; 
-            padding-bottom: 8px; 
+            background: rgba(240, 244, 248, 0.95); 
+            backdrop-filter: blur(8px);
+            padding: 10px 0; 
             z-index: 1000; 
         }
         #search-input { 
-            width: 90%; 
-            max-width: 420px; 
-            padding: 12px 14px; 
+            width: 95%; 
+            max-width: 460px; 
+            padding: 13px 18px; 
             margin-bottom: 8px; 
-            border: 2px solid #3498db; 
-            border-radius: 10px; 
+            border: 2px solid #3b82f6; 
+            border-radius: 14px; 
+            font-family: inherit;
             font-size: 16px; 
             outline: none; 
-            background: #fff; 
-            box-sizing: border-box; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            background: #ffffff; 
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.12);
+            transition: all 0.25s ease;
+        }
+        #search-input:focus {
+            border-color: #1d4ed8;
+            box-shadow: 0 6px 20px rgba(29, 78, 216, 0.2);
+            transform: scale(1.01);
         }
 
-        #result-count { font-size: 14px; color: #555; margin-bottom: 6px; font-weight: bold; }
+        #result-count { 
+            font-size: 13px; 
+            color: #475569; 
+            margin-bottom: 4px; 
+            font-weight: 600; 
+        }
         
+        /* استایل بهینه‌شده جدول */
+        .table-container {
+            width: 100%;
+            max-width: 760px;
+            margin: 8px auto 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+            background: #fff;
+        }
         table { 
             width: 100%; 
             border-collapse: collapse; 
             background: #fff; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.08); 
-            border-radius: 8px; 
-            margin-top: 5px; 
-            overflow: hidden;
+            text-align: right;
         }
         th, td { 
-            border: 1px solid #e0e0e0; 
-            padding: 12px; 
+            padding: 14px 16px; 
             text-align: right; 
-            font-size: 18px; 
+            font-size: 17px; 
+            line-height: 1.6;
+            border-bottom: 1px solid #edf2f7;
         }
         thead th { 
-            background-color: #3498db; 
-            color: white; 
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); 
+            color: #ffffff; 
+            font-weight: 700;
+            font-size: 17px;
+            letter-spacing: 0.5px;
+            border: none;
         }
-        tr:nth-child(even) { background-color: #f4f8fb; }
+        thead th:first-child { width: 42%; }
+        
+        tbody tr {
+            transition: background-color 0.15s ease;
+        }
+        tbody tr:nth-child(even) { 
+            background-color: #f8fafc; 
+        }
+        tbody tr:hover { 
+            background-color: #e0f2fe; 
+        }
+        tbody td:first-child {
+            font-weight: 700;
+            color: #1e3a8a;
+            border-left: 1px solid #f1f5f9;
+        }
+        tbody td:last-child {
+            color: #334155;
+        }
         
         /* دکمه‌های شناور پایین */
         .btn-float { 
             position: fixed; 
             bottom: 16px; 
             z-index: 1000; 
-            padding: 11px 18px; 
+            padding: 12px 18px; 
             border: none; 
-            border-radius: 25px; 
+            border-radius: 30px; 
             cursor: pointer; 
             color: #fff; 
-            font-weight: bold; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.25); 
+            font-family: inherit;
+            font-weight: 700; 
+            box-shadow: 0 6px 18px rgba(0,0,0,0.22); 
             display: flex; 
             align-items: center; 
-            gap: 6px; 
+            gap: 8px; 
             font-size: 14px;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        #suggestBtn { left: 16px; background: #27ae60; }
-        #moreBtn { right: 16px; background: #2980b9; }
+        .btn-float:active {
+            transform: scale(0.96);
+        }
+        #suggestBtn { left: 16px; background: linear-gradient(135deg, #16a34a, #22c55e); }
+        #moreBtn { right: 16px; background: linear-gradient(135deg, #0284c7, #38bdf8); }
         
         /* مودال‌ها */
-        .overlay { display: none; position: fixed; inset: 0; z-index: 10001; background: rgba(0,0,0,0.55); backdrop-filter: blur(2px); }
-        .custom-modal { display: none; position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 10002; width: min(94vw, 540px); max-height: 85vh; background: #fff; border-radius: 14px; padding: 16px; overflow-y: auto; text-align: right; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 8px; margin-bottom: 12px; }
-        .close-btn { border: none; background: transparent; font-size: 26px; cursor: pointer; color: #888; }
-        #village-search { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 10px; box-sizing: border-box; }
-        .filter-tabs { display: flex; gap: 6px; margin-bottom: 10px; }
-        .tab-btn { flex: 1; padding: 8px; border: 1px solid #dce4ec; background: #f8fafc; border-radius: 6px; cursor: pointer; }
-        .tab-btn.active { background: #3498db; color: #fff; }
-        .village-item { padding: 12px; border: 1px solid #eee; border-radius: 8px; margin-bottom: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .village-item:hover { background: #f4f8fb; }
+        .overlay { display: none; position: fixed; inset: 0; z-index: 10001; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(3px); }
+        .custom-modal { display: none; position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 10002; width: min(92vw, 520px); max-height: 85vh; background: #fff; border-radius: 16px; padding: 18px; overflow-y: auto; text-align: right; box-shadow: 0 20px 35px rgba(0,0,0,0.25); font-family: inherit; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-bottom: 14px; }
+        .modal-header h3 { margin: 0; color: #0f172a; font-size: 18px; font-weight: 700; }
+        .close-btn { border: none; background: transparent; font-size: 26px; cursor: pointer; color: #94a3b8; transition: color 0.2s; }
+        .close-btn:hover { color: #0f172a; }
+        #village-search { width: 100%; padding: 11px 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; margin-bottom: 12px; box-sizing: border-box; font-family: inherit; outline: none; }
+        #village-search:focus { border-color: #3b82f6; }
+        .filter-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+        .tab-btn { flex: 1; padding: 9px; border: 1px solid #e2e8f0; background: #f8fafc; border-radius: 8px; cursor: pointer; font-family: inherit; font-weight: 600; color: #475569; transition: all 0.2s; }
+        .tab-btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+        .village-item { padding: 13px 15px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #ffffff; transition: all 0.15s; }
+        .village-item:hover { background: #f0f9ff; border-color: #bae6fd; transform: translateY(-1px); }
 
-        /* استایل اختصاصی کارت جزئیات روستا */
+        /* استایل کارت جزئیات روستا */
         .village-detail-card { line-height: 1.8; text-align: right; }
-        .village-title { margin-top: 0; color: #2c3e50; font-size: 22px; border-bottom: 2px solid #3498db; padding-bottom: 8px; }
-        .badge-section { display: inline-block; background: #e1f0fa; color: #2980b9; padding: 3px 10px; border-radius: 12px; font-size: 13px; margin-bottom: 10px; font-weight: bold; }
-        .detail-row { margin-bottom: 10px; background: #fcfcfc; border: 1px solid #f0f0f0; border-radius: 8px; padding: 9px 12px; font-size: 14px; }
-        .detail-row strong { color: #2c3e50; }
-        .back-btn { background: #ecf0f1; border: 1px solid #bdc3c7; border-radius: 6px; padding: 6px 14px; font-size: 14px; cursor: pointer; font-weight: bold; margin-bottom: 12px; }
+        .village-title { margin-top: 0; color: #0f172a; font-size: 22px; border-bottom: 2px solid #3b82f6; padding-bottom: 8px; }
+        .badge-section { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 14px; font-size: 13px; margin-bottom: 12px; font-weight: 700; }
+        .detail-row { margin-bottom: 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 14px; font-size: 14px; }
+        .detail-row strong { color: #1e293b; }
+        .back-btn { background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 16px; font-size: 14px; cursor: pointer; font-weight: 700; margin-bottom: 14px; font-family: inherit; }
     </style>
 </head>
 <body>
@@ -114,15 +187,17 @@
         <div id="result-count"></div>
     </div>
 
-    <table id="dictionary-table">
-        <thead>
-            <tr>
-                <th>تاتی</th>
-                <th>فارسی</th>
-            </tr>
-        </thead>
-        <tbody id="table-body"></tbody>
-    </table>
+    <div class="table-container">
+        <table id="dictionary-table">
+            <thead>
+                <tr>
+                    <th>تاتی</th>
+                    <th>فارسی</th>
+                </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </div>
 
     <button id="suggestBtn" class="btn-float"><span>➕</span> پیشنهاد واژه</button>
     <button id="moreBtn" class="btn-float"><span>📚</span> الموت‌شناسی</button>
@@ -133,12 +208,12 @@
     <div id="suggestModal" class="custom-modal">
         <div class="modal-header"><h3>پیشنهاد واژه جدید</h3><button class="close-btn" onclick="closeAllModals()">&times;</button></div>
         
-        <input type="text" id="sugTati" placeholder="واژه تاتی (الزامی)" style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box;">
-        <input type="text" id="sugFarsi" placeholder="معنی فارسی (الزامی)" style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box;">
-        <textarea id="sugDesc" placeholder="مثال، تلفظ یا توضیحات (اختیاری)..." style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box; height:80px; font-family:inherit;"></textarea>
-        <input type="text" id="sugVillage" placeholder="نام شما یا روستای مربوطه (اختیاری)" style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box;">
+        <input type="text" id="sugTati" placeholder="واژه تاتی (الزامی)" style="width:100%; padding:11px; margin-bottom:10px; box-sizing:border-box; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit;">
+        <input type="text" id="sugFarsi" placeholder="معنی فارسی (الزامی)" style="width:100%; padding:11px; margin-bottom:10px; box-sizing:border-box; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit;">
+        <textarea id="sugDesc" placeholder="مثال، تلفظ یا توضیحات (اختیاری)..." style="width:100%; padding:11px; margin-bottom:10px; box-sizing:border-box; height:85px; font-family:inherit; border-radius:8px; border:1px solid #cbd5e1;"></textarea>
+        <input type="text" id="sugVillage" placeholder="نام شما یا روستای مربوطه (اختیاری)" style="width:100%; padding:11px; margin-bottom:12px; box-sizing:border-box; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit;">
         
-        <button id="sugSubmit" onclick="sendToBale()" style="width:100%; padding:12px; background:#27ae60; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size:15px;">ارسال در پیام رسان بله</button>
+        <button id="sugSubmit" onclick="sendToBale()" style="width:100%; padding:13px; background:linear-gradient(135deg, #16a34a, #22c55e); color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold; font-size:15px; font-family:inherit;">ارسال در پیام رسان بله</button>
     </div>
 
     <!-- مودال الموت شناسی -->
@@ -320,7 +395,7 @@
             renderVillages(currentVillageFilter, e.target.value);
         });
 
-                // نمایش پاپ‌آپ کامل اطلاعات روستا
+        // نمایش پاپ‌آپ کامل اطلاعات روستا
         function showDetail(vName) {
             const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
             const v = list.find(item => item.name === vName);
@@ -349,7 +424,7 @@
                     <div class="detail-row" style="background:#f4f8fb; border-color:#d4e6f1;">
                         📜 <strong>معرفی و پیشینه:</strong><br>${descriptionText}
                     </div>
-                    <button onclick="openWikiFrame('${v.name}')" style="margin-top:15px; padding:10px 20px; background:#2980b9; color:white; border:none; border-radius:8px; font-family:Tahoma; font-size:14px; cursor:pointer; width:100%;">
+                    <button onclick="openWikiFrame('${v.name}')" style="margin-top:15px; padding:10px 20px; background:#2980b9; color:white; border:none; border-radius:8px; font-family:inherit; font-size:14px; cursor:pointer; width:100%;">
                         🌐 مشاهده صفحه ویکی‌پدیا
                     </button>
                 </div>
@@ -364,7 +439,7 @@
             const wikiName = v.wiki || v.name;
             document.getElementById('village-detail-content').innerHTML = `
                 <div style="text-align:center; margin-bottom:10px;">
-                    <button onclick="showDetail('${v.name}')" style="padding:8px 16px; background:#e74c3c; color:white; border:none; border-radius:8px; font-family:Tahoma; font-size:13px; cursor:pointer;">
+                    <button onclick="showDetail('${v.name}')" style="padding:8px 16px; background:#e74c3c; color:white; border:none; border-radius:8px; font-family:inherit; font-size:13px; cursor:pointer;">
                         ↩️ بازگشت به مشخصات روستا
                     </button>
                 </div>
