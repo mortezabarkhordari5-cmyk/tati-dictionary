@@ -108,7 +108,7 @@
             letter-spacing: 0.5px;
             border: none;
         }
-        thead th:first-child { width: 44%; }
+        thead th:first-child { width: 42%; }
         
         tbody tr {
             transition: background-color 0.15s ease;
@@ -126,26 +126,6 @@
         }
         tbody td:last-child {
             color: #334155;
-        }
-
-        /* دکمه پخش صدا */
-        .speak-btn {
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            border-radius: 6px;
-            cursor: pointer;
-            padding: 3px 7px;
-            margin-left: 8px;
-            font-size: 15px;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            vertical-align: middle;
-        }
-        .speak-btn:hover {
-            background: #3b82f6;
-            transform: scale(1.1);
         }
         
         /* دکمه‌های شناور پایین */
@@ -264,19 +244,6 @@
         const searchInput = document.getElementById('search-input');
         const resultCount = document.getElementById('result-count');
 
-        // تابع تلفظ صوتی واژه
-        function speakWord(text) {
-            if (!('speechSynthesis' in window)) {
-                alert('مرورگر شما از قابلیت پخش صوتی پشتیبانی نمی‌کند.');
-                return;
-            }
-            window.speechSynthesis.cancel(); // قطع صدای قبلی در صورت وجود
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'fa-IR';
-            utterance.rate = 0.85; // سرعت ملایم و شمرده برای تلفظ دقیق
-            window.speechSynthesis.speak(utterance);
-        }
-
         // تابع حذف اعراب برای جستجو و مرتب‌سازی دقیق
         function cleanDiacritics(str) {
             return (str || '').replace(/[\u064B-\u065F\u0670]/g, '').trim();
@@ -300,6 +267,7 @@
                         farsi: farsiText
                     });
                 } else {
+                    // اگر دقیقاً با همین اعراب تکرار شده بود، معنی‌ها را ادغام کن
                     const existingWord = uniqueMap.get(key);
                     const oldMeanings = existingWord.farsi
                         .split('،')
@@ -320,8 +288,10 @@
             const val = searchInput.value.trim().toLowerCase();
             const rawList = (typeof words !== 'undefined') ? words : [];
 
+            // ۱. ابتدا تکراری‌های هم‌شکل حذف/ادغام می‌شوند
             const list = getUniqueWords(rawList);
 
+            // ۲. فیلتر کردن طبق کادر جستجو
             const filtered = list.filter(w => {
                 if (!val) return true;
                 const tatiClean = cleanDiacritics(w.tati).toLowerCase();
@@ -332,31 +302,20 @@
                        farsiClean.includes(val);
             });
 
+            // ۳. مرتب‌سازی الفبایی دقیق (آ تا ی) بر اساس ستون تاتی
             filtered.sort((a, b) => {
                 const aClean = cleanDiacritics(a.tati);
                 const bClean = cleanDiacritics(b.tati);
                 return aClean.localeCompare(bClean, 'fa');
             });
 
-            // ساخت ردیف‌های جدول همراه با دکمه صوتی
-            tableBody.innerHTML = filtered.map(w => {
-                // پاکسازی کوتیشن برای ارسال امن به تابع
-                const safeTati = w.tati.replace(/'/g, "\\'");
-                return `
-                    <tr>
-                        <td>
-                            <button class="speak-btn" onclick="speakWord('${safeTati}')" title="پخش صوتی">🔊</button>
-                            ${w.tati}
-                        </td>
-                        <td>${w.farsi}</td>
-                    </tr>
-                `;
-            }).join('');
+            // ۴. نمایش در جدول
+            tableBody.innerHTML = filtered.map(w => `<tr><td>${w.tati}</td><td>${w.farsi}</td></tr>`).join('');
             resultCount.textContent = `تعداد واژه‌ها: ${filtered.length}`;
         }
 
         searchInput.addEventListener('input', renderDict);
-        renderDict();
+        renderDict(); // اجرای اولیه هنگام باز شدن صفحه
 
         // مدیریت مودال‌ها
         const overlay = document.getElementById('overlay');
