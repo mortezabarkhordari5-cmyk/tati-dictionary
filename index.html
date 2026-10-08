@@ -10,9 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             user-select: none;
@@ -98,8 +96,7 @@
             text-align: right;
         }
 
-        th,
-        td {
+        th, td {
             padding: 14px 16px;
             text-align: right;
             font-size: 17px;
@@ -115,21 +112,11 @@
             border: none;
         }
 
-        thead th:first-child {
-            width: 44%;
-        }
+        thead th:first-child { width: 44%; }
 
-        tbody tr {
-            transition: background-color 0.15s ease;
-        }
-
-        tbody tr:nth-child(even) {
-            background-color: #f8fafc;
-        }
-
-        tbody tr:hover {
-            background-color: #e0f2fe;
-        }
+        tbody tr { transition: background-color 0.15s ease; }
+        tbody tr:nth-child(even) { background-color: #f8fafc; }
+        tbody tr:hover { background-color: #e0f2fe; }
 
         tbody td:first-child {
             font-weight: 700;
@@ -137,9 +124,7 @@
             border-left: 1px solid #f1f5f9;
         }
 
-        tbody td:last-child {
-            color: #334155;
-        }
+        tbody td:last-child { color: #334155; }
 
         /* دکمه پخش صوتی */
         .speak-btn {
@@ -162,9 +147,7 @@
             transform: scale(1.1);
         }
 
-        .speak-btn:active {
-            transform: scale(0.95);
-        }
+        .speak-btn:active { transform: scale(0.95); }
 
         /* دکمه‌های پایین */
         .btn-float {
@@ -185,21 +168,11 @@
             font-size: 14px;
         }
 
-        .btn-float:active {
-            transform: scale(0.96);
-        }
+        .btn-float:active { transform: scale(0.96); }
+        #suggestBtn { left: 16px; background: linear-gradient(135deg, #16a34a, #22c55e); }
+        #moreBtn { right: 16px; background: linear-gradient(135deg, #0284c7, #38bdf8); }
 
-        #suggestBtn {
-            left: 16px;
-            background: linear-gradient(135deg, #16a34a, #22c55e);
-        }
-
-        #moreBtn {
-            right: 16px;
-            background: linear-gradient(135deg, #0284c7, #38bdf8);
-        }
-
-        /* پنجره‌های بازشونده */
+        /* پاپ‌آپ‌ها */
         .overlay {
             display: none;
             position: fixed;
@@ -236,24 +209,8 @@
             margin-bottom: 14px;
         }
 
-        .modal-header h3 {
-            margin: 0;
-            color: #0f172a;
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .close-btn {
-            border: none;
-            background: transparent;
-            font-size: 26px;
-            cursor: pointer;
-            color: #94a3b8;
-        }
-
-        .close-btn:hover {
-            color: #0f172a;
-        }
+        .modal-header h3 { margin: 0; color: #0f172a; font-size: 18px; font-weight: 700; }
+        .close-btn { border: none; background: transparent; font-size: 26px; cursor: pointer; color: #94a3b8; }
 
         #village-search {
             width: 100%;
@@ -265,16 +222,7 @@
             outline: none;
         }
 
-        #village-search:focus {
-            border-color: #3b82f6;
-        }
-
-        .filter-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
+        .filter-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
         .tab-btn {
             flex: 1;
             padding: 9px;
@@ -287,12 +235,7 @@
             color: #475569;
         }
 
-        .tab-btn.active {
-            background: #2563eb;
-            color: #fff;
-            border-color: #2563eb;
-        }
-
+        .tab-btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
         .village-item {
             padding: 13px 15px;
             border: 1px solid #e2e8f0;
@@ -305,94 +248,28 @@
             background: #ffffff;
         }
 
-        .village-item:hover {
-            background: #f0f9ff;
-            border-color: #bae6fd;
-        }
-
-        .village-detail-card {
-            line-height: 1.8;
-            text-align: right;
-        }
-
-        .village-title {
-            margin-top: 0;
-            color: #0f172a;
-            font-size: 22px;
-            border-bottom: 2px solid #3b82f6;
-            padding-bottom: 8px;
-        }
-
-        .badge-section {
-            display: inline-block;
-            background: #e0f2fe;
-            color: #0369a1;
-            padding: 4px 12px;
-            border-radius: 14px;
-            font-size: 13px;
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-
-        .detail-row {
-            margin-bottom: 10px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 10px 14px;
-            font-size: 14px;
-        }
-
-        .back-btn {
-            background: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            padding: 8px 16px;
-            font-size: 14px;
-            cursor: pointer;
-            font-weight: 700;
-            margin-bottom: 14px;
-            font-family: inherit;
-        }
+        .village-detail-card { line-height: 1.8; text-align: right; }
+        .village-title { margin-top: 0; color: #0f172a; font-size: 22px; border-bottom: 2px solid #3b82f6; padding-bottom: 8px; }
+        .badge-section { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 14px; font-size: 13px; margin-bottom: 12px; font-weight: 700; }
+        .detail-row { margin-bottom: 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 14px; font-size: 14px; }
+        .back-btn { background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 16px; font-size: 14px; cursor: pointer; font-weight: 700; margin-bottom: 14px; font-family: inherit; }
 
         @media (max-width: 600px) {
-            h1 {
-                font-size: 23px;
-            }
-
-            th,
-            td {
-                padding: 11px 9px;
-                font-size: 15px;
-            }
-
-            .btn-float {
-                padding: 10px 13px;
-                font-size: 12px;
-            }
-
-            #suggestBtn {
-                left: 8px;
-            }
-
-            #moreBtn {
-                right: 8px;
-            }
+            h1 { font-size: 23px; }
+            th, td { padding: 11px 9px; font-size: 15px; }
+            .btn-float { padding: 10px 13px; font-size: 12px; }
+            #suggestBtn { left: 8px; }
+            #moreBtn { right: 8px; }
         }
     </style>
 </head>
-
 <body>
 
     <h1>لغت‌نامه تاتی الموتی</h1>
     <div id="author">اثر: مرتضی برخورداری</div>
 
     <div class="sticky-header">
-        <input
-            type="text"
-            id="search-input"
-            placeholder="جستجو در تاتی یا فارسی..."
-        >
+        <input type="text" id="search-input" placeholder="جستجو در تاتی یا فارسی...">
         <div id="result-count"></div>
     </div>
 
@@ -408,239 +285,102 @@
         </table>
     </div>
 
-    <button id="suggestBtn" class="btn-float">
-        <span>➕</span>
-        پیشنهاد واژه
-    </button>
-
-    <button id="moreBtn" class="btn-float">
-        <span>📚</span>
-        الموت‌شناسی
-    </button>
+    <button id="suggestBtn" class="btn-float"><span>➕</span> پیشنهاد واژه</button>
+    <button id="moreBtn" class="btn-float"><span>📚</span> الموت‌شناسی</button>
 
     <div id="overlay" class="overlay"></div>
 
-    <!-- پنجره پیشنهاد واژه -->
+    <!-- مودال پیشنهاد واژه -->
     <div id="suggestModal" class="custom-modal">
         <div class="modal-header">
             <h3>پیشنهاد واژه جدید</h3>
             <button class="close-btn" onclick="closeAllModals()">&times;</button>
         </div>
-
-        <input
-            type="text"
-            id="sugTati"
-            placeholder="واژه تاتی (الزامی)"
-            style="width:100%; padding:11px; margin-bottom:10px; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit;"
-        >
-
-        <input
-            type="text"
-            id="sugFarsi"
-            placeholder="معنی فارسی (الزامی)"
-            style="width:100%; padding:11px; margin-bottom:10px; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit;"
-        >
-
-        <textarea
-            id="sugDesc"
-            placeholder="مثال، تلفظ یا توضیحات (اختیاری)..."
-            style="width:100%; padding:11px; margin-bottom:10px; height:85px; font-family:inherit; border-radius:8px; border:1px solid #cbd5e1;"
-        ></textarea>
-
-        <input
-            type="text"
-            id="sugVillage"
-            placeholder="نام شما یا روستای مربوطه (اختیاری)"
-            style="width:100%; padding:11px; margin-bottom:12px; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit;"
-        >
-
-        <button
-            id="sugSubmit"
-            onclick="sendToBale()"
-            style="width:100%; padding:13px; background:linear-gradient(135deg, #16a34a, #22c55e); color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold; font-size:15px; font-family:inherit;"
-        >
-            ارسال در پیام‌رسان بله
-        </button>
+        <input type="text" id="sugTati" placeholder="واژه تاتی (الزامی)" style="width:100%; padding:11px; margin-bottom:10px; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit;">
+        <input type="text" id="sugFarsi" placeholder="معنی فارسی (الزامی)" style="width:100%; padding:11px; margin-bottom:10px; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit;">
+        <textarea id="sugDesc" placeholder="مثال، تلفظ یا توضیحات (اختیاری)..." style="width:100%; padding:11px; margin-bottom:10px; height:85px; font-family:inherit; border-radius:8px; border:1px solid #cbd5e1;"></textarea>
+        <input type="text" id="sugVillage" placeholder="نام شما یا روستای مربوطه (اختیاری)" style="width:100%; padding:11px; margin-bottom:12px; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit;">
+        <button id="sugSubmit" onclick="sendToBale()" style="width:100%; padding:13px; background:linear-gradient(135deg, #16a34a, #22c55e); color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold; font-size:15px; font-family:inherit;">ارسال در پیام‌رسان بله</button>
     </div>
 
-    <!-- پنجره الموت‌شناسی -->
+    <!-- مودال الموت شناسی -->
     <div id="moreModal" class="custom-modal">
         <div class="modal-header">
             <h3 id="modal-title">روستاهای الموت</h3>
             <button class="close-btn" onclick="closeAllModals()">&times;</button>
         </div>
-
         <div id="list-view">
-            <input
-                type="text"
-                id="village-search"
-                placeholder="جستجوی نام روستا..."
-            >
-
+            <input type="text" id="village-search" placeholder="جستجوی نام روستا...">
             <div class="filter-tabs">
-                <button class="tab-btn active" onclick="filterVillages('همه')">
-                    همه
-                </button>
-
-                <button class="tab-btn" onclick="filterVillages('شرقی')">
-                    شرقی
-                </button>
-
-                <button class="tab-btn" onclick="filterVillages('غربی')">
-                    غربی
-                </button>
+                <button class="tab-btn active" onclick="filterVillages('همه')">همه</button>
+                <button class="tab-btn" onclick="filterVillages('شرقی')">شرقی</button>
+                <button class="tab-btn" onclick="filterVillages('غربی')">غربی</button>
             </div>
-
             <div id="villages-container"></div>
         </div>
-
         <div id="detail-view" style="display:none;">
-            <button class="back-btn" onclick="backToList()">
-                🔙 بازگشت به لیست
-            </button>
-
+            <button class="back-btn" onclick="backToList()">🔙 بازگشت به لیست</button>
             <div id="village-detail-content"></div>
         </div>
     </div>
 
-    <!-- این دو فایل اصلی شما دست‌نخورده باقی می‌مانند -->
-    <script src="data.js?v=5"></script>
-    <script src="places.js?v=5"></script>
+    <!-- بارگذاری داده‌ها -->
+    <script src="data.js"></script>
+    <script src="places.js"></script>
 
     <script>
         const tableBody = document.getElementById('table-body');
         const searchInput = document.getElementById('search-input');
         const resultCount = document.getElementById('result-count');
 
-        /*
-         * پخش آنلاین صدا
-         * این متغیر صدای در حال پخش را نگه می‌دارد
-         */
-        let currentAudio = null;
+        // خواندن لغات از هر نام متغیری که در data.js تعریف شده باشد
+        function getRawWordList() {
+            if (typeof words !== 'undefined' && Array.isArray(words)) return words;
+            if (typeof dictionaryData !== 'undefined' && Array.isArray(dictionaryData)) return dictionaryData;
+            if (typeof tatiWords !== 'undefined' && Array.isArray(tatiWords)) return tatiWords;
+            if (typeof data !== 'undefined' && Array.isArray(data)) return data;
+            return [];
+        }
 
-        /*
-         * پخش واژه با صدای آنلاین فارسی
-         * اگر صدای آنلاین اجرا نشود، از موتور داخلی مرورگر استفاده می‌شود.
-         */
+        // تلفظ صوتی واژه با موتور هوشمند
         function speakWord(text) {
             const word = String(text || '').trim();
+            if (!word) return;
 
-            if (!word) {
-                return;
-            }
-
-            // توقف صدای قبلی
-            if (currentAudio) {
-                currentAudio.pause();
-                currentAudio.currentTime = 0;
-                currentAudio = null;
-            }
-
-            // توقف خوانش داخلی قبلی
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-            }
-
-            /*
-             * سرویس آنلاین خوانش فارسی گوگل
-             * برای کارکرد این بخش، اینترنت باید روشن باشد.
-             */
-            const audioUrl =
-                'https://translate.google.com/translate_tts' +
-                '?ie=UTF-8' +
-                '&client=tw-ob' +
-                '&tl=fa' +
-                '&total=1' +
-                '&idx=0' +
-                '&q=' + encodeURIComponent(word);
-
-            currentAudio = new Audio(audioUrl);
-            currentAudio.volume = 1;
-
-            let fallbackUsed = false;
-
-            function useLocalSpeech() {
-                if (fallbackUsed) {
-                    return;
-                }
-
-                fallbackUsed = true;
-
-                if ('speechSynthesis' in window) {
-                    const utterance = new SpeechSynthesisUtterance(word);
-                    utterance.lang = 'fa-IR';
-                    utterance.rate = 0.85;
-                    utterance.pitch = 1;
-                    utterance.volume = 1;
-
-                    window.speechSynthesis.speak(utterance);
-                } else {
-                    alert(
-                        'پخش صوتی در این مرورگر پشتیبانی نمی‌شود. ' +
-                        'لطفاً اینترنت و موتور گفتار گوشی را بررسی کنید.'
-                    );
-                }
-            }
-
-            currentAudio.onerror = function () {
-                useLocalSpeech();
-            };
-
-            const playPromise = currentAudio.play();
-
-            if (playPromise !== undefined) {
-                playPromise.catch(function () {
-                    useLocalSpeech();
-                });
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'fa-IR';
+                utterance.rate = 0.85;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert('مرورگر از پخش صوتی پشتیبانی نمی‌کند.');
             }
         }
 
-        /*
-         * حذف اعراب برای جستجو و مرتب‌سازی
-         */
+        // حذف اعراب برای جستجو و مرتب‌سازی دقیق
         function cleanDiacritics(str) {
-            return (str || '')
-                .replace(/[\u064B-\u065F\u0670]/g, '')
-                .trim();
+            return (str || '').replace(/[\u064B-\u065F\u0670]/g, '').trim();
         }
 
-        /*
-         * حذف واژه‌های تکراری
-         */
+        // حذف لغات تکراری با حفظ ساختار
         function getUniqueWords(list) {
             const uniqueMap = new Map();
 
             list.forEach(function (word) {
-                if (!word || typeof word.tati !== 'string') {
-                    return;
-                }
+                if (!word) return;
+                const tatiText = String(word.tati || word.word || '').trim();
+                if (!tatiText) return;
 
-                const tatiText = word.tati.trim();
                 const key = tatiText.normalize('NFC');
-                const farsiText = String(word.farsi || '')
-                    .trim()
-                    .replace(/\.$/, '');
+                const farsiText = String(word.farsi || word.meaning || '').trim().replace(/\.$/, '');
 
                 if (!uniqueMap.has(key)) {
-                    uniqueMap.set(key, {
-                        ...word,
-                        tati: tatiText,
-                        farsi: farsiText
-                    });
+                    uniqueMap.set(key, { tati: tatiText, farsi: farsiText });
                 } else {
                     const existingWord = uniqueMap.get(key);
-
-                    const oldMeanings = existingWord.farsi
-                        .split('،')
-                        .map(function (item) {
-                            return item.trim();
-                        })
-                        .filter(Boolean);
-
-                    if (
-                        farsiText &&
-                        !oldMeanings.includes(farsiText)
-                    ) {
+                    const oldMeanings = existingWord.farsi.split('،').map(i => i.trim()).filter(Boolean);
+                    if (farsiText && !oldMeanings.includes(farsiText)) {
                         oldMeanings.push(farsiText);
                         existingWord.farsi = oldMeanings.join('، ');
                     }
@@ -650,21 +390,13 @@
             return Array.from(uniqueMap.values());
         }
 
-        /*
-         * ساخت جدول واژه‌ها
-         */
         function renderDict() {
             const val = searchInput.value.trim().toLowerCase();
-            const rawList =
-                typeof words !== 'undefined' ? words : [];
-
+            const rawList = getRawWordList();
             const list = getUniqueWords(rawList);
 
             const filtered = list.filter(function (word) {
-                if (!val) {
-                    return true;
-                }
-
+                if (!val) return true;
                 const tatiClean = cleanDiacritics(word.tati).toLowerCase();
                 const farsiClean = cleanDiacritics(word.farsi).toLowerCase();
 
@@ -679,81 +411,47 @@
             filtered.sort(function (a, b) {
                 const aClean = cleanDiacritics(a.tati);
                 const bClean = cleanDiacritics(b.tati);
-
                 return aClean.localeCompare(bClean, 'fa');
             });
 
-            tableBody.innerHTML = filtered.map(function (word) {
-                /*
-                 * برای جلوگیری از مشکل کوتیشن در نام واژه،
-                 * متن واژه به‌صورت کدگذاری‌شده به دکمه داده می‌شود.
-                 */
-                const encodedWord = encodeURIComponent(word.tati);
+            if (filtered.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="2" style="text-align:center; color:#888; padding:20px;">واژه‌ای یافت نشد!</td></tr>`;
+            } else {
+                tableBody.innerHTML = filtered.map(function (word) {
+                    const safeTati = encodeURIComponent(word.tati);
+                    return `
+                        <tr>
+                            <td>
+                                <button class="speak-btn" onclick="speakWord(decodeURIComponent('${safeTati}'))" title="پخش صوتی">🔊</button>
+                                ${word.tati}
+                            </td>
+                            <td>${word.farsi}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
 
-                return `
-                    <tr>
-                        <td>
-                            <button
-                                class="speak-btn"
-                                onclick="speakWord(decodeURIComponent('${encodedWord}'))"
-                                title="پخش تلفظ واژه"
-                                aria-label="پخش تلفظ واژه"
-                            >
-                                🔊
-                            </button>
-                            ${word.tati}
-                        </td>
-
-                        <td>${word.farsi}</td>
-                    </tr>
-                `;
-            }).join('');
-
-            resultCount.textContent =
-                'تعداد واژه‌ها: ' + filtered.length;
+            resultCount.textContent = 'تعداد واژه‌ها: ' + filtered.length;
         }
 
         searchInput.addEventListener('input', renderDict);
-
+        window.addEventListener('DOMContentLoaded', renderDict);
         renderDict();
 
-        /*
-         * مدیریت پنجره‌ها
-         */
+        // مدیریت مودال‌ها
         const overlay = document.getElementById('overlay');
-
-        function openModal(id) {
-            overlay.style.display = 'block';
-            document.getElementById(id).style.display = 'block';
-        }
-
+        function openModal(id) { overlay.style.display = 'block'; document.getElementById(id).style.display = 'block'; }
         function closeAllModals() {
             overlay.style.display = 'none';
-
-            document
-                .querySelectorAll('.custom-modal')
-                .forEach(function (modal) {
-                    modal.style.display = 'none';
-                });
-
+            document.querySelectorAll('.custom-modal').forEach(m => m.style.display = 'none');
             document.getElementById('detail-view').style.display = 'none';
             document.getElementById('list-view').style.display = 'block';
         }
 
-        document.getElementById('suggestBtn').onclick = function () {
-            openModal('suggestModal');
-        };
-
-        document.getElementById('moreBtn').onclick = function () {
-            openModal('moreModal');
-            renderVillages('همه');
-        };
-
+        document.getElementById('suggestBtn').onclick = () => openModal('suggestModal');
+        document.getElementById('moreBtn').onclick = () => { openModal('moreModal'); renderVillages('همه'); };
         overlay.onclick = closeAllModals;
 
-        /*
-         * ارسال پیشنهاد واژه به پیام‌رسان بله
-         */
         function sendToBale() {
             const tati = document.getElementById('sugTati').value.trim();
             const farsi = document.getElementById('sugFarsi').value.trim();
@@ -765,259 +463,109 @@
                 return;
             }
 
-            const text =
-                'سلام، پیشنهاد واژه برای لغت‌نامه تاتی الموتی:\n\n' +
-                '🔹 واژه تاتی: ' + tati + '\n' +
-                '🔹 معنی فارسی: ' + farsi + '\n' +
-                '🔹 توضیح: ' + desc + '\n' +
-                '🔹 نام/روستا: ' + village;
-
+            const text = `سلام، پیشنهاد واژه برای لغت‌نامه تاتی الموتی:\n\n🔹 واژه تاتی: ${tati}\n🔹 معنی فارسی: ${farsi}\n🔹 توضیح: ${desc}\n🔹 نام/روستا: ${village}`;
             const myId = 'MortezaBarkhordari';
-
-            const url =
-                'https://ble.ir/' +
-                myId +
-                '?text=' +
-                encodeURIComponent(text);
-
-            window.location.href = url;
+            window.location.href = `https://ble.ir/${myId}?text=${encodeURIComponent(text)}`;
             closeAllModals();
         }
 
-        /*
-         * نمایش و فیلتر روستاها
-         */
         let currentVillageFilter = 'همه';
-
         function renderVillages(filter, search) {
             currentVillageFilter = filter;
+            const container = document.getElementById('villages-container');
+            const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : ((typeof villages !== 'undefined') ? villages : []);
+            const searchVal = (search || '').trim().toLowerCase();
 
-            const container =
-                document.getElementById('villages-container');
-
-            const list =
-                typeof alamutVillages !== 'undefined'
-                    ? alamutVillages
-                    : [];
-
-            const searchVal =
-                (search || '').trim().toLowerCase();
-
-            const filtered = list.filter(function (village) {
-                const regionName =
-                    village.region || village.section || '';
-
-                const matchFilter =
-                    filter === 'همه' ||
-                    regionName.includes(filter);
-
-                const matchSearch =
-                    !searchVal ||
-                    (
-                        village.name &&
-                        village.name
-                            .toLowerCase()
-                            .includes(searchVal)
-                    );
-
+            const filtered = list.filter(function (v) {
+                const regionName = v.region || v.section || '';
+                const matchFilter = (filter === 'همه') || regionName.includes(filter);
+                const matchSearch = !searchVal || (v.name && v.name.toLowerCase().includes(searchVal));
                 return matchFilter && matchSearch;
             });
 
             if (filtered.length === 0) {
-                container.innerHTML =
-                    '<div style="text-align:center; padding:15px; color:#888;">' +
-                    'روستایی یافت نشد!' +
-                    '</div>';
-
+                container.innerHTML = '<div style="text-align:center; padding:15px; color:#888;">روستایی یافت نشد!</div>';
                 return;
             }
 
-            container.innerHTML = filtered.map(function (village) {
-                const regionName =
-                    village.region || village.section || '';
-
-                const encodedName =
-                    encodeURIComponent(village.name);
-
+            container.innerHTML = filtered.map(function (v) {
+                const regionName = v.region || v.section || '';
+                const enc = encodeURIComponent(v.name);
                 return `
-                    <div
-                        class="village-item"
-                        onclick="showDetail(decodeURIComponent('${encodedName}'))"
-                    >
-                        <span style="font-weight:bold;">
-                            ${village.name}
-                        </span>
-
-                        <span style="color:#2980b9; font-size:12px; background:#e1f0fa; padding:2px 8px; border-radius:10px;">
-                            ${regionName}
-                        </span>
+                    <div class="village-item" onclick="showDetail(decodeURIComponent('${enc}'))">
+                        <span style="font-weight:bold;">${v.name}</span>
+                        <span style="color:#2980b9; font-size:12px; background:#e1f0fa; padding:2px 8px; border-radius:10px;">${regionName}</span>
                     </div>
                 `;
             }).join('');
         }
 
         function filterVillages(filter) {
-            document
-                .querySelectorAll('.tab-btn')
-                .forEach(function (button) {
-                    button.classList.toggle(
-                        'active',
-                        button.innerText.trim() === filter
-                    );
-                });
-
-            renderVillages(
-                filter,
-                document.getElementById('village-search').value
-            );
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.innerText.trim() === filter));
+            renderVillages(filter, document.getElementById('village-search').value);
         }
 
-        document
-            .getElementById('village-search')
-            .addEventListener('input', function (event) {
-                renderVillages(
-                    currentVillageFilter,
-                    event.target.value
-                );
-            });
+        document.getElementById('village-search').addEventListener('input', function (e) {
+            renderVillages(currentVillageFilter, e.target.value);
+        });
 
-        /*
-         * نمایش جزئیات روستا
-         */
         function showDetail(vName) {
-            const list =
-                typeof alamutVillages !== 'undefined'
-                    ? alamutVillages
-                    : [];
-
-            const village = list.find(function (item) {
-                return item.name === vName;
-            });
-
-            if (!village) {
-                return;
-            }
+            const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : ((typeof villages !== 'undefined') ? villages : []);
+            const v = list.find(item => item.name === vName);
+            if (!v) return;
 
             document.getElementById('list-view').style.display = 'none';
             document.getElementById('detail-view').style.display = 'block';
 
-            const regionName =
-                village.region || village.section || 'الموت';
+            const regionName = v.region || v.section || 'الموت';
+            const descriptionText = v.description || 'توضیحاتی برای این روستا ثبت نشده است.';
+            const popText = v.population ? `<div class="detail-row">👥 <strong>جمعیت:</strong> ${v.population}</div>` : '';
+            const dehestanText = v.dehestan ? `<div class="detail-row">📍 <strong>دهستان:</strong> ${v.dehestan}</div>` : '';
+            const souvenirsText = v.souvenirs ? `<div class="detail-row">🍯 <strong>محصولات و سوغات:</strong> ${v.souvenirs}</div>` : '';
+            const customsText = v.customs ? `<div class="detail-row">🎉 <strong>آداب و رسوم:</strong> ${v.customs}</div>` : '';
+            const attractionsText = v.attractions ? `<div class="detail-row">🏞️ <strong>جاذبه‌ها و دیدنی‌ها:</strong> ${v.attractions}</div>` : '';
 
-            const descriptionText =
-                village.description ||
-                'توضیحاتی برای این روستا ثبت نشده است.';
-
-            const popText = village.population
-                ? `
-                    <div class="detail-row">
-                        👥 <strong>جمعیت:</strong>
-                        ${village.population}
-                    </div>
-                `
-                : '';
-
-            const dehestanText = village.dehestan
-                ? `
-                    <div class="detail-row">
-                        📍 <strong>دهستان:</strong>
-                        ${village.dehestan}
-                    </div>
-                `
-                : '';
-
-            const souvenirsText = village.souvenirs
-                ? `
-                    <div class="detail-row">
-                        🍯 <strong>محصولات و سوغات:</strong>
-                        ${village.souvenirs}
-                    </div>
-                `
-                : '';
-
-            const customsText = village.customs
-                ? `
-                    <div class="detail-row">
-                        🎉 <strong>آداب و رسوم:</strong>
-                        ${village.customs}
-                    </div>
-                `
-                : '';
-
-            const attractionsText = village.attractions
-                ? `
-                    <div class="detail-row">
-                        🏞️ <strong>جاذبه‌ها و دیدنی‌ها:</strong>
-                        ${village.attractions}
-                    </div>
-                `
-                : '';
-
-            const encodedVillageName =
-                encodeURIComponent(village.name);
-
-            document.getElementById(
-                'village-detail-content'
-            ).innerHTML = `
+            const enc = encodeURIComponent(v.name);
+            document.getElementById('village-detail-content').innerHTML = `
                 <div class="village-detail-card">
-                    <h3 class="village-title">
-                        ${village.name}
-                    </h3>
-
-                    <div class="badge-section">
-                        ${regionName}
-                    </div>
-
+                    <h3 class="village-title">${v.name}</h3>
+                    <div class="badge-section">${regionName}</div>
                     ${popText}
                     ${dehestanText}
                     ${souvenirsText}
                     ${customsText}
                     ${attractionsText}
-
-                    <div
-                        class="detail-row"
-                        style="background:#f4f8fb; border-color:#d4e6f1;"
-                    >
-                        📜 <strong>معرفی و پیشینه:</strong><br>
-                        ${descriptionText}
+                    <div class="detail-row" style="background:#f4f8fb; border-color:#d4e6f1;">
+                        📜 <strong>معرفی و پیشینه:</strong><br>${descriptionText}
                     </div>
-
-                    <button
-                        onclick="openWikiFrame(decodeURIComponent('${encodedVillageName}'))"
-                        style="margin-top:15px; padding:10px 20px; background:#2980b9; color:white; border:none; border-radius:8px; font-family:inherit; font-size:14px; cursor:pointer; width:100%;"
-                    >
+                    <button onclick="openWikiFrame(decodeURIComponent('${enc}'))" style="margin-top:15px; padding:10px 20px; background:#2980b9; color:white; border:none; border-radius:8px; font-family:inherit; font-size:14px; cursor:pointer; width:100%;">
                         🌐 مشاهده صفحه ویکی‌پدیا
                     </button>
                 </div>
             `;
         }
 
-        /*
-         * نمایش ویکی‌پدیا
-         */
         function openWikiFrame(vName) {
-            const list =
-                typeof alamutVillages !== 'undefined'
-                    ? alamutVillages
-                    : [];
+            const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : ((typeof villages !== 'undefined') ? villages : []);
+            const v = list.find(item => item.name === vName);
+            if (!v) return;
 
-            const village = list.find(function (item) {
-                return item.name === vName;
-            });
-
-            if (!village) {
-                return;
-            }
-
-            const wikiName =
-                village.wiki || village.name;
-
-            const encodedVillageName =
-                encodeURIComponent(village.name);
-
-            document.getElementById(
-                'village-detail-content'
-            ).innerHTML = `
+            const wikiName = v.wiki || v.name;
+            const enc = encodeURIComponent(v.name);
+            document.getElementById('village-detail-content').innerHTML = `
                 <div style="text-align:center; margin-bottom:10px;">
-                    <button
-                        oncl
+                    <button onclick="showDetail(decodeURIComponent('${enc}'))" style="padding:8px 16px; background:#e74c3c; color:white; border:none; border-radius:8px; font-family:inherit; font-size:13px; cursor:pointer;">
+                        ↩️ بازگشت به مشخصات روستا
+                    </button>
+                </div>
+                <iframe src="https://fa.m.wikipedia.org/wiki/${encodeURIComponent(wikiName)}" style="width:100%; height:70vh; border:1px solid #ccc; border-radius:8px;"></iframe>
+            `;
+        }
+
+        function backToList() {
+            document.getElementById('detail-view').style.display = 'none';
+            document.getElementById('list-view').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
