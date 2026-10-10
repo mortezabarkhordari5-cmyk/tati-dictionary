@@ -222,18 +222,19 @@
     <div id="suggestModal" class="custom-modal">
         <div class="modal-header"><h3>پیشنهاد واژه جدید</h3><button class="close-btn" onclick="closeAllModals()">&times;</button></div>
         
-        <input type="text" id="sugTati" placeholder="واژه تاتی (الزامی)" style="width:100%; padding:11px; margin-bottom:10px; box-sizing:border-box; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit;">
-        <input type="text" id="sugFarsi" placeholder="معنی فارسی (الزامی)" style="width:100%; padding:11px; margin-bottom:10px; box-sizing:border-box; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit;">
-        <textarea id="sugDesc" placeholder="مثال، تلفظ یا توضیحات (اختیاری)..." style="width:100%; padding:11px; margin-bottom:10px; box-sizing:border-box; height:85px; font-family:inherit; border-radius:8px; border:1px solid #cbd5e1;"></textarea>
-        <input type="text" id="sugVillage" placeholder="نام شما یا روستای مربوطه (اختیاری)" style="width:100%; padding:11px; margin-bottom:12px; box-sizing:border-box; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit;">
-        
-        <button id="sugSubmit" onclick="sendToBale()" style="width:100%; padding:13px; background:linear-gradient(135deg, #16a34a, #22c55e); color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold; font-size:15px; font-family:inherit;">ارسال در پیام رسان بله</button>
+        <form action="https://formspree.io/f/xeaeklvn" method="POST">
+            <input type="text" name="tati_word" placeholder="واژه تاتی (الزامی)" required style="width:100%; padding:11px; margin-bottom:10px; box-sizing:border-box; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit;">
+            <input type="text" name="farsi_word" placeholder="معنی فارسی (الزامی)" required style="width:100%; padding:11px; margin-bottom:10px; box-sizing:border-box; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit;">
+            <textarea name="description" placeholder="مثال، تلفظ یا توضیحات (اختیاری)..." style="width:100%; padding:11px; margin-bottom:10px; box-sizing:border-box; height:85px; font-family:inherit; border-radius:8px; border:1px solid #cbd5e1;"></textarea>
+            <input type="text" name="sender_info" placeholder="نام شما یا روستای مربوطه (اختیاری)" style="width:100%; padding:11px; margin-bottom:12px; box-sizing:border-box; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit;">
+            
+            <button type="submit" style="width:100%; padding:13px; background:linear-gradient(135deg, #16a34a, #22c55e); color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold; font-size:15px; font-family:inherit;">ارسال پیشنهاد به ایمیل</button>
+        </form>
     </div>
 
     <!-- مودال الموت شناسی -->
     <div id="moreModal" class="custom-modal">
         <div id="list-view">
-            <!-- بخش هدر، جستجو و فیلترها که به صورت شناور بالا می‌ماند -->
             <div class="sticky-modal-header">
                 <div class="modal-header">
                     <h3 id="modal-title">روستاهای الموت</h3>
@@ -264,54 +265,35 @@
         const searchInput = document.getElementById('search-input');
         const resultCount = document.getElementById('result-count');
 
-        // تابع حذف اعراب برای جستجو و مرتب‌سازی دقیق
         function cleanDiacritics(str) {
             return (str || '').replace(/[\u064B-\u065F\u0670]/g, '').trim();
         }
 
-        // تابع حذف لغات تکراری دقیق با حفظ اعراب متفاوت
         function getUniqueWords(list) {
             const uniqueMap = new Map();
-
             list.forEach(word => {
                 if (!word || typeof word.tati !== 'string') return;
-
                 const tatiText = word.tati.trim();
                 const key = tatiText.normalize('NFC');
                 const farsiText = String(word.farsi || '').trim().replace(/\.$/, '');
-
                 if (!uniqueMap.has(key)) {
-                    uniqueMap.set(key, {
-                        ...word,
-                        tati: tatiText,
-                        farsi: farsiText
-                    });
+                    uniqueMap.set(key, { ...word, tati: tatiText, farsi: farsiText });
                 } else {
-                    // اگر دقیقاً با همین اعراب تکرار شده بود، معنی‌ها را ادغام کن
                     const existingWord = uniqueMap.get(key);
-                    const oldMeanings = existingWord.farsi
-                        .split('،')
-                        .map(item => item.trim())
-                        .filter(Boolean);
-
+                    const oldMeanings = existingWord.farsi.split('،').map(item => item.trim()).filter(Boolean);
                     if (farsiText && !oldMeanings.includes(farsiText)) {
                         oldMeanings.push(farsiText);
                         existingWord.farsi = oldMeanings.join('، ');
                     }
                 }
             });
-
             return Array.from(uniqueMap.values());
         }
 
         function renderDict() {
             const val = searchInput.value.trim().toLowerCase();
             const rawList = (typeof words !== 'undefined') ? words : [];
-
-            // ۱. ابتدا تکراری‌های هم‌شکل حذف/ادغام می‌شوند
             const list = getUniqueWords(rawList);
-
-            // ۲. فیلتر کردن طبق کادر جستجو
             const filtered = list.filter(w => {
                 if (!val) return true;
                 const tatiClean = cleanDiacritics(w.tati).toLowerCase();
@@ -321,23 +303,18 @@
                        tatiClean.includes(val) ||
                        farsiClean.includes(val);
             });
-
-            // ۳. مرتب‌سازی الفبایی دقیق (آ تا ی) بر اساس ستون تاتی
             filtered.sort((a, b) => {
                 const aClean = cleanDiacritics(a.tati);
                 const bClean = cleanDiacritics(b.tati);
                 return aClean.localeCompare(bClean, 'fa');
             });
-
-            // ۴. نمایش در جدول
             tableBody.innerHTML = filtered.map(w => `<tr><td>${w.tati}</td><td>${w.farsi}</td></tr>`).join('');
             resultCount.textContent = `تعداد واژه‌ها: ${filtered.length}`;
         }
 
         searchInput.addEventListener('input', renderDict);
-        renderDict(); // اجرای اولیه هنگام باز شدن صفحه
+        renderDict();
 
-        // مدیریت مودال‌ها
         const overlay = document.getElementById('overlay');
         function openModal(id) { overlay.style.display = 'block'; document.getElementById(id).style.display = 'block'; }
         
@@ -352,47 +329,22 @@
         document.getElementById('moreBtn').onclick = () => { openModal('moreModal'); renderVillages('همه'); };
         overlay.onclick = closeAllModals;
 
-        // باز کردن مستقیم پیام‌رسان بله
-        function sendToBale() {
-            const tati = document.getElementById('sugTati').value.trim();
-            const farsi = document.getElementById('sugFarsi').value.trim();
-            const desc = document.getElementById('sugDesc').value.trim();
-            const village = document.getElementById('sugVillage').value.trim();
-
-            if (!tati || !farsi) {
-                alert("لطفاً واژه تاتی و معنی فارسی را وارد کنید.");
-                return;
-            }
-
-            const text = `سلام، پیشنهاد واژه برای لغت‌نامه تاتی الموتی:\n\n🔹 واژه تاتی: ${tati}\n🔹 معنی فارسی: ${farsi}\n🔹 توضیح: ${desc}\n🔹 نام/روستا: ${village}`;
-            const myId = "MortezaBarkhordari";
-            const url = `https://ble.ir/${myId}?text=${encodeURIComponent(text)}`;
-
-            window.location.href = url;
-            closeAllModals();
-        }
-
-        // نمایش و فیلتر روستاها
         let currentVillageFilter = 'همه';
-
         function renderVillages(filter, search = '') {
             currentVillageFilter = filter;
             const container = document.getElementById('villages-container');
             const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
             const searchVal = (search || '').trim().toLowerCase();
-            
             const filtered = list.filter(v => {
                 const regionName = (v.region || v.section || '');
                 const matchFilter = (filter === 'همه') || regionName.includes(filter);
                 const matchSearch = !searchVal || (v.name && v.name.toLowerCase().includes(searchVal));
                 return matchFilter && matchSearch;
             });
-
             if (filtered.length === 0) {
                 container.innerHTML = `<div style="text-align:center; padding:15px; color:#888;">روستایی یافت نشد!</div>`;
                 return;
             }
-
             container.innerHTML = filtered.map((v) => {
                 const regionName = v.region || v.section || '';
                 return `
@@ -415,15 +367,12 @@
             renderVillages(currentVillageFilter, e.target.value);
         });
 
-        // نمایش پاپ‌آپ کامل اطلاعات روستا
         function showDetail(vName) {
             const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
             const v = list.find(item => item.name === vName);
             if (!v) return;
-
             document.getElementById('list-view').style.display = 'none';
             document.getElementById('detail-view').style.display = 'block';
-
             const regionName = v.region || v.section || "الموت";
             const descriptionText = v.description || 'توضیحاتی برای این روستا ثبت نشده است.';
             const popText = v.population ? `<div class="detail-row">👥 <strong>جمعیت:</strong> ${v.population}</div>` : '';
@@ -431,7 +380,6 @@
             const souvText = v.souvenirs ? `<div class="detail-row">🍯 <strong>محصولات و سوغات:</strong> ${v.souvenirs}</div>` : '';
             const customText = v.customs ? `<div class="detail-row">🎉 <strong>آداب و رسوم:</strong> ${v.customs}</div>` : '';
             const attractText = v.attractions ? `<div class="detail-row">🏞️ <strong>جاذبه‌ها و دیدنی‌ها:</strong> ${v.attractions}</div>` : '';
-
             document.getElementById('village-detail-content').innerHTML = `
                 <div class="village-detail-card">
                     <h3 class="village-title">${v.name}</h3>
@@ -451,7 +399,6 @@
             `;
         }
 
-        // نمایش درون‌برنامه‌ای ویکی‌پدیا
         function openWikiFrame(vName) {
             const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
             const v = list.find(item => item.name === vName);
