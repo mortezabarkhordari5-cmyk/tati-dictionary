@@ -233,6 +233,7 @@
     <!-- مودال الموت شناسی -->
     <div id="moreModal" class="custom-modal">
         <div id="list-view">
+            <!-- بخش هدر، جستجو و فیلترها که به صورت شناور بالا می‌ماند -->
             <div class="sticky-modal-header">
                 <div class="modal-header">
                     <h3 id="modal-title">روستاهای الموت</h3>
@@ -263,49 +264,80 @@
         const searchInput = document.getElementById('search-input');
         const resultCount = document.getElementById('result-count');
 
+        // تابع حذف اعراب برای جستجو و مرتب‌سازی دقیق
         function cleanDiacritics(str) {
             return (str || '').replace(/[\u064B-\u065F\u0670]/g, '').trim();
         }
 
+        // تابع حذف لغات تکراری دقیق با حفظ اعراب متفاوت
         function getUniqueWords(list) {
             const uniqueMap = new Map();
+
             list.forEach(word => {
                 if (!word || typeof word.tati !== 'string') return;
+
                 const tatiText = word.tati.trim();
                 const key = tatiText.normalize('NFC');
                 const farsiText = String(word.farsi || '').trim().replace(/\.$/, '');
+
                 if (!uniqueMap.has(key)) {
-                    uniqueMap.set(key, { ...word, tati: tatiText, farsi: farsiText });
+                    uniqueMap.set(key, {
+                        ...word,
+                        tati: tatiText,
+                        farsi: farsiText
+                    });
                 } else {
+                    // اگر دقیقاً با همین اعراب تکرار شده بود، معنی‌ها را ادغام کن
                     const existingWord = uniqueMap.get(key);
-                    const oldMeanings = existingWord.farsi.split('،').map(item => item.trim()).filter(Boolean);
+                    const oldMeanings = existingWord.farsi
+                        .split('،')
+                        .map(item => item.trim())
+                        .filter(Boolean);
+
                     if (farsiText && !oldMeanings.includes(farsiText)) {
                         oldMeanings.push(farsiText);
                         existingWord.farsi = oldMeanings.join('، ');
                     }
                 }
             });
+
             return Array.from(uniqueMap.values());
         }
 
         function renderDict() {
             const val = searchInput.value.trim().toLowerCase();
             const rawList = (typeof words !== 'undefined') ? words : [];
+
+            // ۱. ابتدا تکراری‌های هم‌شکل حذف/ادغام می‌شوند
             const list = getUniqueWords(rawList);
+
+            // ۲. فیلتر کردن طبق کادر جستجو
             const filtered = list.filter(w => {
                 if (!val) return true;
                 const tatiClean = cleanDiacritics(w.tati).toLowerCase();
                 const farsiClean = cleanDiacritics(w.farsi).toLowerCase();
-                return w.tati.toLowerCase().includes(val) || w.farsi.toLowerCase().includes(val) || tatiClean.includes(val) || farsiClean.includes(val);
+                return w.tati.toLowerCase().includes(val) || 
+                       w.farsi.toLowerCase().includes(val) ||
+                       tatiClean.includes(val) ||
+                       farsiClean.includes(val);
             });
-            filtered.sort((a, b) => cleanDiacritics(a.tati).localeCompare(cleanDiacritics(b.tati), 'fa'));
+
+            // ۳. مرتب‌سازی الفبایی دقیق (آ تا ی) بر اساس ستون تاتی
+            filtered.sort((a, b) => {
+                const aClean = cleanDiacritics(a.tati);
+                const bClean = cleanDiacritics(b.tati);
+                return aClean.localeCompare(bClean, 'fa');
+            });
+
+            // ۴. نمایش در جدول
             tableBody.innerHTML = filtered.map(w => `<tr><td>${w.tati}</td><td>${w.farsi}</td></tr>`).join('');
             resultCount.textContent = `تعداد واژه‌ها: ${filtered.length}`;
         }
 
         searchInput.addEventListener('input', renderDict);
-        renderDict();
+        renderDict(); // اجرای اولیه هنگام باز شدن صفحه
 
+        // مدیریت مودال‌ها
         const overlay = document.getElementById('overlay');
         function openModal(id) { overlay.style.display = 'block'; document.getElementById(id).style.display = 'block'; }
         
@@ -320,7 +352,7 @@
         document.getElementById('moreBtn').onclick = () => { openModal('moreModal'); renderVillages('همه'); };
         overlay.onclick = closeAllModals;
 
-        // تابع اصلاح شده ارسال به بله
+        // باز کردن مستقیم پیام‌رسان بله
         function sendToBale() {
             const tati = document.getElementById('sugTati').value.trim();
             const farsi = document.getElementById('sugFarsi').value.trim();
@@ -328,7 +360,7 @@
             const village = document.getElementById('sugVillage').value.trim();
 
             if (!tati || !farsi) {
-                alert("لطفاً واژه تاتی و معنی فارسی را حتماً وارد کنید.");
+                alert("لطفاً واژه تاتی و معنی فارسی را وارد کنید.");
                 return;
             }
 
@@ -336,20 +368,11 @@
             const myId = "MortezaBarkhordari";
             const url = `https://ble.ir/${myId}?text=${encodeURIComponent(text)}`;
 
-            // سعی می‌کنیم در یک تب جدید باز کنیم
-            const newTab = window.open(url, '_blank');
-
-            // اگر مرورگر باز شدن تب جدید را مسدود کرد، از window.location استفاده می‌کنیم
-            if (!newTab) {
-                window.location.href = url;
-            }
-
+            window.location.href = url;
             closeAllModals();
-
-            // هشدار برای کاربر
-            alert("اگر برنامه بله باز نشد، لطفاً متن را کپی کرده و به صورت دستی در گفت‌وگوی بله ارسال کنید.");
         }
 
+        // نمایش و فیلتر روستاها
         let currentVillageFilter = 'همه';
 
         function renderVillages(filter, search = '') {
@@ -357,6 +380,7 @@
             const container = document.getElementById('villages-container');
             const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
             const searchVal = (search || '').trim().toLowerCase();
+            
             const filtered = list.filter(v => {
                 const regionName = (v.region || v.section || '');
                 const matchFilter = (filter === 'همه') || regionName.includes(filter);
@@ -391,6 +415,7 @@
             renderVillages(currentVillageFilter, e.target.value);
         });
 
+        // نمایش پاپ‌آپ کامل اطلاعات روستا
         function showDetail(vName) {
             const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
             const v = list.find(item => item.name === vName);
@@ -426,6 +451,7 @@
             `;
         }
 
+        // نمایش درون‌برنامه‌ای ویکی‌پدیا
         function openWikiFrame(vName) {
             const list = (typeof alamutVillages !== 'undefined') ? alamutVillages : [];
             const v = list.find(item => item.name === vName);
