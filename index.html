@@ -249,21 +249,21 @@
 
       const message = `پیشنهاد واژه لغت‌نامه تاتی الموتی:\n▫️ واژه تاتی: ${tati}\n▫️ معنی فارسی: ${farsi}\n▫️ توضیحات: ${desc || '-'}\n▫️ فرستنده/روستا: ${village || '-'}\n\nارسال برای: @MortezaBarkhordari`;
 
-      // همیشه اول متن را در کلیپ‌بورد کپی می‌کنیم
+      // ۱. کپی متن در کلیپ‌بورد گوشی
       if(navigator.clipboard && navigator.clipboard.writeText){
         navigator.clipboard.writeText(message).catch(()=>{});
       }
 
-      // اگر گوشی از اشتراک‌گذاری پیش‌فرض پشتیبانی کند (استانداردترین راه در اپ‌های موبایل)
+      // ۲. اشتراک‌گذاری استاندارد یا راهنمایی کاربر
       if (navigator.share) {
         navigator.share({
           title: 'پیشنهاد واژه تاتی',
           text: message
         }).catch(() => {
-          fallbackSend(message);
+          fallbackSend();
         });
       } else {
-        fallbackSend(message);
+        fallbackSend();
       }
 
       document.getElementById('sugTati').value='';
@@ -273,9 +273,11 @@
       closeAllModals();
     }
 
-    function fallbackSend(message) {
-      alert("متن پیشنهاد کپی شد!\nمی‌توانید در پیام‌رسان بله برای @MortezaBarkhordari ارسال کنید.");
-      window.location.href = `https://ble.ir/MortezaBarkhordari`;
+    function fallbackSend() {
+      const userChoice = confirm("پیشنهاد شما در حافظه گوشی کپی شد.\nآیا می‌خواهید وارد پیام‌رسان بله شوید تا آن را ارسال کنید؟");
+      if (userChoice) {
+        window.location.href = `https://ble.ir/MortezaBarkhordari`;
+      }
     }
 
     // --- بخش روستاها و الموت شناسی ---
