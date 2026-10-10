@@ -366,14 +366,9 @@
 
             const text = `سلام، پیشنهاد واژه برای لغت‌نامه تاتی الموتی:\n\n🔹 واژه تاتی: ${tati}\n🔹 معنی فارسی: ${farsi}\n🔹 توضیح: ${desc}\n🔹 نام/روستا: ${village}`;
             const myId = "MortezaBarkhordari";
-            
-            // استفاده از پروتکل Intent برای باز کردن مستقیم اپلیکیشن بله
-            const encodedText = encodeURIComponent(text);
-            const intentUrl = `intent://chat?id=${myId}&text=${encodedText}#Intent;scheme=ble;package=ir.bale;end`;
+            const url = `https://ble.ir/${myId}?text=${encodeURIComponent(text)}`;
 
-            // تلاش برای باز کردن اپلیکیشن بله
-            window.location.href = intentUrl;
-            
+            window.location.href = url;
             closeAllModals();
         }
 
