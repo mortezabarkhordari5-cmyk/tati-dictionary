@@ -20,7 +20,7 @@
             color: #2c3e50; 
             margin: 0; 
             padding: 16px 12px; 
-            padding-bottom: 90px; 
+            padding-bottom: 95px; 
             text-align: center; 
         }
         h1 { 
@@ -34,19 +34,73 @@
             font-size: 15px; 
             font-weight: 700; 
             color: #c0392b; 
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             background: rgba(231, 76, 60, 0.08);
             display: inline-block;
             padding: 4px 14px;
             border-radius: 20px;
         }
         
+        /* کارت جذاب واژه تصادفی روز */
+        .random-card-wrapper {
+            max-width: 460px;
+            margin: 0 auto 12px auto;
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: #ffffff;
+            border-radius: 14px;
+            padding: 14px 16px;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2);
+            text-align: center;
+        }
+        .random-card-title {
+            font-size: 12px;
+            color: #bfdbfe;
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .random-card-word {
+            font-size: 20px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+        .random-card-meaning {
+            font-size: 15px;
+            color: #f1f5f9;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .random-card-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+        .random-btn {
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .random-btn:active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0.96);
+        }
+
         .sticky-header { 
             position: sticky; 
             top: 0; 
             background: rgba(240, 244, 248, 0.95); 
             backdrop-filter: blur(8px);
-            padding: 10px 0; 
+            padding: 6px 0; 
             z-index: 1000; 
         }
         #search-input { 
@@ -76,7 +130,7 @@
             font-weight: 600; 
         }
         
-        /* استایل بهینه‌شده جدول */
+        /* استایل جدول */
         .table-container {
             width: 100%;
             max-width: 760px;
@@ -129,29 +183,40 @@
         }
         
         /* دکمه‌های شناور پایین */
+        .btn-float-container {
+            position: fixed;
+            bottom: 14px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            z-index: 1000;
+            padding: 0 10px;
+            pointer-events: none;
+        }
         .btn-float { 
-            position: fixed; 
-            bottom: 16px; 
-            z-index: 1000; 
-            padding: 12px 18px; 
+            pointer-events: auto;
+            padding: 11px 15px; 
             border: none; 
-            border-radius: 30px; 
+            border-radius: 25px; 
             cursor: pointer; 
             color: #fff; 
             font-family: inherit;
             font-weight: 700; 
             box-shadow: 0 6px 18px rgba(0,0,0,0.22); 
-            display: flex; 
+            display: inline-flex; 
             align-items: center; 
-            gap: 8px; 
-            font-size: 14px;
+            gap: 6px; 
+            font-size: 13px;
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .btn-float:active {
             transform: scale(0.96);
         }
-        #suggestBtn { left: 16px; background: linear-gradient(135deg, #16a34a, #22c55e); }
-        #moreBtn { right: 16px; background: linear-gradient(135deg, #0284c7, #38bdf8); }
+        #quizBtn { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        #suggestBtn { background: linear-gradient(135deg, #16a34a, #22c55e); }
+        #moreBtn { background: linear-gradient(135deg, #0284c7, #38bdf8); }
         
         /* مودال‌ها */
         .overlay { display: none; position: fixed; inset: 0; z-index: 10001; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(3px); }
@@ -182,19 +247,64 @@
         .village-item { padding: 13px 15px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #ffffff; transition: all 0.15s; }
         .village-item:hover { background: #f0f9ff; border-color: #bae6fd; transform: translateY(-1px); }
 
-        /* استایل کارت جزئیات روستا */
+        /* کارت جزئیات روستا */
         .village-detail-card { line-height: 1.8; text-align: right; }
         .village-title { margin-top: 0; color: #0f172a; font-size: 22px; border-bottom: 2px solid #3b82f6; padding-bottom: 8px; }
         .badge-section { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 14px; font-size: 13px; margin-bottom: 12px; font-weight: 700; }
         .detail-row { margin-bottom: 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 14px; font-size: 14px; }
         .detail-row strong { color: #1e293b; }
         .back-btn { background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 16px; font-size: 14px; cursor: pointer; font-weight: 700; margin-bottom: 14px; font-family: inherit; }
+
+        /* استایل مسابقه تاتی (کوییز) */
+        .quiz-option-btn {
+            width: 100%;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            border: 1.5px solid #e2e8f0;
+            background: #f8fafc;
+            border-radius: 10px;
+            text-align: right;
+            font-family: inherit;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            color: #334155;
+        }
+        .quiz-option-btn:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        .quiz-option-btn.correct {
+            background: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #15803d !important;
+        }
+        .quiz-option-btn.wrong {
+            background: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #b91c1c !important;
+        }
     </style>
 </head>
 <body>
 
     <h1>لغت‌نامه تاتی الموتی</h1>
     <div id="author">اثر: مرتضی برخورداری</div>
+
+    <!-- کارت واژه تصادفی روز -->
+    <div class="random-card-wrapper">
+        <div class="random-card-title">
+            <span>✨ واژه روز الموت</span>
+            <span style="font-size: 11px; opacity: 0.9;">گویش کهن تاتی</span>
+        </div>
+        <div id="rndWord" class="random-card-word">در حال بارگذاری...</div>
+        <div id="rndMeaning" class="random-card-meaning"></div>
+        <div class="random-card-actions">
+            <button type="button" class="random-btn" onclick="showNextRandomWord()">🔄 واژه بعدی</button>
+            <button type="button" class="random-btn" onclick="shareRandomWord()">📤 اشتراک‌گذاری</button>
+        </div>
+    </div>
 
     <div class="sticky-header">
         <input type="text" id="search-input" placeholder="جستجو در تاتی یا فارسی...">
@@ -213,10 +323,48 @@
         </table>
     </div>
 
-    <button id="suggestBtn" class="btn-float"><span>➕</span> پیشنهاد واژه</button>
-    <button id="moreBtn" class="btn-float"><span>📚</span> الموت‌شناسی</button>
+    <!-- نوار دکمه‌های شناور پایین صفحه -->
+    <div class="btn-float-container">
+        <button id="quizBtn" class="btn-float"><span>🎯</span> آزمون تاتی</button>
+        <button id="suggestBtn" class="btn-float"><span>➕</span> پیشنهاد واژه</button>
+        <button id="moreBtn" class="btn-float"><span>📚</span> الموت‌شناسی</button>
+    </div>
 
     <div id="overlay" class="overlay"></div>
+
+    <!-- مودال مسابقه و چالش تاتی -->
+    <div id="quizModal" class="custom-modal">
+        <div class="modal-header">
+            <h3>🎯 چالش: چقدر تاتی بلدی؟</h3>
+            <button class="close-btn" onclick="closeAllModals()">&times;</button>
+        </div>
+        <div id="quiz-body" style="text-align: center;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:13px; color:#64748b; font-weight:bold;">
+                <span id="quiz-counter">سوال ۱ از ۵</span>
+                <span id="quiz-score">امتیاز: ۰</span>
+            </div>
+            <div style="background:#f1f5f9; padding:15px; border-radius:12px; margin-bottom:16px;">
+                <div style="font-size:14px; color:#475569; margin-bottom:6px;">معنی این واژه چیست؟</div>
+                <div id="quiz-question-word" style="font-size:24px; font-weight:800; color:#1e3a8a;">...</div>
+            </div>
+            <div id="quiz-options-container"></div>
+            <div id="quiz-feedback" style="min-height:24px; margin-top:10px; font-size:14px; font-weight:bold;"></div>
+            <button id="quiz-next-btn" onclick="loadNextQuestion()" style="display:none; width:100%; margin-top:12px; padding:12px; background:#2563eb; color:#fff; border:none; border-radius:10px; font-family:inherit; font-weight:bold; cursor:pointer;">
+                سوال بعدی ⬅️
+            </button>
+        </div>
+        <div id="quiz-result" style="display:none; text-align:center; padding:10px;">
+            <div style="font-size:45px; margin-bottom:8px;">🏆</div>
+            <h3 id="quiz-result-title" style="margin:0 0 8px 0; color:#1e293b;">نتیجه آزمون</h3>
+            <p id="quiz-result-desc" style="color:#475569; font-size:15px; line-height:1.6; margin-bottom:16px;"></p>
+            <button onclick="startQuiz()" style="width:100%; padding:12px; background:#16a34a; color:#fff; border:none; border-radius:10px; font-family:inherit; font-weight:bold; cursor:pointer; margin-bottom:8px;">
+                🔄 شروع آزمون جدید
+            </button>
+            <button onclick="closeAllModals()" style="width:100%; padding:10px; background:#e2e8f0; color:#475569; border:none; border-radius:10px; font-family:inherit; font-weight:bold; cursor:pointer;">
+                بستن
+            </button>
+        </div>
+    </div>
 
     <!-- مودال پیشنهاد واژه -->
     <div id="suggestModal" class="custom-modal">
@@ -327,6 +475,7 @@
         
         document.getElementById('suggestBtn').onclick = () => openModal('suggestModal');
         document.getElementById('moreBtn').onclick = () => { openModal('moreModal'); renderVillages('همه'); };
+        document.getElementById('quizBtn').onclick = () => { openModal('quizModal'); startQuiz(); };
         overlay.onclick = closeAllModals;
 
         let currentVillageFilter = 'همه';
@@ -418,6 +567,132 @@
             document.getElementById('detail-view').style.display = 'none';
             document.getElementById('list-view').style.display = 'block';
         }
+
+        /* ------------------ بخش واژه روز و اشتراک‌گذاری ------------------ */
+        let currentRandomWordItem = null;
+
+        function showNextRandomWord() {
+            const rawList = (typeof words !== 'undefined') ? words : [];
+            const list = getUniqueWords(rawList);
+            if (!list || list.length === 0) return;
+            const randomIndex = Math.floor(Math.random() * list.length);
+            currentRandomWordItem = list[randomIndex];
+
+            document.getElementById('rndWord').textContent = currentRandomWordItem.tati;
+            document.getElementById('rndMeaning').textContent = currentRandomWordItem.farsi;
+        }
+
+        function shareRandomWord() {
+            if (!currentRandomWordItem) return;
+            const text = `✨ واژه کهن تاتی الموتی:\n▫️ «${currentRandomWordItem.tati}»: ${currentRandomWordItem.farsi}\n\n📱 دانلود لغت‌نامه تاتی الموتی در کافه‌بازار:\nhttps://cafebazaar.ir/app/?id=com.mortezabarkhordari.tatialamut`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'لغت‌نامه تاتی الموتی',
+                    text: text
+                }).catch(() => {});
+            } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(text);
+                alert('متن واژه کپی شد! می‌توانید در واتساپ، ایتا یا تلگرام ارسال کنید.');
+            } else {
+                alert('امکان کپی خودکار پشتیبانی نمی‌شود.');
+            }
+        }
+
+        // بارگذاری اولین واژه روز
+        showNextRandomWord();
+
+        /* ------------------ بخش مسابقه و کوییز تاتی ------------------ */
+        let quizIndex = 0;
+        let quizScore = 0;
+        const totalQuizQuestions = 5;
+        let currentQuestion = null;
+
+        function startQuiz() {
+            quizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-body').style.display = 'block';
+            document.getElementById('quiz-result').style.display = 'none';
+            loadNextQuestion();
+        }
+
+        function loadNextQuestion() {
+            const rawList = (typeof words !== 'undefined') ? words : [];
+            const list = getUniqueWords(rawList);
+            if (list.length < 4) {
+                alert('تعداد واژگان برای مسابقه کافی نیست.');
+                return;
+            }
+
+            if (quizIndex >= totalQuizQuestions) {
+                showQuizResult();
+                return;
+            }
+
+            quizIndex++;
+            document.getElementById('quiz-counter').textContent = `سوال ${quizIndex} از ${totalQuizQuestions}`;
+            document.getElementById('quiz-score').textContent = `امتیاز: ${quizScore}`;
+            document.getElementById('quiz-feedback').textContent = '';
+            document.getElementById('quiz-next-btn').style.display = 'none';
+
+            const target = list[Math.floor(Math.random() * list.length)];
+            currentQuestion = target;
+            document.getElementById('quiz-question-word').textContent = target.tati;
+
+            const options = [target.farsi];
+            while (options.length < 4) {
+                const randomOther = list[Math.floor(Math.random() * list.length)].farsi;
+                if (!options.includes(randomOther) && randomOther !== target.farsi) {
+                    options.push(randomOther);
+                }
+            }
+            options.sort(() => Math.random() - 0.5);
+
+            const optionsContainer = document.getElementById('quiz-options-container');
+            optionsContainer.innerHTML = options.map(opt => `
+                <button type="button" class="quiz-option-btn" onclick="selectAnswer(this, '${opt.replace(/'/g, "\\'")}')">
+                    ${opt}
+                </button>
+            `).join('');
+        }
+
+        function selectAnswer(buttonEl, selectedText) {
+            const buttons = document.querySelectorAll('.quiz-option-btn');
+            buttons.forEach(b => b.disabled = true);
+            const feedback = document.getElementById('quiz-feedback');
+            if (selectedText === currentQuestion.farsi) {
+                buttonEl.classList.add('correct');
+                quizScore += 20;
+                feedback.innerHTML = '<span style="color:#16a34a;">✅ آفرین! کاملاً درسته.</span>';
+            } else {
+                buttonEl.classList.add('wrong');
+                buttons.forEach(b => {
+                    if (b.innerText.trim() === currentQuestion.farsi.trim()) {
+                        b.classList.add('correct');
+                    }
+                });
+                feedback.innerHTML = '<span style="color:#dc2626;">❌ اشتباه بود! گزینه سبز درسته.</span>';
+            }
+            document.getElementById('quiz-score').textContent = `امتیاز: ${quizScore}`;
+            document.getElementById('quiz-next-btn').style.display = 'block';
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-body').style.display = 'none';
+            const res = document.getElementById('quiz-result');
+            res.style.display = 'block';
+            let msg = '';
+            if (quizScore >= 80) {
+                msg = `فوق‌العاده بود! امتیاز شما: ${quizScore} از ۱۰۰.<br>شما یک تاتی‌دان اصیل و افتخار الموت هستید! 🌟`;
+            } else if (quizScore >= 40) {
+                msg = `آفرین، خوب بود! امتیاز شما: ${quizScore} از ۱۰۰.<br>با مرور واژگان برنامه، زبان مادری‌ات را زنده‌تر نگه‌دار. 🌱`;
+            } else {
+                msg = `امتیاز شما: ${quizScore} از ۱۰۰.<br>فرصت خوبیست تا با این لغت‌نامه، واژگان شیرین الموتی را بیشتر یاد بگیری! 📖`;
+            }
+            document.getElementById('quiz-result-desc').innerHTML = msg;
+        }
     </script>
 </body>
 </html>
+
+    
