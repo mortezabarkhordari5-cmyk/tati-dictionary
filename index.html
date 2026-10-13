@@ -99,7 +99,7 @@
         .seo-footer { margin-top: 30px; padding: 15px; font-size: 12px; color: #7f8c8d; text-align: center; }
     </style>
 </head>
-<body class="">
+<body>
     <div class="header-top">
         <button class="theme-toggle-btn" onclick="toggleDarkMode()" aria-label="تغییر تم">
             <span id="theme-icon">🌙</span>
@@ -185,6 +185,7 @@
             <button class="tab-btn" onclick="generateQuiz()" style="margin-top:10px; background:#f8fafc; color:#334155;">سوال بعدی</button>
         </div>
     </div>
+
     <!-- مدال روستاهای الموت -->
     <div id="villageModal" class="custom-modal">
         <div class="sticky-modal-header">
@@ -206,6 +207,14 @@
     <script src="data.js"></script>
 
     <script>
+        // تطبیق خودکار با متغیر words در data.js
+        let wordsDatabase = [];
+        if (typeof words !== 'undefined' && Array.isArray(words)) {
+            wordsDatabase = words.map(item => [item.tati || '', item.farsi || '']);
+        } else if (typeof window.words !== 'undefined' && Array.isArray(window.words)) {
+            wordsDatabase = window.words.map(item => [item.tati || '', item.farsi || '']);
+        }
+
         // دیتای روستاهای الموت
         const alamutVillages = [
             { name: "گازرخان", region: "shargh", desc: "دامنه قلعه حسن صباح، پایتخت اسماعیلیان الموت" },
@@ -300,6 +309,7 @@
             }
             searchWords();
         }
+
         // کلمه تصادفی
         function generateRandomWord() {
             triggerHaptic();
@@ -310,7 +320,7 @@
                 icon.classList.add('spin');
             }
 
-            if (typeof wordsDatabase !== 'undefined' && wordsDatabase.length > 0) {
+            if (wordsDatabase.length > 0) {
                 const randomIndex = Math.floor(Math.random() * wordsDatabase.length);
                 currentRandomWord = wordsDatabase[randomIndex];
                 document.getElementById('random-word').innerText = currentRandomWord[0];
@@ -338,7 +348,7 @@
             const tbody = document.getElementById('word-list');
             const counter = document.getElementById('result-count');
             
-            if (typeof wordsDatabase === 'undefined') {
+            if (!wordsDatabase || wordsDatabase.length === 0) {
                 counter.innerText = 'خطا در بارگذاری داده‌ها!';
                 return;
             }
@@ -390,7 +400,7 @@
         }
 
         function generateQuiz() {
-            if (typeof wordsDatabase === 'undefined' || wordsDatabase.length < 4) return;
+            if (!wordsDatabase || wordsDatabase.length < 4) return;
             document.getElementById('quiz-feedback').innerText = '';
             
             const questionIndex = Math.floor(Math.random() * wordsDatabase.length);
@@ -489,7 +499,7 @@
         // راه‌اندازی اولیه صفحه
         window.addEventListener('DOMContentLoaded', () => {
             initTheme();
-            if (typeof wordsDatabase !== 'undefined') {
+            if (wordsDatabase.length > 0) {
                 searchWords();
                 generateRandomWord();
             } else {
