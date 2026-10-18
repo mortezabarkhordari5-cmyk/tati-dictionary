@@ -376,40 +376,61 @@
     const searchVal = document.getElementById('eco-search')?.value.trim().toLowerCase() || '';
     renderEcoTourism(currentEcoRegion, searchVal);
   }
+// شماره تماس مدیریت جهت رزرو و تبلیغات (کسب درآمد شما)
+const managerPhone = "09120000000"; // <--- شماره موبایل خودتان را اینجا بگذارید
 
-  function renderEcoTourism(region = 'همه', query = '') {
-    const container = document.getElementById('eco-list-container');
-    if (!container || typeof alamutEcoTourism === 'undefined') return;
+function renderEcoTourism(region = 'همه', query = '') {
+  const container = document.getElementById('eco-list-container');
+  if (!container || typeof alamutEcoTourism === 'undefined') return;
 
-    let list = alamutEcoTourism.filter(item => {
-      const matchRegion = (region === 'همه') || (item.region.includes(region));
-      const matchQuery = !query ||
-        item.name.toLowerCase().includes(query) ||
-        item.stay.toLowerCase().includes(query) ||
-        item.attractions.toLowerCase().includes(query) ||
-        item.souvenirs.toLowerCase().includes(query);
-      return matchRegion && matchQuery;
-    });
+  let list = alamutEcoTourism.filter(item => {
+    const matchRegion = (region === 'همه') || (item.region.includes(region));
+    const matchQuery = !query ||
+      item.name.toLowerCase().includes(query) ||
+      item.stay.toLowerCase().includes(query) ||
+      item.attractions.toLowerCase().includes(query) ||
+      item.souvenirs.toLowerCase().includes(query);
+    return matchRegion && matchQuery;
+  });
 
-    if (list.length === 0) {
-      container.innerHTML = '<div style="text-align:center; padding:20px; color:#64748b;">موردی یافت نشد.</div>';
-      return;
-    }
+  // بنر روش دوم: جذب تبلیغ و حق اشتراک از صاحبان اقامتگاه
+  let html = `
+    <div style="background: linear-gradient(135deg, #1e3c72, #2a5298); color: #fff; padding: 12px; border-radius: 10px; margin-bottom: 15px; text-align: center; font-size: 13px; line-height: 1.6; box-shadow: 0 3px 6px rgba(0,0,0,0.15);">
+      📢 <strong>صاحب اقامتگاه، سوییت یا تولیدکننده سوغات الموت هستید؟</strong><br>
+      جهت معرفی کسب‌وکار و ثبت اقامتگاه در سامانه، با مدیریت تماس بگیرید:
+      <br>
+      <a href="tel:${managerPhone}" style="display: inline-block; margin-top: 6px; background: #ffca28; color: #222; padding: 5px 12px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 12px;">
+        📞 ثبت تبلیغ و اشتراک اقامتگاه
+      </a>
+    </div>
+  `;
 
-    container.innerHTML = list.map(item => `
-      <div class="eco-card">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <span class="eco-title">🏡 ${item.name}</span>
-          <span class="eco-badge ${item.region.includes('شرقی') ? 'eco-badge-east' : 'eco-badge-west'}">${item.region}</span>
-        </div>
-        <div class="eco-field"><strong>🛏️ امکانات اسکان و اقامتگاه:</strong> ${item.stay}</div>
-        <div class="eco-field"><strong>🏰 جاذبه‌ها:</strong> ${item.attractions}</div>
-        <div class="eco-field"><strong>🍯 سوغات و محصولات:</strong> ${item.souvenirs}</div>
-        <div class="eco-field"><strong>🛣️ مسیر دسترسی:</strong> ${item.route}</div>
-        ${item.mapUrl ? `<a href="${item.mapUrl}" target="_blank" rel="noopener" class="eco-map-link">📍 مسیریابی روی نقشه</a>` : ''}
-      </div>
-    `).join('');
+  if (list.length === 0) {
+    html += '<div style="text-align:center; padding:20px; color:#888;">اقامتگاهی یافت نشد.</div>';
+    container.innerHTML = html;
+    return;
   }
+  // کارت‌ها + دکمه رزرو مستقیم با خود شما (روش اول: کمیسیون)
+  container.innerHTML = html + list.map(item => `
+    <div class="eco-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap;">
+        <span class="eco-title">🏡 ${item.name} ${item.isFeatured ? '<span style="background:#ffb300; color:#000; font-size:11px; padding:2px 8px; border-radius:10px; font-weight:bold;">⭐ اقامتگاه ویژه</span>' : ''}</span>
+        <span class="eco-badge ${item.region.includes('شرقی') ? 'eco-badge-east' : 'eco-badge-west'}">${item.region}</span>
+      </div>
+      <div class="eco-field"><strong>🏠 امکانات اقامتگاه:</strong> ${item.stay}</div>
+      <div class="eco-field"><strong>🏞️ دیدنی‌ها:</strong> ${item.attractions}</div>
+      <div class="eco-field"><strong>🍯 سوغات و محصولات:</strong> ${item.souvenirs}</div>
+      <div class="eco-field"><strong>🧭 مسیر دسترسی:</strong> ${item.route}</div>
+      <div style="margin-top:10px; padding-top:10px; border-top:1px dashed #ddd; display:flex; gap:8px; flex-wrap:wrap;">
+        <a href="tel:${managerPhone}" style="flex:1; min-width:130px; text-align:center; background:#27ae60; color:#fff; text-decoration:none; padding:8px 10px; border-radius:6px; font-size:13px; font-weight:bold;">
+          📞 رزرو اقامتگاه با مدیر
+        </a>
+        ${item.mapUrl ? `<a href="${item.mapUrl}" target="_blank" rel="noopener" style="background:#f0f0f0; color:#444; text-decoration:none; padding:8px 10px; border-radius:6px; font-size:13px;">مسیریابی 🗺️</a>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
     </script>
 </body>
 </html>
